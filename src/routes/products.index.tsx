@@ -82,7 +82,7 @@ function ProductsIndex() {
                 </Link>
               </Button>
             </div>
-            <ul className="grid content-start gap-3 rounded-xl bg-white/5 p-7">
+            <ul className="grid content-start gap-3 rounded-xl bg-ink-foreground/5 p-7">
               {bundle.includes.map((i) => (
                 <li key={i} className="flex gap-2.5 text-sm">
                   <Check className="mt-0.5 size-4 shrink-0 text-accent" />
