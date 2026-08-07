@@ -52,7 +52,7 @@ export const tools: Tool[] = [
     secondaryLabel: "Location & standout feature",
     secondaryPlaceholder: "Lisbon, Alfama — rooftop terrace with river view",
     sample: (input, extra) =>
-      `SUGGESTED TITLE\nSunlit 2-Bed with Rooftop Terrace · 6 min to Old Town\n\nOPENING LINE\nA quiet, light-filled apartment${extra ? ` in ${extra.split("—")[0].trim()}` : ""} — designed for travellers who want to be central without losing a good night's sleep.\n\nDESCRIPTION\nTwo proper bedrooms with blackout curtains, a full kitchen, fast 300 Mbps wifi and a dedicated desk. The private terrace catches afternoon sun and is set up for slow dinners.\n\nWHY GUESTS BOOK IT\n· Self check-in, 24/7\n· Walkable to transport, cafés and the historic centre\n· Workspace that actually works\n\nSEARCH KEYWORDS TO KEEP\nfamily friendly · self check-in · workspace · terrace · central`,
+      `SUGGESTED TITLE\nSunlit 2-Bed with Rooftop Terrace · 6 min to Old Town\n\nOPENING LINE\nA quiet, light-filled apartment${extra ? ` in ${extra.split("—")[0]!.trim()}` : ""} — designed for travellers who want to be central without losing a good night's sleep.\n\nDESCRIPTION\nTwo proper bedrooms with blackout curtains, a full kitchen, fast 300 Mbps wifi and a dedicated desk. The private terrace catches afternoon sun and is set up for slow dinners.\n\nWHY GUESTS BOOK IT\n· Self check-in, 24/7\n· Walkable to transport, cafés and the historic centre\n· Workspace that actually works\n\nSEARCH KEYWORDS TO KEEP\nfamily friendly · self check-in · workspace · terrace · central`,
   },
   {
     slug: "house-rules-generator",
