@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as AiToolsIndexRouteImport } from './routes/ai-tools.index'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -62,6 +68,7 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/resources': typeof ResourcesRoute
   '/ai-tools/$slug': typeof AiToolsSlugRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/resources': typeof ResourcesRoute
   '/ai-tools/$slug': typeof AiToolsSlugRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/resources': typeof ResourcesRoute
   '/ai-tools/$slug': typeof AiToolsSlugRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/portal'
     | '/pricing'
     | '/resources'
     | '/ai-tools/$slug'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/portal'
     | '/pricing'
     | '/resources'
     | '/ai-tools/$slug'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/portal'
     | '/pricing'
     | '/resources'
     | '/ai-tools/$slug'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  PortalRoute: typeof PortalRoute
   PricingRoute: typeof PricingRoute
   ResourcesRoute: typeof ResourcesRoute
   AiToolsSlugRoute: typeof AiToolsSlugRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  PortalRoute: PortalRoute,
   PricingRoute: PricingRoute,
   ResourcesRoute: ResourcesRoute,
   AiToolsSlugRoute: AiToolsSlugRoute,
