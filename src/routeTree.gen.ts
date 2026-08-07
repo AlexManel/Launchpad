@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiToolsIndexRouteImport } from './routes/ai-tools.index'
+import { Route as AiToolsSlugRouteImport } from './routes/ai-tools.$slug'
+import { Route as ProductsIndexRouteImport } from './routes/products.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiToolsIndexRoute = AiToolsIndexRouteImport.update({
+  id: '/ai-tools/',
+  path: '/ai-tools/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiToolsSlugRoute = AiToolsSlugRouteImport.update({
+  id: '/ai-tools/$slug',
+  path: '/ai-tools/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-tools/$slug': typeof AiToolsSlugRoute
+  '/ai-tools/': typeof AiToolsIndexRoute
+  '/products/': typeof ProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-tools/$slug': typeof AiToolsSlugRoute
+  '/ai-tools': typeof AiToolsIndexRoute
+  '/products': typeof ProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-tools/$slug': typeof AiToolsSlugRoute
+  '/ai-tools/': typeof AiToolsIndexRoute
+  '/products/': typeof ProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ai-tools/$slug' | '/ai-tools/' | '/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ai-tools/$slug' | '/ai-tools' | '/products'
+  id: '__root__' | '/' | '/ai-tools/$slug' | '/ai-tools/' | '/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiToolsSlugRoute: typeof AiToolsSlugRoute
+  AiToolsIndexRoute: typeof AiToolsIndexRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +78,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-tools/': {
+      id: '/ai-tools/'
+      path: '/ai-tools'
+      fullPath: '/ai-tools/'
+      preLoaderRoute: typeof AiToolsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-tools/$slug': {
+      id: '/ai-tools/$slug'
+      path: '/ai-tools/$slug'
+      fullPath: '/ai-tools/$slug'
+      preLoaderRoute: typeof AiToolsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiToolsSlugRoute: AiToolsSlugRoute,
+  AiToolsIndexRoute: AiToolsIndexRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
