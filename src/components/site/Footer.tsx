@@ -9,7 +9,7 @@ const columns = [
       { to: "/ai-tools", label: "AI Tools" },
       { to: "/products", label: "Digital Products" },
       { to: "/portal", label: "Webrya Workspace" },
-      { to: "/pricing", label: "Packages" },
+      { to: "/pricing", label: "Solutions" },
     ],
   },
   {

@@ -58,7 +58,7 @@ const properties = [
 const activity = [
   { text: "Review response generated for Casa Oliva", when: "2 hours ago" },
   { text: "Guest reply sent — early check-in request", when: "Yesterday" },
-  { text: "AIRCover Suite downloaded", when: "3 days ago" },
+  { text: "AirCover Suite downloaded", when: "3 days ago" },
   { text: "Listing optimized — The Terrace Loft", when: "Last week" },
 ];
 
@@ -335,9 +335,9 @@ function AccountPanel({ name }: { name: string }) {
         <div className="rounded-xl border border-border bg-card p-6">
           <p className="eyebrow">Current package</p>
           <p className="mt-3 text-lg">Free tools</p>
-          <p className="text-sm text-muted-foreground">Upgrade to a one-time Webrya package.</p>
+          <p className="text-sm text-muted-foreground">Upgrade with a one-time professional Webrya solution.</p>
           <Button asChild className="mt-4">
-            <Link to="/pricing">View packages</Link>
+            <Link to="/pricing">View solutions</Link>
           </Button>
         </div>
       </div>
