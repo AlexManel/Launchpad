@@ -69,11 +69,11 @@ function Home() {
           <div>
             <p className="eyebrow">For Airbnb hosts &amp; short-term rental professionals</p>
             <h1 className="mt-5 text-[2.6rem] leading-[1.04] sm:text-6xl">
-              Run your short-term rental smarter.
+              Everything you need to run your short-term rental smarter.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              AI-powered tools, ready-made resources and digital solutions built for Airbnb hosts
-              and short-term rental professionals.
+              AI-powered tools, ready-made resources and professional digital solutions built for
+              hosts who want to save time and operate like pros.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild size="lg">
@@ -86,12 +86,13 @@ function Home() {
               </Button>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted-foreground">
-              {["5 free AI tools", "One-time purchases", "No subscription"].map((t) => (
+              {["Free AI tools", "One-time purchases", "No mandatory subscription"].map((t) => (
                 <span key={t} className="inline-flex items-center gap-2">
                   <Check className="size-4 text-accent" /> {t}
                 </span>
               ))}
             </div>
+
           </div>
 
           <div className="relative">
@@ -116,10 +117,11 @@ function Home() {
       <Section className="py-16 lg:py-24">
         <p className="eyebrow">The Webrya ecosystem</p>
         <h2 className="mt-4 max-w-2xl text-3xl leading-tight sm:text-4xl">
-          Three products that work as one system.
+          One connected system: start free, own what you buy, grow into a full setup.
         </h2>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
           {pillars.map((p) => (
             <Link
               key={p.title}
