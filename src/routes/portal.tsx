@@ -19,13 +19,13 @@ import { getSession, signOut } from "@/lib/mock-auth";
 export const Route = createFileRoute("/portal")({
   head: () => ({
     meta: [
-      { title: "Host Portal — Webrya" },
+      { title: "Webrya Workspace — Webrya" },
       {
         name: "description",
         content:
-          "A preview of the Webrya Host Portal: your AI tools, purchased digital products, properties and resources in one place.",
+          "A preview of the Webrya Webrya Workspace: your AI tools, purchased digital products, properties and resources in one place.",
       },
-      { property: "og:title", content: "Host Portal — Webrya" },
+      { property: "og:title", content: "Webrya Workspace — Webrya" },
       {
         property: "og:description",
         content: "One portal for your short-term rental tools, products and properties.",
@@ -78,7 +78,7 @@ function Portal() {
           <div className="flex items-center gap-3">
             <Logo />
             <span className="hidden rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground sm:inline">
-              Host Portal
+              Webrya Workspace
             </span>
           </div>
           <div className="flex items-center gap-2">

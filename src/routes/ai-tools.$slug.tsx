@@ -119,7 +119,7 @@ function ToolPage() {
                 {loading ? "Generating…" : "Generate"}
               </Button>
               <p className="text-xs text-muted-foreground">
-                Free preview. Sign in to save results to your Host Portal.
+                Free preview. Sign in to save results to your Webrya Workspace.
               </p>
             </div>
           </div>

@@ -76,7 +76,7 @@ function ProductPage() {
             <ol className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground">
               <li>
                 <span className="font-medium text-foreground">1. Download instantly.</span> Files
-                arrive in your Host Portal the moment checkout completes.
+                arrive in your Webrya Workspace the moment checkout completes.
               </li>
               <li>
                 <span className="font-medium text-foreground">2. Adapt once.</span> Swap in your
@@ -101,10 +101,10 @@ function ProductPage() {
                 <p className="font-medium">Checkout placeholder</p>
                 <p className="mt-2 leading-relaxed text-muted-foreground">
                   Payments aren't connected yet in this MVP. In production this opens a secure
-                  one-time checkout and unlocks the product in your Host Portal.
+                  one-time checkout and unlocks the product in your Webrya Workspace.
                 </p>
                 <Button asChild variant="outline" className="mt-4 w-full">
-                  <Link to="/portal">Preview in Host Portal</Link>
+                  <Link to="/portal">Preview in Webrya Workspace</Link>
                 </Button>
               </div>
             ) : (

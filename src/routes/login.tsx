@@ -10,13 +10,13 @@ import { signIn } from "@/lib/mock-auth";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — Webrya Host Portal" },
+      { title: "Login — Webrya Webrya Workspace" },
       {
         name: "description",
         content:
-          "Sign in to the Webrya Host Portal to access your AI tools, purchased digital products and saved content.",
+          "Sign in to the Webrya Webrya Workspace to access your AI tools, purchased digital products and saved content.",
       },
-      { property: "og:title", content: "Login — Webrya Host Portal" },
+      { property: "og:title", content: "Login — Webrya Webrya Workspace" },
       { property: "og:description", content: "Access your Webrya tools, products and resources." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -103,7 +103,7 @@ function LoginPage() {
       </div>
 
       <div className="hidden flex-col justify-between bg-ink p-14 text-ink-foreground lg:flex">
-        <p className="eyebrow text-accent">Webrya Host Portal</p>
+        <p className="eyebrow text-accent">Webrya Webrya Workspace</p>
         <div>
           <p className="font-display text-4xl leading-tight">
             “Everything you need to run your short-term rental smarter.”

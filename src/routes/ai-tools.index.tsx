@@ -72,10 +72,10 @@ function ToolsIndex() {
             <h2 className="text-xl">More tools coming</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Pricing assistant, cleaning schedule builder and damage claim writer are in
-              development for the Host Portal.
+              development for the Webrya Workspace.
             </p>
             <Button asChild variant="ghost" className="mt-6 justify-start px-0">
-              <Link to="/portal">See the Host Portal</Link>
+              <Link to="/portal">See the Webrya Workspace</Link>
             </Button>
           </div>
         </div>

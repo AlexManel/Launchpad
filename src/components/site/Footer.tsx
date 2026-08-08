@@ -8,7 +8,7 @@ const columns = [
     links: [
       { to: "/ai-tools", label: "AI Tools" },
       { to: "/products", label: "Digital Products" },
-      { to: "/portal", label: "Host Portal" },
+      { to: "/portal", label: "Webrya Workspace" },
       { to: "/pricing", label: "Packages" },
     ],
   },
