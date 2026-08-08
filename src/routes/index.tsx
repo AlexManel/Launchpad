@@ -174,7 +174,7 @@ function Home() {
       <Section className="pb-16 lg:pb-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow">Digital products · one-time purchase</p>
+            <p className="eyebrow">Digital products · pay once. own it.</p>
             <h2 className="mt-3 text-3xl sm:text-4xl">Systems you can put to work tonight.</h2>
           </div>
           <Button asChild variant="outline">
@@ -214,30 +214,30 @@ function Home() {
       <Section className="pb-24">
         <div className="grid items-center gap-10 rounded-2xl border border-border bg-card p-8 lg:grid-cols-2 lg:p-12">
           <div>
-            <p className="eyebrow">Webrya packages</p>
+            <p className="eyebrow">Professional Webrya solutions</p>
             <h2 className="mt-3 text-3xl sm:text-4xl">
-              Need the whole thing built for you?
+              Need the whole thing set up for you?
             </h2>
             <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
-              One-time professional setups for hosts, co-hosts and property managers — a landing
-              page, branding, AI tools and your own host dashboard, delivered as a finished
-              solution. No monthly subscription.
+              One-time professional Webrya solutions for hosts, co-hosts and property managers — a
+              branded property page, digital guidebook, AI toolkit and your Webrya Workspace,
+              delivered as a finished setup. No mandatory subscription.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to="/pricing">View packages</Link>
+                <Link to="/pricing">View solutions</Link>
               </Button>
               <Button asChild size="lg" variant="ghost">
-                <Link to="/portal">Preview the Host Portal</Link>
+                <Link to="/portal">Preview the Webrya Workspace</Link>
               </Button>
             </div>
           </div>
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
             {[
-              ["Starter", "$99"],
-              ["Professional", "$299"],
+              ["Host Starter", "$99"],
+              ["Host Pro", "$299"],
               ["Business", "from $699"],
-              ["Everything", "one-time"],
+              ["Every solution", "one-time"],
             ].map(([k, v]) => (
               <div key={k} className="bg-card p-6">
                 <dt className="eyebrow">{k}</dt>
