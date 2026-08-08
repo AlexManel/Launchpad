@@ -108,7 +108,7 @@ function Home() {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 “Thank you for taking the time to share this — I'm glad the space worked well…”
               </p>
-              <p className="mt-3 text-xs text-accent">Generated in 4 seconds</p>
+              <p className="mt-3 text-xs text-accent">Draft ready to edit and send</p>
             </div>
           </div>
         </div>

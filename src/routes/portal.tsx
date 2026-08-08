@@ -149,7 +149,7 @@ function Overview({ name, onNavigate }: { name: string; onNavigate: (s: SectionI
 
   return (
     <>
-      <PanelTitle title="Welcome back." sub={`Signed in as ${name}. Here's where things stand.`} />
+      <PanelTitle title="Welcome back." sub={`Signed in as ${name}. Everything you've purchased, created and saved — in one place.`} />
 
       <div className="grid gap-4 sm:grid-cols-3">
         {stats.map((s) => (
