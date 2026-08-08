@@ -12,12 +12,12 @@ export const Route = createFileRoute("/products/")({
       {
         name: "description",
         content:
-          "One-time digital products for short-term rental hosts: damage claim kits, review protection, guest communication templates and the Ultimate Host Bundle.",
+          "One-time digital products for short-term rental hosts: AirCover Suite, Review Protection Suite, Guest Communication Suite and the Ultimate Host Bundle. Pay once. Own it.",
       },
       { property: "og:title", content: "Digital Products for Airbnb Hosts — Webrya" },
       {
         property: "og:description",
-        content: "Templates, checklists and AI prompt systems. One-time purchase, lifetime access.",
+        content: "Templates, checklists and AI prompt systems. Pay once. Own it.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,9 +33,9 @@ function ProductsIndex() {
   return (
     <>
       <PageHeader
-        eyebrow="Digital Products"
+        eyebrow="Digital Products · Pay once. Own it."
         title="Ready-to-use systems for hosts who want it handled."
-        intro="Every product is a one-time purchase with lifetime access. No subscriptions, no seats, no renewal emails."
+        intro="Every product is a one-time purchase with lifetime access. No mandatory subscription, no seats, no renewal emails."
       />
 
       <Section className="py-14 lg:py-20">
@@ -55,7 +55,7 @@ function ProductsIndex() {
               </ul>
               <div className="mt-auto pt-7">
                 <p className="font-display text-3xl">{p.priceLabel}</p>
-                <p className="mt-1 text-xs text-muted-foreground">One-time purchase</p>
+                <p className="mt-1 text-xs text-muted-foreground">Pay once. Own it.</p>
                 <Button asChild className="mt-4 w-full">
                   <Link to="/products/$slug" params={{ slug: p.slug }}>
                     Get Access
@@ -74,7 +74,9 @@ function ProductsIndex() {
               <p className="mt-4 max-w-xl leading-relaxed opacity-80">{bundle.description}</p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <span className="font-display text-4xl">{bundle.priceLabel}</span>
-                <span className="text-sm opacity-70">One-time · lifetime updates</span>
+                <span className="text-sm opacity-70">
+                  <s>$117 separately</s> · save $18 · lifetime updates
+                </span>
               </div>
               <Button asChild size="lg" variant="secondary" className="mt-7">
                 <Link to="/products/$slug" params={{ slug: bundle.slug }}>
