@@ -10,13 +10,13 @@ import { signIn } from "@/lib/mock-auth";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — Webrya Host Portal" },
+      { title: "Login — Webrya Workspace" },
       {
         name: "description",
         content:
-          "Sign in to the Webrya Host Portal to access your AI tools, purchased digital products and saved content.",
+          "Sign in to the Webrya Workspace to access your AI tools, purchased digital products and saved content.",
       },
-      { property: "og:title", content: "Login — Webrya Host Portal" },
+      { property: "og:title", content: "Login — Webrya Workspace" },
       { property: "og:description", content: "Access your Webrya tools, products and resources." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -94,7 +94,7 @@ function LoginPage() {
             </button>
           </p>
           <p className="mt-8 text-xs text-muted-foreground">
-            Demo environment — any details will sign you into the portal preview.{" "}
+            Demo environment — any details will sign you into your Workspace preview.{" "}
             <Link to="/" className="underline">
               Back to webrya.com
             </Link>
@@ -103,13 +103,13 @@ function LoginPage() {
       </div>
 
       <div className="hidden flex-col justify-between bg-ink p-14 text-ink-foreground lg:flex">
-        <p className="eyebrow text-accent">Webrya Host Portal</p>
+        <p className="eyebrow text-accent">Webrya Workspace</p>
         <div>
           <p className="font-display text-4xl leading-tight">
             “Everything you need to run your short-term rental smarter.”
           </p>
           <p className="mt-6 max-w-md leading-relaxed opacity-75">
-            AI tools, purchased products, your properties and your resources — one portal, built
+            AI tools, purchased products, your properties and your resources — one workspace, built
             for hosts who treat this like a business.
           </p>
         </div>

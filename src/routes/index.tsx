@@ -13,44 +13,53 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI-powered tools, ready-made resources and digital solutions built for Airbnb hosts and short-term rental professionals.",
+          "AI-powered tools, ready-made resources and professional digital solutions built for short-term rental hosts and property managers.",
       },
       { property: "og:title", content: "Webrya — Run your short-term rental smarter" },
       {
         property: "og:description",
         content:
-          "AI tools, digital products and a host portal for Airbnb hosts, co-hosts and property managers.",
+          "AI tools, digital products, the Webrya Workspace and professional solutions for hosts and property managers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+
   component: Home,
 });
 
 const pillars = [
   {
     icon: Sparkles,
-    title: "AI Tools",
-    body: "Free and practical AI tools for everyday hosting tasks.",
+    title: "Free AI Tools",
+    body: "Try Webrya for free — practical AI tools for everyday hosting tasks.",
     to: "/ai-tools" as const,
     cta: "Explore AI Tools",
   },
   {
     icon: Package,
     title: "Digital Products",
-    body: "Ready-to-use templates, systems and resources.",
+    body: "Buy ready-made hosting systems. Pay once. Own it.",
     to: "/products" as const,
     cta: "View Products",
   },
   {
     icon: LayoutDashboard,
-    title: "Host Portal",
-    body: "A central place for your Webrya tools, resources and property-related digital solutions.",
+    title: "Webrya Workspace",
+    body: "Keep your tools, purchases and saved work together in one place.",
     to: "/portal" as const,
-    cta: "See the Portal",
+    cta: "See the Workspace",
+  },
+  {
+    icon: Check,
+    title: "Professional Solutions",
+    body: "Get a complete Webrya setup for your property or business.",
+    to: "/pricing" as const,
+    cta: "View solutions",
   },
 ];
+
 
 function Home() {
   return (
@@ -60,11 +69,11 @@ function Home() {
           <div>
             <p className="eyebrow">For Airbnb hosts &amp; short-term rental professionals</p>
             <h1 className="mt-5 text-[2.6rem] leading-[1.04] sm:text-6xl">
-              Run your short-term rental smarter.
+              Everything you need to run your short-term rental smarter.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              AI-powered tools, ready-made resources and digital solutions built for Airbnb hosts
-              and short-term rental professionals.
+              AI-powered tools, ready-made resources and professional digital solutions built for
+              hosts who want to save time and operate like pros.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild size="lg">
@@ -77,12 +86,13 @@ function Home() {
               </Button>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted-foreground">
-              {["5 free AI tools", "One-time purchases", "No subscription"].map((t) => (
+              {["Free AI tools", "One-time purchases", "No mandatory subscription"].map((t) => (
                 <span key={t} className="inline-flex items-center gap-2">
                   <Check className="size-4 text-accent" /> {t}
                 </span>
               ))}
             </div>
+
           </div>
 
           <div className="relative">
@@ -98,7 +108,7 @@ function Home() {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 “Thank you for taking the time to share this — I'm glad the space worked well…”
               </p>
-              <p className="mt-3 text-xs text-accent">Generated in 4 seconds</p>
+              <p className="mt-3 text-xs text-accent">Draft ready to edit and send</p>
             </div>
           </div>
         </div>
@@ -107,10 +117,11 @@ function Home() {
       <Section className="py-16 lg:py-24">
         <p className="eyebrow">The Webrya ecosystem</p>
         <h2 className="mt-4 max-w-2xl text-3xl leading-tight sm:text-4xl">
-          Three products that work as one system.
+          One connected system: start free, own what you buy, grow into a full setup.
         </h2>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
           {pillars.map((p) => (
             <Link
               key={p.title}
@@ -163,7 +174,7 @@ function Home() {
       <Section className="pb-16 lg:pb-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow">Digital products · one-time purchase</p>
+            <p className="eyebrow">Digital products · pay once. own it.</p>
             <h2 className="mt-3 text-3xl sm:text-4xl">Systems you can put to work tonight.</h2>
           </div>
           <Button asChild variant="outline">
@@ -203,30 +214,30 @@ function Home() {
       <Section className="pb-24">
         <div className="grid items-center gap-10 rounded-2xl border border-border bg-card p-8 lg:grid-cols-2 lg:p-12">
           <div>
-            <p className="eyebrow">Webrya packages</p>
+            <p className="eyebrow">Professional Webrya solutions</p>
             <h2 className="mt-3 text-3xl sm:text-4xl">
-              Need the whole thing built for you?
+              Need the whole thing set up for you?
             </h2>
             <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
-              One-time professional setups for hosts, co-hosts and property managers — a landing
-              page, branding, AI tools and your own host dashboard, delivered as a finished
-              solution. No monthly subscription.
+              One-time professional Webrya solutions for hosts, co-hosts and property managers — a
+              branded property page, digital guidebook, AI toolkit and your Webrya Workspace,
+              delivered as a finished setup. No mandatory subscription.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to="/pricing">View packages</Link>
+                <Link to="/pricing">View solutions</Link>
               </Button>
               <Button asChild size="lg" variant="ghost">
-                <Link to="/portal">Preview the Host Portal</Link>
+                <Link to="/portal">Preview the Webrya Workspace</Link>
               </Button>
             </div>
           </div>
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
             {[
-              ["Starter", "$99"],
-              ["Professional", "$299"],
+              ["Host Starter", "$99"],
+              ["Host Pro", "$299"],
               ["Business", "from $699"],
-              ["Everything", "one-time"],
+              ["Every solution", "one-time"],
             ].map(([k, v]) => (
               <div key={k} className="bg-card p-6">
                 <dt className="eyebrow">{k}</dt>

@@ -19,16 +19,16 @@ import { getSession, signOut } from "@/lib/mock-auth";
 export const Route = createFileRoute("/portal")({
   head: () => ({
     meta: [
-      { title: "Host Portal — Webrya" },
+      { title: "Webrya Workspace — Webrya" },
       {
         name: "description",
         content:
-          "A preview of the Webrya Host Portal: your AI tools, purchased digital products, properties and resources in one place.",
+          "A preview of the Webrya Workspace: your AI tools, purchased digital products, properties and resources in one place.",
       },
-      { property: "og:title", content: "Host Portal — Webrya" },
+      { property: "og:title", content: "Webrya Workspace — Webrya" },
       {
         property: "og:description",
-        content: "One portal for your short-term rental tools, products and properties.",
+        content: "One workspace for your short-term rental tools, products and properties.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -58,7 +58,7 @@ const properties = [
 const activity = [
   { text: "Review response generated for Casa Oliva", when: "2 hours ago" },
   { text: "Guest reply sent — early check-in request", when: "Yesterday" },
-  { text: "AIRCover Suite downloaded", when: "3 days ago" },
+  { text: "AirCover Suite downloaded", when: "3 days ago" },
   { text: "Listing optimized — The Terrace Loft", when: "Last week" },
 ];
 
@@ -78,7 +78,7 @@ function Portal() {
           <div className="flex items-center gap-3">
             <Logo />
             <span className="hidden rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground sm:inline">
-              Host Portal
+              Webrya Workspace
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ function Overview({ name, onNavigate }: { name: string; onNavigate: (s: SectionI
 
   return (
     <>
-      <PanelTitle title="Welcome back." sub={`Signed in as ${name}. Here's where things stand.`} />
+      <PanelTitle title="Welcome back." sub={`Signed in as ${name}. Everything you've purchased, created and saved — in one place.`} />
 
       <div className="grid gap-4 sm:grid-cols-3">
         {stats.map((s) => (
@@ -335,9 +335,9 @@ function AccountPanel({ name }: { name: string }) {
         <div className="rounded-xl border border-border bg-card p-6">
           <p className="eyebrow">Current package</p>
           <p className="mt-3 text-lg">Free tools</p>
-          <p className="text-sm text-muted-foreground">Upgrade to a one-time Webrya package.</p>
+          <p className="text-sm text-muted-foreground">Upgrade with a one-time professional Webrya solution.</p>
           <Button asChild className="mt-4">
-            <Link to="/pricing">View packages</Link>
+            <Link to="/pricing">View solutions</Link>
           </Button>
         </div>
       </div>

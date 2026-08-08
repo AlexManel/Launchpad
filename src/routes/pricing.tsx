@@ -8,16 +8,16 @@ import { packages } from "@/data/webrya";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Webrya Packages — One-time Solutions for Hosts" },
+      { title: "Webrya Solutions — One-time Setups for Hosts" },
       {
         name: "description",
         content:
-          "Professional one-time Webrya packages for Airbnb hosts, co-hosts and property managers. Starter $99, Professional $299, Business from $699.",
+          "One-time professional Webrya solutions for short-term rental hosts and property managers. Host Starter $99, Host Pro $299, Business from $699.",
       },
-      { property: "og:title", content: "Webrya Packages — One-time Solutions for Hosts" },
+      { property: "og:title", content: "Webrya Solutions — One-time Setups for Hosts" },
       {
         property: "og:description",
-        content: "One-time professional setups. No monthly subscription.",
+        content: "One-time professional Webrya solutions. No mandatory subscription.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,20 +28,28 @@ export const Route = createFileRoute("/pricing")({
 
 const faqs = [
   {
-    q: "Is this a monthly subscription?",
-    a: "No. Webrya packages are one-time professional solutions. You pay once for the setup and keep what's built.",
+    q: "Is Webrya a subscription?",
+    a: "No. Webrya's core products and professional solutions are designed as one-time purchases. There is no mandatory monthly subscription.",
   },
   {
-    q: "What's the difference between a package and a digital product?",
-    a: "Digital products are downloadable systems you use yourself. Packages are done-for-you setups — your landing page, branding, tools and dashboard configured by Webrya.",
+    q: "Is Webrya just ChatGPT for Airbnb?",
+    a: "No. Webrya combines specialized hosting workflows, structured prompts, ready-made systems and practical tools designed around real short-term rental tasks.",
   },
   {
-    q: "Can I start free?",
-    a: "Yes. The AI tools are free and always will be. Most hosts start there and upgrade when they need more.",
+    q: "Do I need an account to use the AI tools?",
+    a: "You can try your first generation without creating an account. A free Webrya account lets you save your work and access your Workspace.",
+  },
+  {
+    q: "What happens after I buy a digital product?",
+    a: "Your purchase is connected to your Webrya account and becomes available inside your Webrya Workspace.",
+  },
+  {
+    q: "What's the difference between a solution and a digital product?",
+    a: "Digital products are ready-made systems you use yourself. Professional solutions are complete setups — your branded property page, guidebook, AI toolkit and Workspace, configured by Webrya.",
   },
   {
     q: "Do you work with property managers?",
-    a: "Yes — the Business package covers multiple properties, multiple users and white-label options.",
+    a: "Yes — Webrya Business covers multiple properties, multiple users and white-label options.",
   },
 ];
 
@@ -49,10 +57,11 @@ function Pricing() {
   return (
     <>
       <PageHeader
-        eyebrow="Webrya Packages"
+        eyebrow="Professional Webrya Solutions"
         title="Professional solutions, paid once."
-        intro="Webrya isn't sold as a monthly seat. Choose the level of solution your hosting business needs and it's built for you."
+        intro="Webrya isn't sold as a monthly seat. Choose the level of solution your hosting business needs and it's set up for you as a one-time professional Webrya solution."
       />
+
 
       <Section className="py-14 lg:py-20">
         <div className="grid items-start gap-5 lg:grid-cols-3">
@@ -66,7 +75,7 @@ function Pricing() {
                   : "border border-border bg-card")
               }
             >
-              {p.recommended && <p className="eyebrow text-accent">Recommended</p>}
+              {p.badge && <p className="eyebrow text-accent">{p.badge}</p>}
               <h2 className="mt-1 text-2xl">{p.name}</h2>
               <p
                 className={
@@ -94,7 +103,7 @@ function Pricing() {
                 variant={p.recommended ? "secondary" : "outline"}
                 className="mt-8 w-full"
               >
-                <Link to="/login">Get started</Link>
+                <Link to="/login">{p.cta}</Link>
               </Button>
             </div>
           ))}

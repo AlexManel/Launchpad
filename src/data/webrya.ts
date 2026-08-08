@@ -97,9 +97,10 @@ export type Product = {
 export const products: Product[] = [
   {
     slug: "aircover-suite",
-    name: "AIRCover Suite",
+    name: "AirCover Suite",
     price: 39,
-    priceLabel: "$39",
+    priceLabel: "$39 one-time",
+
     tagline: "Prepare and win damage claims.",
     description:
       "A collection of templates, checklists and AI prompts designed to help hosts prepare and organize Airbnb damage claims — documented properly, submitted on time, argued clearly.",
@@ -115,7 +116,7 @@ export const products: Product[] = [
     slug: "review-protection-suite",
     name: "Review Protection Suite",
     price: 39,
-    priceLabel: "$39",
+    priceLabel: "$39 one-time",
     tagline: "Defend your rating, respond with authority.",
     description:
       "Everything needed to handle an unfair review calmly: analyse what actually happened, respond publicly without escalating, and escalate to Airbnb when the review breaks policy.",
@@ -131,7 +132,7 @@ export const products: Product[] = [
     slug: "guest-communication-suite",
     name: "Guest Communication Suite",
     price: 39,
-    priceLabel: "$39",
+    priceLabel: "$39 one-time",
     tagline: "Every message you'll ever need to send.",
     description:
       "A complete message library covering the whole guest lifecycle, from the booking confirmation to the awkward conversations most hosts improvise badly.",
@@ -147,13 +148,13 @@ export const products: Product[] = [
   {
     slug: "ultimate-host-bundle",
     name: "Ultimate Host Bundle",
-    price: 149,
-    priceLabel: "$99 – $149",
-    tagline: "The complete Webrya library, one purchase.",
+    price: 99,
+    priceLabel: "$99 one-time",
+    tagline: "$117 separately · $99 bundle · save $18.",
     description:
-      "Every major Webrya digital product together, plus the bundle-only operations material. Built for hosts who want the whole system rather than one piece of it.",
+      "Every major Webrya digital product together, plus the bundle-only operations material. Pay once. Own it.",
     includes: [
-      "AIRCover Suite",
+      "AirCover Suite",
       "Review Protection Suite",
       "Guest Communication Suite",
       "Listing optimization workbook",
@@ -163,6 +164,7 @@ export const products: Product[] = [
     featured: true,
     format: "Everything above · lifetime access · free future additions",
   },
+
 ];
 
 export type Pkg = {
@@ -172,55 +174,65 @@ export type Pkg = {
   note: string;
   audience: string;
   includes: string[];
+  cta: string;
+  badge?: string;
   recommended?: boolean;
 };
 
 export const packages: Pkg[] = [
   {
-    slug: "starter",
-    name: "Starter",
+    slug: "host-starter",
+    name: "Webrya Host Starter",
     price: "$99",
-    note: "one-time",
-    audience: "For hosts who need a professional digital foundation.",
+    note: "One-time setup",
+    audience: "Launch your digital hosting hub.",
     includes: [
-      "Professional landing page",
-      "3 AI tools",
+      "Branded property landing page",
       "Digital guidebook",
-      "Basic Webrya setup",
+      "3 Webrya AI tools",
+      "Ready-to-use host resources",
+      "Webrya setup",
     ],
+    cta: "Get Started",
   },
   {
-    slug: "professional",
-    name: "Professional",
+    slug: "host-pro",
+    name: "Webrya Host Pro",
     price: "$299",
-    note: "one-time",
-    audience: "For serious hosts.",
+    note: "One-time setup",
+    audience: "Turn your property into a professional digital experience.",
     includes: [
-      "Premium landing page",
-      "Custom branding",
-      "Full AI tools access",
-      "Host dashboard",
-      "Digital resources",
+      "Premium custom website",
+      "Custom branding & copy",
+      "Full Webrya AI toolkit",
       "Digital guidebook",
+      "Webrya Workspace setup",
+      "Property-specific resources",
+      "Priority setup",
     ],
+    cta: "Choose Host Pro",
+    badge: "Most Popular",
     recommended: true,
   },
   {
     slug: "business",
-    name: "Business",
+    name: "Webrya Business",
     price: "Starting at $699",
-    note: "one-time setup",
-    audience: "For co-hosts and property managers.",
+    note: "One-time professional setup",
+    audience: "Build a digital system for your property operation.",
     includes: [
       "Multiple properties",
-      "Advanced setup",
       "Multiple users",
-      "Professional branding",
+      "Centralized Webrya Workspace",
+      "Custom branding",
       "White-label options",
+      "Advanced configuration",
       "Priority support",
     ],
+    cta: "Talk to Webrya",
   },
 ];
+
 
 export type Resource = {
   slug: string;
