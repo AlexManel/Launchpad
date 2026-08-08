@@ -75,7 +75,7 @@ function Pricing() {
                   : "border border-border bg-card")
               }
             >
-              {p.recommended && <p className="eyebrow text-accent">Recommended</p>}
+              {p.badge && <p className="eyebrow text-accent">{p.badge}</p>}
               <h2 className="mt-1 text-2xl">{p.name}</h2>
               <p
                 className={
@@ -103,7 +103,7 @@ function Pricing() {
                 variant={p.recommended ? "secondary" : "outline"}
                 className="mt-8 w-full"
               >
-                <Link to="/login">Get started</Link>
+                <Link to="/login">{p.cta}</Link>
               </Button>
             </div>
           ))}
