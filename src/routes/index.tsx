@@ -13,44 +13,53 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI-powered tools, ready-made resources and digital solutions built for Airbnb hosts and short-term rental professionals.",
+          "AI-powered tools, ready-made resources and professional digital solutions built for short-term rental hosts and property managers.",
       },
       { property: "og:title", content: "Webrya — Run your short-term rental smarter" },
       {
         property: "og:description",
         content:
-          "AI tools, digital products and a host portal for Airbnb hosts, co-hosts and property managers.",
+          "AI tools, digital products, the Webrya Workspace and professional solutions for hosts and property managers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+
   component: Home,
 });
 
 const pillars = [
   {
     icon: Sparkles,
-    title: "AI Tools",
-    body: "Free and practical AI tools for everyday hosting tasks.",
+    title: "Free AI Tools",
+    body: "Try Webrya for free — practical AI tools for everyday hosting tasks.",
     to: "/ai-tools" as const,
     cta: "Explore AI Tools",
   },
   {
     icon: Package,
     title: "Digital Products",
-    body: "Ready-to-use templates, systems and resources.",
+    body: "Buy ready-made hosting systems. Pay once. Own it.",
     to: "/products" as const,
     cta: "View Products",
   },
   {
     icon: LayoutDashboard,
-    title: "Host Portal",
-    body: "A central place for your Webrya tools, resources and property-related digital solutions.",
+    title: "Webrya Workspace",
+    body: "Keep your tools, purchases and saved work together in one place.",
     to: "/portal" as const,
-    cta: "See the Portal",
+    cta: "See the Workspace",
+  },
+  {
+    icon: Check,
+    title: "Professional Solutions",
+    body: "Get a complete Webrya setup for your property or business.",
+    to: "/pricing" as const,
+    cta: "View solutions",
   },
 ];
+
 
 function Home() {
   return (
