@@ -23,12 +23,12 @@ export const Route = createFileRoute("/portal")({
       {
         name: "description",
         content:
-          "A preview of the Webrya Webrya Workspace: your AI tools, purchased digital products, properties and resources in one place.",
+          "A preview of the Webrya Workspace: your AI tools, purchased digital products, properties and resources in one place.",
       },
       { property: "og:title", content: "Webrya Workspace — Webrya" },
       {
         property: "og:description",
-        content: "One portal for your short-term rental tools, products and properties.",
+        content: "One workspace for your short-term rental tools, products and properties.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
