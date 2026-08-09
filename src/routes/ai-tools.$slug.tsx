@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
+import { generateReviewResponse } from "@/lib/review-response.functions";
+
 
 const iconMap = {
   star: Star,
@@ -52,18 +54,34 @@ function ToolPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const generate = () => {
+  const generate = async () => {
     if (!input.trim()) {
       toast.error("Add some input first so the tool has something to work with.");
       return;
     }
     setLoading(true);
     setOutput("");
+
+    if (slug === "review-response-generator") {
+      try {
+        const res = await generateReviewResponse({
+          data: { review: input.trim(), guestName: extra.trim() || undefined },
+        });
+        setOutput(res.text);
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : "Could not generate a response.");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     window.setTimeout(() => {
       setOutput(tool.sample(input, extra.trim() || undefined));
       setLoading(false);
     }, 900);
   };
+
 
   return (
     <>
