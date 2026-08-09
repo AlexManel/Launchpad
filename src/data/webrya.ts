@@ -23,8 +23,9 @@ export const tools: Tool[] = [
     placeholder: "The apartment was lovely but check-in was confusing and the wifi dropped twice…",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "Marta",
-    sample: (input, extra) =>
-      `Thank you for taking the time to share this${extra ? `, ${extra}` : ""}.\n\nI'm glad the space itself worked well for your stay. I'm sorry the arrival instructions weren't as clear as they should have been — I've since rewritten the check-in guide and added photos of the entrance, and the router has been replaced with a mesh system so connectivity stays stable throughout the apartment.\n\nFeedback like yours is exactly how the place keeps improving. You'd be very welcome back any time.\n\n— Your host`,
+    // Live AI tool — output comes from the model, not from this placeholder.
+    sample: () => "",
+
   },
   {
     slug: "guest-reply-generator",
