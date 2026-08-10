@@ -1,17 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { AiToolInput } from "./ai/schema";
 
+/**
+ * Single entry point for all five Webrya AI tools.
+ * Validation happens here (server-side); generation happens in the AI engine.
+ */
 export const generateToolOutput = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => AiToolInput.parse(input))
   .handler(async ({ data }) => {
-    const { toolPrompts, buildUserPrompt } = await import("./ai/prompts");
-    const { generateWithGateway } = await import("./ai/generate.server");
-
-    const text = await generateWithGateway({
-      system: toolPrompts[data.slug],
-      prompt: buildUserPrompt(data.slug, data.input, data.extra),
-      temperature: data.slug === "listing-optimizer" ? 0.5 : 0.4,
-    });
-
-    return { text };
+    const { generateAI } = await import("./ai/engine.server");
+    return generateAI(data);
   });
