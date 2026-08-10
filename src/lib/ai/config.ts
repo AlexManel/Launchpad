@@ -1,7 +1,7 @@
 import type { AiTool } from "./types";
 
 /** Single place where the Webrya model is configured. */
-export const AI_MODEL = "google/gemini-3.6-flash";
+export const AI_MODEL = "gemini-3.6-flash";
 
 export const AI_DEFAULT_TEMPERATURE = 0.4;
 

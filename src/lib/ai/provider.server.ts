@@ -1,22 +1,18 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { google } from "@ai-sdk/google";
 import { AI_MODEL } from "./config";
 
 /**
- * Provider abstraction. The rest of Webrya only asks for "the AI model" —
- * swapping Lovable AI Gateway for another provider later happens here only.
+ * Google Gemini provider.
+ * The API key is read server-side from GEMINI_API_KEY.
  */
 export function getAIModel() {
-  const key = process.env["LOVABLE_API_KEY"];
-  if (!key) throw new Error("AI is not configured.");
+  const key = process.env["GEMINI_API_KEY"];
 
-  const provider = createOpenAICompatible({
-    name: "lovable",
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    headers: {
-      "Lovable-API-Key": key,
-      "X-Lovable-AIG-SDK": "vercel-ai-sdk",
-    },
+  if (!key) {
+    throw new Error("AI is not configured.");
+  }
+
+  return google(AI_MODEL, {
+    apiKey: key,
   });
-
-  return provider(AI_MODEL);
 }
