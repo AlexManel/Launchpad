@@ -1,7 +1,9 @@
 /**
- * Server-side system prompts for the Webrya AI tools.
- * Keep prompt text here so it can be updated without touching UI code.
+ * Prompt engine for the Webrya AI tools.
+ * System prompts + user prompt building live here only.
  */
+
+import type { AiTool } from "./types";
 
 const NO_INVENTION = `ABSOLUTE RULE — NO INVENTION:
 Use ONLY the information supplied by the host. Never invent, imply or promise:
@@ -11,6 +13,29 @@ Use ONLY the information supplied by the host. Never invent, imply or promise:
 - repairs, upgrades, purchases, staff actions or anything "already done"
 If required information is missing, say it is missing (or use an obvious
 [placeholder]) instead of guessing.`;
+
+export const reviewResponsePrompt = `You are the Webrya Review Response Generator.
+
+You write a professional PUBLIC response to an Airbnb guest review, on behalf of the host.
+
+ABSOLUTE RULE — NO INVENTION:
+Every factual statement about the property, the stay, or the host must come ONLY from the
+text supplied by the user. You must NEVER invent, imply, or promise:
+- repairs, upgrades, replacements or equipment (e.g. routers, wifi hardware, appliances)
+- rewritten guides, added photos, new instructions or documentation
+- policies, prices, refunds, compensation
+- amenities, distances, room counts, features
+- follow-up actions, investigations, staff actions, or anything the host "has since done"
+
+If the review mentions a problem, you may acknowledge it and express regret, and you may say
+you will look into it — but only in general terms, with NO specific fix, cause, or action.
+Do not thank the guest for feedback about something they did not mention.
+
+STYLE:
+Professional, warm, calm, human, confident. No corporate customer-service clichés.
+Do not argue, blame, or be defensive. Balance positives and negatives naturally.
+Address the guest by name only if a name is supplied.
+Approximately 60-120 words. Output only the response text, with no headings, labels, or notes.`;
 
 export const guestReplyPrompt = `You are the Webrya Guest Reply Generator.
 
@@ -85,18 +110,24 @@ RULES:
 - Roughly 80-160 words, easy to read on a phone.
 Output only the message text.`;
 
-export const toolPrompts = {
+const systemPrompts: Record<AiTool, string> = {
+  "review-response-generator": reviewResponsePrompt,
   "guest-reply-generator": guestReplyPrompt,
   "listing-optimizer": listingOptimizerPrompt,
   "house-rules-generator": houseRulesPrompt,
   "welcome-message-generator": welcomeMessagePrompt,
-} as const;
+};
 
-export type AiToolSlug = keyof typeof toolPrompts;
+export function getSystemPrompt(tool: AiTool): string {
+  return systemPrompts[tool];
+}
 
-export const aiToolSlugs = Object.keys(toolPrompts) as [AiToolSlug, ...AiToolSlug[]];
-
-const contextLabels: Record<AiToolSlug, { primary: string; secondary: string; task: string }> = {
+const contextLabels: Record<AiTool, { primary: string; secondary: string; task: string }> = {
+  "review-response-generator": {
+    primary: "Guest review (the ONLY source of facts)",
+    secondary: "Guest name",
+    task: "Write the public host response now.",
+  },
   "guest-reply-generator": {
     primary: "Guest message",
     secondary: "Host's answer / policy to use",
@@ -119,8 +150,8 @@ const contextLabels: Record<AiToolSlug, { primary: string; secondary: string; ta
   },
 };
 
-export function buildUserPrompt(slug: AiToolSlug, input: string, extra?: string) {
-  const labels = contextLabels[slug];
+export function buildUserPrompt(tool: AiTool, input: string, extra?: string) {
+  const labels = contextLabels[tool];
   return [
     `${labels.primary}:`,
     input.trim(),
