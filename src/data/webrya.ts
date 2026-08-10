@@ -8,7 +8,6 @@ export type Tool = {
   placeholder: string;
   secondaryLabel?: string;
   secondaryPlaceholder?: string;
-  sample: (input: string, extra?: string) => string;
 };
 
 export const tools: Tool[] = [
@@ -23,8 +22,6 @@ export const tools: Tool[] = [
     placeholder: "The apartment was lovely but check-in was confusing and the wifi dropped twice…",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "Marta",
-    // Live AI tool — output comes from the model, not from this placeholder.
-    sample: () => "",
 
   },
   {
@@ -64,8 +61,6 @@ export const tools: Tool[] = [
     icon: "scroll",
     inputLabel: "Property type & key constraints",
     placeholder: "2-bed apartment, residential building, no parties, no pets, quiet hours after 22:00",
-    sample: (input) =>
-      `HOUSE RULES\n\n1. Check-in from 15:00, checkout by 11:00. Flexible timing on request.\n2. Registered guests only. Please tell us if plans change — unregistered visitors are not permitted.\n3. Quiet hours 22:00–08:00. This is a residential building with neighbours on every side.\n4. No parties or events of any kind.\n5. No smoking or vaping anywhere inside, including on the balcony.\n6. Please remove shoes indoors to protect the wood floors.\n7. Report any accidental damage right away — honest guests are never penalised.\n8. Take rubbish to the bins in the courtyard before departure.\n\nThank you for treating the home with care. It's kept to a high standard for every guest who stays.`,
   },
   {
     slug: "welcome-message-generator",
