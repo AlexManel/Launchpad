@@ -74,21 +74,14 @@ function ToolPage() {
     setOutput("");
 
     try {
-      if (slug === "review-response-generator") {
-        const res = await generateReviewResponse({
-          data: { review: input.trim(), guestName: extra.trim() || undefined },
-        });
-        setOutput(res.text);
-      } else {
-        const res = await generateToolOutput({
-          data: {
-            slug: slug as AiToolSlug,
-            input: input.trim(),
-            ...(extra.trim() ? { extra: extra.trim() } : {}),
-          },
-        });
-        setOutput(res.text);
-      }
+      const res = await generateToolOutput({
+        data: {
+          tool: slug as AiTool,
+          input: input.trim(),
+          ...(extra.trim() ? { extra: extra.trim() } : {}),
+        },
+      });
+      setOutput(res.text);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not generate a response.");
     } finally {
