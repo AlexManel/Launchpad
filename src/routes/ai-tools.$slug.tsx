@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
 import { generateReviewResponse } from "@/lib/review-response.functions";
+import { generateToolOutput } from "@/lib/ai-tools.functions";
+import type { AiToolSlug } from "@/lib/ai/prompts";
+
 
 
 const iconMap = {
@@ -62,25 +65,29 @@ function ToolPage() {
     setLoading(true);
     setOutput("");
 
-    if (slug === "review-response-generator") {
-      try {
+    try {
+      if (slug === "review-response-generator") {
         const res = await generateReviewResponse({
           data: { review: input.trim(), guestName: extra.trim() || undefined },
         });
         setOutput(res.text);
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Could not generate a response.");
-      } finally {
-        setLoading(false);
+      } else {
+        const res = await generateToolOutput({
+          data: {
+            slug: slug as AiToolSlug,
+            input: input.trim(),
+            ...(extra.trim() ? { extra: extra.trim() } : {}),
+          },
+        });
+        setOutput(res.text);
       }
-      return;
-    }
-
-    window.setTimeout(() => {
-      setOutput(tool.sample(input, extra.trim() || undefined));
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not generate a response.");
+    } finally {
       setLoading(false);
-    }, 900);
+    }
   };
+
 
 
   return (
