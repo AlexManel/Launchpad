@@ -8,7 +8,6 @@ export type Tool = {
   placeholder: string;
   secondaryLabel?: string;
   secondaryPlaceholder?: string;
-  sample: (input: string, extra?: string) => string;
 };
 
 export const tools: Tool[] = [
@@ -23,9 +22,6 @@ export const tools: Tool[] = [
     placeholder: "The apartment was lovely but check-in was confusing and the wifi dropped twice…",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "Marta",
-    // Live AI tool — output comes from the model, not from this placeholder.
-    sample: () => "",
-
   },
   {
     slug: "guest-reply-generator",
@@ -38,8 +34,6 @@ export const tools: Tool[] = [
     placeholder: "Hi! Would it be possible to check in around 11am instead of 3pm?",
     secondaryLabel: "Your answer / policy",
     secondaryPlaceholder: "Early check-in possible from 1pm for €25",
-    sample: (input, extra) =>
-      `Hi there, thanks so much for reaching out ahead of your stay.\n\n${extra ? `${extra}. ` : ""}I'll do my best to accommodate you — the cleaning team finishes in the early afternoon, so I can confirm the earliest possible arrival the day before your trip. If it works out, I'll send the door code straight to this chat.\n\nIn the meantime, you're welcome to drop your luggage in the building's entrance storage.\n\nLooking forward to hosting you.`,
   },
   {
     slug: "listing-optimizer",
@@ -52,8 +46,6 @@ export const tools: Tool[] = [
     placeholder: "Nice apartment in the city center, 2 bedrooms, near everything…",
     secondaryLabel: "Location & standout feature",
     secondaryPlaceholder: "Lisbon, Alfama — rooftop terrace with river view",
-    sample: (input, extra) =>
-      `SUGGESTED TITLE\nSunlit 2-Bed with Rooftop Terrace · 6 min to Old Town\n\nOPENING LINE\nA quiet, light-filled apartment${extra ? ` in ${extra.split("—")[0]!.trim()}` : ""} — designed for travellers who want to be central without losing a good night's sleep.\n\nDESCRIPTION\nTwo proper bedrooms with blackout curtains, a full kitchen, fast 300 Mbps wifi and a dedicated desk. The private terrace catches afternoon sun and is set up for slow dinners.\n\nWHY GUESTS BOOK IT\n· Self check-in, 24/7\n· Walkable to transport, cafés and the historic centre\n· Workspace that actually works\n\nSEARCH KEYWORDS TO KEEP\nfamily friendly · self check-in · workspace · terrace · central`,
   },
   {
     slug: "house-rules-generator",
@@ -63,9 +55,8 @@ export const tools: Tool[] = [
       "Clear, firm and friendly rules that reduce damage disputes without scaring guests away at the booking stage.",
     icon: "scroll",
     inputLabel: "Property type & key constraints",
-    placeholder: "2-bed apartment, residential building, no parties, no pets, quiet hours after 22:00",
-    sample: (input) =>
-      `HOUSE RULES\n\n1. Check-in from 15:00, checkout by 11:00. Flexible timing on request.\n2. Registered guests only. Please tell us if plans change — unregistered visitors are not permitted.\n3. Quiet hours 22:00–08:00. This is a residential building with neighbours on every side.\n4. No parties or events of any kind.\n5. No smoking or vaping anywhere inside, including on the balcony.\n6. Please remove shoes indoors to protect the wood floors.\n7. Report any accidental damage right away — honest guests are never penalised.\n8. Take rubbish to the bins in the courtyard before departure.\n\nThank you for treating the home with care. It's kept to a high standard for every guest who stays.`,
+    placeholder:
+      "2-bed apartment, residential building, no parties, no pets, quiet hours after 22:00",
   },
   {
     slug: "welcome-message-generator",
@@ -78,8 +69,6 @@ export const tools: Tool[] = [
     placeholder: "Casa Oliva, Athens — Koukaki",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "James",
-    sample: (input, extra) =>
-      `Hi${extra ? ` ${extra}` : ""}, welcome — we're really glad you're staying with us.\n\n${input || "The apartment"} is ready for you. You'll find the full arrival details, door code and wifi password in the guidebook link below, plus a short list of the places we actually go to ourselves: the bakery on the corner, the wine bar two streets down and the quietest rooftop nearby.\n\nIf anything at all comes up during your stay, message here — we usually reply within minutes.\n\nHave a wonderful trip.`,
   },
 ];
 
@@ -165,7 +154,6 @@ export const products: Product[] = [
     featured: true,
     format: "Everything above · lifetime access · free future additions",
   },
-
 ];
 
 export type Pkg = {
@@ -233,7 +221,6 @@ export const packages: Pkg[] = [
     cta: "Talk to Webrya",
   },
 ];
-
 
 export type Resource = {
   slug: string;
@@ -303,15 +290,15 @@ export const resources: Resource[] = [
     slug: "removing-unfair-reviews",
     title: "When Airbnb will actually remove a review",
     category: "Review management",
-    excerpt:
-      "The policy grounds that work, the evidence required, and how to write the appeal.",
+    excerpt: "The policy grounds that work, the evidence required, and how to write the appeal.",
     readTime: "12 min",
   },
   {
     slug: "responding-to-bad-reviews",
     title: "How to respond publicly to a bad review",
     category: "Review management",
-    excerpt: "A four-part structure that reassures future guests instead of arguing with past ones.",
+    excerpt:
+      "A four-part structure that reassures future guests instead of arguing with past ones.",
     readTime: "7 min",
   },
   {
