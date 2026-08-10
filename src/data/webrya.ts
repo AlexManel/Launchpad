@@ -22,7 +22,6 @@ export const tools: Tool[] = [
     placeholder: "The apartment was lovely but check-in was confusing and the wifi dropped twice…",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "Marta",
-
   },
   {
     slug: "guest-reply-generator",
@@ -56,7 +55,8 @@ export const tools: Tool[] = [
       "Clear, firm and friendly rules that reduce damage disputes without scaring guests away at the booking stage.",
     icon: "scroll",
     inputLabel: "Property type & key constraints",
-    placeholder: "2-bed apartment, residential building, no parties, no pets, quiet hours after 22:00",
+    placeholder:
+      "2-bed apartment, residential building, no parties, no pets, quiet hours after 22:00",
   },
   {
     slug: "welcome-message-generator",
@@ -154,7 +154,6 @@ export const products: Product[] = [
     featured: true,
     format: "Everything above · lifetime access · free future additions",
   },
-
 ];
 
 export type Pkg = {
@@ -222,7 +221,6 @@ export const packages: Pkg[] = [
     cta: "Talk to Webrya",
   },
 ];
-
 
 export type Resource = {
   slug: string;
@@ -292,15 +290,15 @@ export const resources: Resource[] = [
     slug: "removing-unfair-reviews",
     title: "When Airbnb will actually remove a review",
     category: "Review management",
-    excerpt:
-      "The policy grounds that work, the evidence required, and how to write the appeal.",
+    excerpt: "The policy grounds that work, the evidence required, and how to write the appeal.",
     readTime: "12 min",
   },
   {
     slug: "responding-to-bad-reviews",
     title: "How to respond publicly to a bad review",
     category: "Review management",
-    excerpt: "A four-part structure that reassures future guests instead of arguing with past ones.",
+    excerpt:
+      "A four-part structure that reassures future guests instead of arguing with past ones.",
     readTime: "7 min",
   },
   {

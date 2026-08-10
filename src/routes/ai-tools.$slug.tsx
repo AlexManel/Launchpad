@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Copy, Loader2, Star, MessageSquare, Sparkles, ScrollText, KeyRound } from "lucide-react";
+import {
+  ArrowLeft,
+  Copy,
+  Loader2,
+  Star,
+  MessageSquare,
+  Sparkles,
+  ScrollText,
+  KeyRound,
+} from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -12,8 +21,6 @@ import { tools } from "@/data/webrya";
 import { generateReviewResponse } from "@/lib/review-response.functions";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiToolSlug } from "@/lib/ai/prompts";
-
-
 
 const iconMap = {
   star: Star,
@@ -31,7 +38,9 @@ export const Route = createFileRoute("/ai-tools/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Tool not found — Webrya" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: "Tool not found — Webrya" }, { name: "robots", content: "noindex" }],
+      };
     }
     return {
       meta: [
@@ -87,8 +96,6 @@ function ToolPage() {
       setLoading(false);
     }
   };
-
-
 
   return (
     <>
@@ -169,9 +176,7 @@ function ToolPage() {
               {output ? (
                 output
               ) : (
-                <span className="text-muted-foreground">
-                  Your generated text will appear here.
-                </span>
+                <span className="text-muted-foreground">Your generated text will appear here.</span>
               )}
             </div>
           </div>
