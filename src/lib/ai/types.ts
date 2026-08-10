@@ -15,7 +15,7 @@ export type AiTool = (typeof AI_TOOLS)[number];
 export type AiGenerationRequest = {
   tool: AiTool;
   input: string;
-  extra?: string;
+  extra?: string | undefined;
 };
 
 export type AiGenerationResult = {
