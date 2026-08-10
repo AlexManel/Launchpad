@@ -35,8 +35,6 @@ export const tools: Tool[] = [
     placeholder: "Hi! Would it be possible to check in around 11am instead of 3pm?",
     secondaryLabel: "Your answer / policy",
     secondaryPlaceholder: "Early check-in possible from 1pm for €25",
-    sample: (input, extra) =>
-      `Hi there, thanks so much for reaching out ahead of your stay.\n\n${extra ? `${extra}. ` : ""}I'll do my best to accommodate you — the cleaning team finishes in the early afternoon, so I can confirm the earliest possible arrival the day before your trip. If it works out, I'll send the door code straight to this chat.\n\nIn the meantime, you're welcome to drop your luggage in the building's entrance storage.\n\nLooking forward to hosting you.`,
   },
   {
     slug: "listing-optimizer",
@@ -49,8 +47,6 @@ export const tools: Tool[] = [
     placeholder: "Nice apartment in the city center, 2 bedrooms, near everything…",
     secondaryLabel: "Location & standout feature",
     secondaryPlaceholder: "Lisbon, Alfama — rooftop terrace with river view",
-    sample: (input, extra) =>
-      `SUGGESTED TITLE\nSunlit 2-Bed with Rooftop Terrace · 6 min to Old Town\n\nOPENING LINE\nA quiet, light-filled apartment${extra ? ` in ${extra.split("—")[0]!.trim()}` : ""} — designed for travellers who want to be central without losing a good night's sleep.\n\nDESCRIPTION\nTwo proper bedrooms with blackout curtains, a full kitchen, fast 300 Mbps wifi and a dedicated desk. The private terrace catches afternoon sun and is set up for slow dinners.\n\nWHY GUESTS BOOK IT\n· Self check-in, 24/7\n· Walkable to transport, cafés and the historic centre\n· Workspace that actually works\n\nSEARCH KEYWORDS TO KEEP\nfamily friendly · self check-in · workspace · terrace · central`,
   },
   {
     slug: "house-rules-generator",
@@ -73,8 +69,6 @@ export const tools: Tool[] = [
     placeholder: "Casa Oliva, Athens — Koukaki",
     secondaryLabel: "Guest name (optional)",
     secondaryPlaceholder: "James",
-    sample: (input, extra) =>
-      `Hi${extra ? ` ${extra}` : ""}, welcome — we're really glad you're staying with us.\n\n${input || "The apartment"} is ready for you. You'll find the full arrival details, door code and wifi password in the guidebook link below, plus a short list of the places we actually go to ourselves: the bakery on the corner, the wine bar two streets down and the quietest rooftop nearby.\n\nIf anything at all comes up during your stay, message here — we usually reply within minutes.\n\nHave a wonderful trip.`,
   },
 ];
 
