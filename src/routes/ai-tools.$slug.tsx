@@ -18,9 +18,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
-import { generateReviewResponse } from "@/lib/review-response.functions";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
-import type { AiToolSlug } from "@/lib/ai/prompts";
+import type { AiTool } from "@/lib/ai/types";
 
 const iconMap = {
   star: Star,
