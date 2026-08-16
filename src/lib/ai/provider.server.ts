@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { AI_MODEL } from "./config";
 
 /**
@@ -12,7 +12,9 @@ export function getAIModel() {
     throw new Error("AI is not configured.");
   }
 
-  return google(AI_MODEL, {
+  const googleProvider = createGoogleGenerativeAI({
     apiKey: key,
   });
+
+  return googleProvider(AI_MODEL);
 }
