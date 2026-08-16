@@ -46,12 +46,13 @@ export async function generateAI(
     }
   );
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Gemini API error:", response.status, errorText);
+if (!response.ok) {
+  const errorText = await response.text();
 
-    throw new Error("Could not generate a response right now. Please try again.");
-  }
+  throw new Error(
+    `Gemini API error ${response.status}: ${errorText}`
+  );
+}
 
   const data = await response.json();
 
