@@ -1,37 +1,69 @@
-import { streamText } from "ai";
-import { buildUserPrompt, getSystemPrompt } from "./prompts";
-import { getAIModel } from "./provider.server";
 import type { AiGenerationRequest, AiGenerationResult } from "./types";
+import { buildUserPrompt, getSystemPrompt } from "./prompts";
 
-/** Maps any failure into a safe, user-facing error. Never leaks keys or stacks. */
-function toUserFacingError(error: unknown): Error {
-  const message = error instanceof Error ? error.message : "";
-  if (message === "AI is not configured.") return new Error(message);
-  if (message.includes("429")) return new Error("Rate limit reached. Please try again shortly.");
-  if (message.includes("402")) return new Error("AI credits exhausted. Please add credits.");
-  if (message.includes("empty response"))
-    return new Error("The AI returned an empty response. Please try again.");
-  return new Error("Could not generate a response right now. Please try again.");
-}
+export async function generateAI(
+  request: AiGenerationRequest
+): Promise<AiGenerationResult> {
+  const key = process.env["GEMINI_API_KEY"];
 
-/**
- * The single Webrya AI Engine. Every tool goes through here.
- * Server-only: credentials never leave this module chain.
- */
-export async function generateAI(request: AiGenerationRequest): Promise<AiGenerationResult> {
-  try {
-    const model = getAIModel();
-
-    const result = streamText({
-      model,
-      system: getSystemPrompt(request.tool),
-      prompt: buildUserPrompt(request.tool, request.input, request.extra),
-    });
-
-    const text = (await result.text).trim();
-    if (!text) throw new Error("The AI returned an empty response.");
-    return { text };
-  } catch (error) {
-    throw toUserFacingError(error);
+  if (!key) {
+    throw new Error("AI is not configured.");
   }
+
+  const userPrompt = buildUserPrompt(
+    request.tool,
+    request.input,
+    request.extra
+  );
+
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": key,
+      },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [
+            {
+              text: getSystemPrompt(request.tool),
+            },
+          ],
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: userPrompt,
+              },
+            ],
+          },
+        ],
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Gemini API error:", response.status, errorText);
+
+    throw new Error("Could not generate a response right now. Please try again.");
+  }
+
+  const data = await response.json();
+
+  const text =
+    data?.candidates?.[0]?.content?.parts
+      ?.map((part: { text?: string }) => part.text || "")
+      .join("")
+      .trim() || "";
+
+  if (!text) {
+    throw new Error("The AI returned an empty response.");
+  }
+
+  return { text };
 }
