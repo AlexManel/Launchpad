@@ -7,6 +7,7 @@ export async function generateAI(
   const key = process.env["GEMINI_API_KEY"];
 
   if (!key) {
+    console.error("GEMINI_API_KEY is missing from the server environment.");
     throw new Error("AI is not configured.");
   }
 
@@ -46,13 +47,19 @@ export async function generateAI(
     }
   );
 
-if (!response.ok) {
-  const errorText = await response.text();
+  if (!response.ok) {
+    const errorText = await response.text();
 
-  throw new Error(
-    `Gemini API error ${response.status}: ${errorText}`
-  );
-}
+    console.error(
+      "GEMINI API ERROR:",
+      response.status,
+      errorText
+    );
+
+    throw new Error(
+      `Gemini API error ${response.status}: ${errorText}`
+    );
+  }
 
   const data = await response.json();
 
@@ -63,6 +70,8 @@ if (!response.ok) {
       .trim() || "";
 
   if (!text) {
+    console.error("GEMINI EMPTY RESPONSE:", data);
+
     throw new Error("The AI returned an empty response.");
   }
 
