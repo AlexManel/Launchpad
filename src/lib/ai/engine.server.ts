@@ -1,5 +1,4 @@
 import { streamText } from "ai";
-import { AI_DEFAULT_TEMPERATURE, AI_TEMPERATURE } from "./config";
 import { buildUserPrompt, getSystemPrompt } from "./prompts";
 import { getAIModel } from "./provider.server";
 import type { AiGenerationRequest, AiGenerationResult } from "./types";
@@ -27,7 +26,6 @@ export async function generateAI(request: AiGenerationRequest): Promise<AiGenera
       model,
       system: getSystemPrompt(request.tool),
       prompt: buildUserPrompt(request.tool, request.input, request.extra),
-      temperature: AI_TEMPERATURE[request.tool] ?? AI_DEFAULT_TEMPERATURE,
     });
 
     const text = (await result.text).trim();
