@@ -6,7 +6,7 @@ import { AiToolInput } from "./ai/schema";
  * Validation happens here (server-side); generation happens in the AI engine.
  */
 export const generateToolOutput = createServerFn({ method: "POST" })
-  .validator((input: unknown) => AiToolInput.parse(input))
+  .inputValidator((input: unknown) => AiToolInput.parse(input))
   .handler(async ({ data }) => {
     const { generateAI } = await import("./ai/engine.server");
     return generateAI(data);
