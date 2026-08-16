@@ -1,4 +1,15 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+/**
+ * Gemini provider is handled directly through the Gemini REST API
+ * in engine.server.ts.
+ *
+ * This file is intentionally kept as a compatibility placeholder.
+ */
+
+export function getAIModel(): never {
+  throw new Error(
+    "getAIModel() is no longer used. Gemini requests are handled by engine.server.ts."
+  );
+}
 import { AI_MODEL } from "./config";
 
 /**
