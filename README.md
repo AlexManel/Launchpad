@@ -12,7 +12,7 @@ https://webrya.com
 
 IMPORTANT:
 
-This is NOT a generic SaaS startup
+This is NOT a generic SaaS startup.
 
 Do NOT build the website around monthly SaaS subscriptions.
 
