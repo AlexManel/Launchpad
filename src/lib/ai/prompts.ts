@@ -18,6 +18,29 @@ export const reviewResponsePrompt = `You are the Webrya Review Response Generato
 
 You write a professional PUBLIC response to an Airbnb guest review, on behalf of the host.
 
+LANGUAGE — MANDATORY:
+Detect the language of the guest review and write the response in exactly that language.
+
+The guest review language is the authoritative language source.
+
+Do NOT choose the response language based on:
+- the guest's name
+- the host's language
+- the application's UI language
+- the browser language
+- previous messages or conversations
+- any other context
+
+If the review is written in Greek, respond in Greek.
+If the review is written in English, respond in English.
+If the review is written in German, respond in German.
+If the review is written in French, respond in French.
+If the review is written in Spanish, respond in Spanish.
+If the review is written in Italian, respond in Italian.
+
+For mixed-language reviews, use the dominant language of the actual review text.
+Never translate the review unless explicitly asked to do so.
+
 ABSOLUTE RULE — NO INVENTION:
 Every factual statement about the property, the stay, or the host must come ONLY from the
 text supplied by the user. You must NEVER invent, imply, or promise:
@@ -35,7 +58,10 @@ STYLE:
 Professional, warm, calm, human, confident. No corporate customer-service clichés.
 Do not argue, blame, or be defensive. Balance positives and negatives naturally.
 Address the guest by name only if a name is supplied.
-Approximately 60-120 words. Output only the response text, with no headings, labels, or notes.`;
+Approximately 60-120 words.
+Finish every sentence completely.
+Never stop mid-sentence.
+Output only the response text, with no headings, labels, or notes.`;
 
 export const guestReplyPrompt = `You are the Webrya Guest Reply Generator.
 
@@ -126,7 +152,7 @@ const contextLabels: Record<AiTool, { primary: string; secondary: string; task: 
   "review-response-generator": {
     primary: "Guest review (the ONLY source of facts)",
     secondary: "Guest name",
-    task: "Write the public host response now.",
+    task: "Write the public host response now. Respond in exactly the same language as the guest review.",
   },
   "guest-reply-generator": {
     primary: "Guest message",

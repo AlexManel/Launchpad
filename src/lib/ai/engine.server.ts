@@ -46,8 +46,9 @@ export async function generateAI(
         },
       ],
       generationConfig: {
-        temperature: 0.4,
-      },
+  temperature: 0.4,
+  maxOutputTokens: 300,
+},
     }),
   });
 
