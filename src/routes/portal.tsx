@@ -628,96 +628,452 @@ function PropertiesPanel({
       </div>
 
       {showForm && (
-        <form onSubmit={handleAddProperty} className="space-y-8">
-          {/* … κράτα τα sections του form όπως τα είχες (Basic, Accommodation, κλπ.) … */}
-          {/* Για συντομία εδώ: minimum required fields — αν θες ΟΛΟ το μακρύ form, πες μου και στο ξαναδίνω ολόκληρο σε 2ο μήνυμα */}
+  <form onSubmit={handleAddProperty} className="space-y-8">
+    {/* 1. BASIC INFORMATION */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Basic information
+      </p>
+      <h2 className="mt-2 text-xl">Tell us about your property</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Only the name, city and country are required.
+      </p>
 
-          <div className="rounded-xl border border-border bg-card p-6">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">
-              Basic information
-            </p>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <Field label="Property name *" htmlFor="property-name" className="sm:col-span-2">
-                <input
-                  id="property-name"
-                  value={propertyName}
-                  onChange={(e) => setPropertyName(e.target.value)}
-                  required
-                  disabled={saving}
-                  className={inputClass}
-                />
-              </Field>
-              <Field label="Property type" htmlFor="property-type">
-                <select
-                  id="property-type"
-                  value={propertyType}
-                  onChange={(e) => setPropertyType(e.target.value)}
-                  disabled={saving}
-                  className={inputClass}
-                >
-                  {propertyTypes.map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Address" htmlFor="property-address">
-                <input
-                  id="property-address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  disabled={saving}
-                  className={inputClass}
-                />
-              </Field>
-              <Field label="City *" htmlFor="property-city">
-                <input
-                  id="property-city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  required
-                  disabled={saving}
-                  className={inputClass}
-                />
-              </Field>
-              <Field label="Country *" htmlFor="property-country">
-                <input
-                  id="property-country"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  required
-                  disabled={saving}
-                  className={inputClass}
-                />
-              </Field>
-            </div>
-          </div>
+      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <Field
+          label="Property name *"
+          htmlFor="property-name"
+          className="sm:col-span-2"
+        >
+          <input
+            id="property-name"
+            value={propertyName}
+            onChange={(e) => setPropertyName(e.target.value)}
+            placeholder="e.g. Casa Olivia"
+            required
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
 
-          {formError && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-              {formError}
-            </div>
-          )}
+        <Field label="Property type" htmlFor="property-type">
+          <select
+            id="property-type"
+            value={propertyType}
+            onChange={(e) => setPropertyType(e.target.value)}
+            disabled={saving}
+            className={inputClass}
+          >
+            {propertyTypes.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </Field>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={saving}
-              onClick={() => {
-                resetForm();
-                setShowForm(false);
-              }}
+        <Field label="Address" htmlFor="property-address">
+          <input
+            id="property-address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Street and number"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label="City *" htmlFor="property-city">
+          <input
+            id="property-city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Athens"
+            required
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label="Country *" htmlFor="property-country">
+          <input
+            id="property-country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            placeholder="Greece"
+            required
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field
+          label="Description"
+          htmlFor="property-description"
+          className="sm:col-span-2"
+        >
+          <textarea
+            id="property-description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            placeholder="Describe the property..."
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+
+        <Field label="Bedrooms" htmlFor="property-bedrooms">
+          <input
+            id="property-bedrooms"
+            type="number"
+            min="0"
+            value={bedrooms}
+            onChange={(e) => setBedrooms(e.target.value)}
+            placeholder="2"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label="Bathrooms" htmlFor="property-bathrooms">
+          <input
+            id="property-bathrooms"
+            type="number"
+            min="0"
+            step="0.5"
+            value={bathrooms}
+            onChange={(e) => setBathrooms(e.target.value)}
+            placeholder="1.5"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+
+        <Field label="Maximum guests" htmlFor="property-max-guests">
+          <input
+            id="property-max-guests"
+            type="number"
+            min="1"
+            value={maxGuests}
+            onChange={(e) => setMaxGuests(e.target.value)}
+            placeholder="4"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+      </div>
+    </div>
+
+    {/* 2. ACCOMMODATION */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Accommodation
+      </p>
+      <div className="mt-6 grid gap-5">
+        <Field label="Bed configuration" htmlFor="bed-configuration">
+          <textarea
+            id="bed-configuration"
+            value={bedConfiguration}
+            onChange={(e) => setBedConfiguration(e.target.value)}
+            rows={3}
+            placeholder="e.g. 1 king bed, 2 single beds"
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Living room" htmlFor="living-room">
+          <textarea
+            id="living-room"
+            value={livingRoom}
+            onChange={(e) => setLivingRoom(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Kitchen" htmlFor="kitchen">
+          <textarea
+            id="kitchen"
+            value={kitchen}
+            onChange={(e) => setKitchen(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Bathroom details" htmlFor="bathroom-details">
+          <textarea
+            id="bathroom-details"
+            value={bathroomDetails}
+            onChange={(e) => setBathroomDetails(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+      </div>
+    </div>
+
+    {/* 3. AMENITIES */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Amenities
+      </p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Select everything available at the property.
+      </p>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {amenityOptions.map(([value, label]) => {
+          const selected = amenities.includes(value);
+          return (
+            <label
+              key={value}
+              className={
+                "flex cursor-pointer items-center gap-3 rounded-lg border p-4 text-sm transition-colors " +
+                (selected
+                  ? "border-primary bg-secondary"
+                  : "border-border hover:bg-secondary")
+              }
             >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={saving}>
-              {saving ? "Saving property..." : "Save property"}
-            </Button>
-          </div>
-        </form>
-      )}
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={() => toggleAmenity(value)}
+                disabled={saving}
+                className="size-4"
+              />
+              <span>{label}</span>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* 4. POLICIES */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Policies
+      </p>
+      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <Field label="Check-in time" htmlFor="check-in-time">
+          <input
+            id="check-in-time"
+            type="time"
+            value={checkInTime}
+            onChange={(e) => setCheckInTime(e.target.value)}
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Check-out time" htmlFor="check-out-time">
+          <input
+            id="check-out-time"
+            type="time"
+            value={checkOutTime}
+            onChange={(e) => setCheckOutTime(e.target.value)}
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Quiet hours" htmlFor="quiet-hours">
+          <input
+            id="quiet-hours"
+            value={quietHours}
+            onChange={(e) => setQuietHours(e.target.value)}
+            placeholder="e.g. 23:00 – 08:00"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+        <PolicySelect
+          label="Smoking"
+          value={smoking}
+          onChange={setSmoking}
+          disabled={saving}
+        />
+        <PolicySelect
+          label="Pets"
+          value={pets}
+          onChange={setPets}
+          disabled={saving}
+        />
+        <PolicySelect
+          label="Parties / events"
+          value={parties}
+          onChange={setParties}
+          disabled={saving}
+        />
+      </div>
+    </div>
+
+    {/* 5. GUEST ACCESS */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Guest access
+      </p>
+      <div className="mt-6 grid gap-5">
+        <Field label="Access method" htmlFor="access-method">
+          <input
+            id="access-method"
+            value={accessMethod}
+            onChange={(e) => setAccessMethod(e.target.value)}
+            placeholder="e.g. Self check-in with lockbox"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Check-in instructions" htmlFor="check-in-instructions">
+          <textarea
+            id="check-in-instructions"
+            value={checkInInstructions}
+            onChange={(e) => setCheckInInstructions(e.target.value)}
+            rows={4}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Parking instructions" htmlFor="parking-instructions">
+          <textarea
+            id="parking-instructions"
+            value={parkingInstructions}
+            onChange={(e) => setParkingInstructions(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Wi-Fi network" htmlFor="wifi-network">
+            <input
+              id="wifi-network"
+              value={wifiNetwork}
+              onChange={(e) => setWifiNetwork(e.target.value)}
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+          <Field label="Wi-Fi password" htmlFor="wifi-password">
+            <input
+              id="wifi-password"
+              type="password"
+              value={wifiPassword}
+              onChange={(e) => setWifiPassword(e.target.value)}
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+        <div className="rounded-lg border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
+          Access details are used only to help Webrya generate accurate guest
+          messages for this property. They are visible only to your account.
+        </div>
+      </div>
+    </div>
+
+    {/* 6. LOCATION */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Location
+      </p>
+      <div className="mt-6 grid gap-5">
+        <Field label="Neighborhood" htmlFor="neighborhood">
+          <input
+            id="neighborhood"
+            value={neighborhood}
+            onChange={(e) => setNeighborhood(e.target.value)}
+            placeholder="e.g. Koukaki"
+            disabled={saving}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Nearby attractions" htmlFor="nearby-attractions">
+          <textarea
+            id="nearby-attractions"
+            value={nearbyAttractions}
+            onChange={(e) => setNearbyAttractions(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Nearby restaurants" htmlFor="nearby-restaurants">
+          <textarea
+            id="nearby-restaurants"
+            value={nearbyRestaurants}
+            onChange={(e) => setNearbyRestaurants(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Public transport" htmlFor="public-transport">
+          <textarea
+            id="public-transport"
+            value={publicTransport}
+            onChange={(e) => setPublicTransport(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+        <Field label="Important landmarks" htmlFor="important-landmarks">
+          <textarea
+            id="important-landmarks"
+            value={importantLandmarks}
+            onChange={(e) => setImportantLandmarks(e.target.value)}
+            rows={3}
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+      </div>
+    </div>
+
+    {/* 7. HOST NOTES */}
+    <div className="rounded-xl border border-border bg-card p-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        Host notes
+      </p>
+      <div className="mt-5">
+        <Field label="Anything else the AI should know" htmlFor="host-notes">
+          <textarea
+            id="host-notes"
+            value={hostNotes}
+            onChange={(e) => setHostNotes(e.target.value)}
+            rows={6}
+            placeholder="Anything specific about this property that would help Webrya generate better responses..."
+            disabled={saving}
+            className={textareaClass}
+          />
+        </Field>
+      </div>
+    </div>
+
+    {formError && (
+      <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+        {formError}
+      </div>
+    )}
+
+    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <Button
+        type="button"
+        variant="outline"
+        disabled={saving}
+        onClick={() => {
+          resetForm();
+          setShowForm(false);
+        }}
+      >
+        Cancel
+      </Button>
+      <Button type="submit" disabled={saving}>
+        {saving ? "Saving property..." : "Save property"}
+      </Button>
+    </div>
+  </form>
+)}
 
       {loading && (
         <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
