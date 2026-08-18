@@ -1,8 +1,8 @@
 import type { AiGenerationRequest, AiGenerationResult } from "./types";
 import { buildUserPrompt, getSystemPrompt } from "./prompts";
+import { AI_MODEL, getMaxOutputTokens, getTemperature } from "./config";
 
-const GEMINI_API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent`;
 
 export async function generateAI(
   request: AiGenerationRequest
@@ -46,9 +46,9 @@ export async function generateAI(
         },
       ],
       generationConfig: {
-  temperature: 0.4,
-  maxOutputTokens: 300,
-},
+        temperature: getTemperature(request.tool),
+        maxOutputTokens: getMaxOutputTokens(request.tool),
+      },
     }),
   });
 
@@ -72,6 +72,7 @@ export async function generateAI(
           text?: string;
         }>;
       };
+      finishReason?: string;
     }>;
   };
 
@@ -90,6 +91,15 @@ export async function generateAI(
   if (!text) {
     console.error("Gemini returned no text:", data);
     throw new Error("The AI returned an empty response.");
+  }
+
+  // If Gemini stopped because it hit the token ceiling rather than
+  // finishing naturally, log it — this is the exact failure mode that
+  // used to silently clip the Listing Optimizer's report.
+  if (data.candidates?.[0]?.finishReason === "MAX_TOKENS") {
+    console.warn(
+      `Gemini output for "${request.tool}" was cut off at the token limit — consider raising AI_MAX_OUTPUT_TOKENS for this tool.`
+    );
   }
 
   return {
