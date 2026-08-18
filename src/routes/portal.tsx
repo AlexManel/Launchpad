@@ -10,6 +10,9 @@ import {
   LogOut,
   Plus,
   ArrowLeft,
+  Pencil,
+  Trash2,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -76,6 +79,41 @@ type Property = {
   host_notes: string | null;
 };
 
+type Profile = {
+  id: string;
+  full_name: string | null;
+  username: string | null;
+  avatar_url: string | null;
+  website: string | null;
+  preferred_language: string;
+  timezone: string | null;
+  host_display_name: string | null;
+  host_type: string | null;
+  business_name: string | null;
+  business_email: string | null;
+  business_phone: string | null;
+  country: string | null;
+  city: string | null;
+  phone: string | null;
+  communication_tone: string | null;
+  response_length: string | null;
+  emoji_usage: string | null;
+  sign_off: string | null;
+  hosting_style: string | null;
+  ai_instructions: string | null;
+  never_do: string | null;
+  always_do: string | null;
+  ai_be_concise: boolean;
+  ai_be_proactive: boolean;
+  ai_suggest_solutions: boolean;
+  ai_use_emojis: boolean;
+  ai_mention_property_name: boolean;
+  ai_use_guest_first_name: boolean;
+  allow_property_context_ai: boolean;
+  allow_analytics: boolean;
+  marketing_emails: boolean;
+};
+
 const inputClass =
   "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -132,7 +170,13 @@ function PolicySelect({
   );
 }
 
-function PanelTitle({ title, sub }: { title: string; sub: string }) {
+function PanelTitle({
+  title,
+  sub,
+}: {
+  title: string;
+  sub: string;
+}) {
   return (
     <div>
       <h1 className="text-2xl">{title}</h1>
@@ -141,16 +185,54 @@ function PanelTitle({ title, sub }: { title: string; sub: string }) {
   );
 }
 
+function emptyToNull(value: string): string | null {
+  const t = value.trim();
+  return t.length > 0 ? t : null;
+}
+
+function numberOrNull(value: string): number | null {
+  const t = value.trim();
+
+  if (!t) {
+    return null;
+  }
+
+  const n = Number(t);
+
+  return Number.isFinite(n) ? n : null;
+}
+
+/* =========================================================
+   PORTAL
+========================================================= */
+
 function PortalPage() {
   const navigate = useNavigate();
-  const [section, setSection] = useState<SectionId>("overview");
+
+  const [section, setSection] =
+    useState<SectionId>("overview");
+
   const [name, setName] = useState("Host");
   const [email, setEmail] = useState("");
   const [ready, setReady] = useState(false);
 
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [propertiesLoading, setPropertiesLoading] = useState(true);
-  const [propertiesError, setPropertiesError] = useState("");
+  const [properties, setProperties] =
+    useState<Property[]>([]);
+
+  const [propertiesLoading, setPropertiesLoading] =
+    useState(true);
+
+  const [propertiesError, setPropertiesError] =
+    useState("");
+
+  const [profile, setProfile] =
+    useState<Profile | null>(null);
+
+  const [profileLoading, setProfileLoading] =
+    useState(true);
+
+  const [profileError, setProfileError] =
+    useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -166,44 +248,80 @@ function PortalPage() {
       }
 
       const user = session.user;
+
       const metadataName =
         typeof user.user_metadata?.full_name === "string"
           ? user.user_metadata.full_name.trim()
           : "";
 
       if (mounted) {
-        setName(metadataName || user.email?.split("@")[0] || "Host");
+        setName(
+          metadataName ||
+            user.email?.split("@")[0] ||
+            "Host"
+        );
+
         setEmail(user.email ?? "");
         setReady(true);
       }
 
-      const { data, error } = await supabase
+      const {
+        data,
+        error,
+      } = await supabase
         .from("properties")
         .select("*")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
+        .order("created_at", {
+          ascending: false,
+        });
 
       if (!mounted) return;
 
       if (error) {
         setPropertiesError(error.message);
-        setPropertiesLoading(false);
-        return;
+      } else {
+        setProperties(
+          (data as Property[]) ?? []
+        );
       }
 
-      setProperties((data as Property[]) ?? []);
       setPropertiesLoading(false);
+
+      const {
+        data: profileData,
+        error: profileErr,
+      } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!mounted) return;
+
+      if (profileErr) {
+        setProfileError(profileErr.message);
+      } else {
+        setProfile(
+          (profileData as Profile | null) ??
+            null
+        );
+      }
+
+      setProfileLoading(false);
     };
 
     void load();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
-        void navigate({ to: "/login" });
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (!session) {
+          void navigate({ to: "/login" });
+        }
       }
-    });
+    );
 
     return () => {
       mounted = false;
@@ -224,13 +342,41 @@ function PortalPage() {
     );
   }
 
-  const nav: { id: SectionId; label: string; icon: typeof Home }[] = [
-    { id: "overview", label: "Overview", icon: LayoutDashboard },
-    { id: "tools", label: "AI Tools", icon: Sparkles },
-    { id: "products", label: "My Products", icon: Package },
-    { id: "properties", label: "My Properties", icon: Home },
-    { id: "resources", label: "Resources", icon: BookOpen },
-    { id: "account", label: "Account", icon: User },
+  const nav: {
+    id: SectionId;
+    label: string;
+    icon: typeof Home;
+  }[] = [
+    {
+      id: "overview",
+      label: "Overview",
+      icon: LayoutDashboard,
+    },
+    {
+      id: "tools",
+      label: "AI Tools",
+      icon: Sparkles,
+    },
+    {
+      id: "products",
+      label: "My Products",
+      icon: Package,
+    },
+    {
+      id: "properties",
+      label: "My Properties",
+      icon: Home,
+    },
+    {
+      id: "resources",
+      label: "Resources",
+      icon: BookOpen,
+    },
+    {
+      id: "account",
+      label: "Account",
+      icon: User,
+    },
   ];
 
   return (
@@ -239,18 +385,29 @@ function PortalPage() {
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 lg:px-8">
           <div className="flex items-center gap-3">
             <Logo />
+
             <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground">
               Webrya Workspace
             </span>
           </div>
+
           <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="sm">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+            >
               <Link to="/">
                 <ArrowLeft className="size-4" />
                 Back to site
               </Link>
             </Button>
-            <Button variant="outline" size="sm" onClick={() => void signOut()}>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => void signOut()}
+            >
               <LogOut className="size-4" />
               Sign out
             </Button>
@@ -262,12 +419,16 @@ function PortalPage() {
         <aside className="space-y-1">
           {nav.map((item) => {
             const Icon = item.icon;
-            const active = section === item.id;
+            const active =
+              section === item.id;
+
             return (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setSection(item.id)}
+                onClick={() =>
+                  setSection(item.id)
+                }
                 className={
                   "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-colors " +
                   (active
@@ -285,31 +446,56 @@ function PortalPage() {
         <main>
           {section === "overview" && (
             <div>
-              <h1 className="text-3xl">Welcome back.</h1>
+              <h1 className="text-3xl">
+                Welcome back.
+              </h1>
+
               <p className="mt-2 text-sm text-muted-foreground">
-                Signed in as {name}. Your tools and properties live here.
+                Signed in as {name}. Your tools
+                and properties live here.
               </p>
+
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-xl border border-border bg-card p-5">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
                     AI Tools
                   </p>
-                  <p className="mt-2 text-3xl">{tools.length}</p>
-                  <p className="text-sm text-muted-foreground">available</p>
+
+                  <p className="mt-2 text-3xl">
+                    {tools.length}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground">
+                    available
+                  </p>
                 </div>
+
                 <div className="rounded-xl border border-border bg-card p-5">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
                     Properties
                   </p>
-                  <p className="mt-2 text-3xl">{properties.length}</p>
-                  <p className="text-sm text-muted-foreground">connected</p>
+
+                  <p className="mt-2 text-3xl">
+                    {properties.length}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground">
+                    connected
+                  </p>
                 </div>
+
                 <div className="rounded-xl border border-border bg-card p-5">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
                     Account
                   </p>
-                  <p className="mt-2 text-lg">{name}</p>
-                  <p className="text-sm text-muted-foreground">Free tools</p>
+
+                  <p className="mt-2 text-lg">
+                    {name}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground">
+                    Free tools
+                  </p>
                 </div>
               </div>
             </div>
@@ -321,19 +507,26 @@ function PortalPage() {
                 title="AI Tools"
                 sub="All five tools are available on your account."
               />
+
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {tools.map((tool) => (
                   <div
                     key={tool.slug}
                     className="rounded-xl border border-border bg-card p-6"
                   >
-                    <h2 className="text-lg">{tool.name}</h2>
+                    <h2 className="text-lg">
+                      {tool.name}
+                    </h2>
+
                     <p className="mt-2 text-sm text-muted-foreground">
                       {tool.short}
                     </p>
+
                     <Link
                       to="/ai-tools/$slug"
-                      params={{ slug: tool.slug }}
+                      params={{
+                        slug: tool.slug,
+                      }}
                       className="mt-4 inline-block text-sm font-medium text-primary"
                     >
                       Open tool
@@ -350,6 +543,7 @@ function PortalPage() {
                 title="My Products"
                 sub="Downloads for products you own will appear here."
               />
+
               <div className="mt-6 rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
                 No purchased products yet.
               </div>
@@ -361,7 +555,9 @@ function PortalPage() {
               properties={properties}
               loading={propertiesLoading}
               error={propertiesError}
-              onPropertiesChange={setProperties}
+              onPropertiesChange={
+                setProperties
+              }
             />
           )}
 
@@ -371,28 +567,30 @@ function PortalPage() {
                 title="Resources"
                 sub="Guides and playbooks for hosts."
               />
+
               <div className="mt-6">
-                <Button asChild variant="outline">
-                  <Link to="/resources">Browse all resources</Link>
+                <Button
+                  asChild
+                  variant="outline"
+                >
+                  <Link to="/resources">
+                    Browse all resources
+                  </Link>
                 </Button>
               </div>
             </div>
           )}
 
           {section === "account" && (
-            <div>
-              <PanelTitle
-                title="Account"
-                sub="Your Webrya profile and plan."
-              />
-              <div className="mt-6 rounded-xl border border-border bg-card p-6">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                  Profile
-                </p>
-                <p className="mt-2 text-lg">{name}</p>
-                <p className="text-sm text-muted-foreground">{email}</p>
-              </div>
-            </div>
+            <AccountPanel
+              email={email}
+              profile={profile}
+              loading={profileLoading}
+              error={profileError}
+              onProfileChange={
+                setProfile
+              }
+            />
           )}
         </main>
       </div>
@@ -400,7 +598,1249 @@ function PortalPage() {
   );
 }
 
-/* ========== PropertiesPanel (το δικό σου form, χωρίς αλλαγές λογικής) ========== */
+/* =========================================================
+   ACCOUNT PANEL
+========================================================= */
+
+function AccountPanel({
+  email,
+  profile,
+  loading,
+  error,
+  onProfileChange,
+}: {
+  email: string;
+  profile: Profile | null;
+  loading: boolean;
+  error: string;
+  onProfileChange: (
+    profile: Profile
+  ) => void;
+}) {
+  const [saving, setSaving] =
+    useState(false);
+
+  const [formError, setFormError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  const [hostDisplayName, setHostDisplayName] =
+    useState("");
+
+  const [hostType, setHostType] =
+    useState("");
+
+  const [country, setCountry] =
+    useState("");
+
+  const [city, setCity] =
+    useState("");
+
+  const [phone, setPhone] =
+    useState("");
+
+  const [businessName, setBusinessName] =
+    useState("");
+
+  const [businessEmail, setBusinessEmail] =
+    useState("");
+
+  const [businessPhone, setBusinessPhone] =
+    useState("");
+
+  const [website, setWebsite] =
+    useState("");
+
+  const [
+    communicationTone,
+    setCommunicationTone,
+  ] = useState("professional");
+
+  const [
+    responseLength,
+    setResponseLength,
+  ] = useState("medium");
+
+  const [emojiUsage, setEmojiUsage] =
+    useState("minimal");
+
+  const [signOff, setSignOff] =
+    useState("");
+
+  const [hostingStyle, setHostingStyle] =
+    useState("");
+
+  const [
+    aiInstructions,
+    setAiInstructions,
+  ] = useState("");
+
+  const [alwaysDo, setAlwaysDo] =
+    useState("");
+
+  const [neverDo, setNeverDo] =
+    useState("");
+
+  const [aiBeConcise, setAiBeConcise] =
+    useState(true);
+
+  const [aiBeProactive, setAiBeProactive] =
+    useState(true);
+
+  const [
+    aiSuggestSolutions,
+    setAiSuggestSolutions,
+  ] = useState(true);
+
+  const [aiUseEmojis, setAiUseEmojis] =
+    useState(false);
+
+  const [
+    aiMentionPropertyName,
+    setAiMentionPropertyName,
+  ] = useState(true);
+
+  const [
+    aiUseGuestFirstName,
+    setAiUseGuestFirstName,
+  ] = useState(true);
+
+  const [
+    allowPropertyContextAi,
+    setAllowPropertyContextAi,
+  ] = useState(true);
+
+  const [
+    allowAnalytics,
+    setAllowAnalytics,
+  ] = useState(true);
+
+  const [
+    marketingEmails,
+    setMarketingEmails,
+  ] = useState(false);
+
+  useEffect(() => {
+    if (!profile) {
+      setHostDisplayName("");
+      setHostType("");
+      setCountry("");
+      setCity("");
+      setPhone("");
+
+      setBusinessName("");
+      setBusinessEmail("");
+      setBusinessPhone("");
+      setWebsite("");
+
+      setCommunicationTone(
+        "professional"
+      );
+      setResponseLength("medium");
+      setEmojiUsage("minimal");
+      setSignOff("");
+      setHostingStyle("");
+
+      setAiInstructions("");
+      setAlwaysDo("");
+      setNeverDo("");
+
+      setAiBeConcise(true);
+      setAiBeProactive(true);
+      setAiSuggestSolutions(true);
+      setAiUseEmojis(false);
+      setAiMentionPropertyName(true);
+      setAiUseGuestFirstName(true);
+
+      setAllowPropertyContextAi(true);
+      setAllowAnalytics(true);
+      setMarketingEmails(false);
+
+      return;
+    }
+
+    setHostDisplayName(
+      profile.host_display_name ?? ""
+    );
+
+    setHostType(
+      profile.host_type ?? ""
+    );
+
+    setCountry(
+      profile.country ?? ""
+    );
+
+    setCity(
+      profile.city ?? ""
+    );
+
+    setPhone(
+      profile.phone ?? ""
+    );
+
+    setBusinessName(
+      profile.business_name ?? ""
+    );
+
+    setBusinessEmail(
+      profile.business_email ?? ""
+    );
+
+    setBusinessPhone(
+      profile.business_phone ?? ""
+    );
+
+    setWebsite(
+      profile.website ?? ""
+    );
+
+    setCommunicationTone(
+      profile.communication_tone ??
+        "professional"
+    );
+
+    setResponseLength(
+      profile.response_length ??
+        "medium"
+    );
+
+    setEmojiUsage(
+      profile.emoji_usage ??
+        "minimal"
+    );
+
+    setSignOff(
+      profile.sign_off ?? ""
+    );
+
+    setHostingStyle(
+      profile.hosting_style ?? ""
+    );
+
+    setAiInstructions(
+      profile.ai_instructions ?? ""
+    );
+
+    setAlwaysDo(
+      profile.always_do ?? ""
+    );
+
+    setNeverDo(
+      profile.never_do ?? ""
+    );
+
+    setAiBeConcise(
+      profile.ai_be_concise ?? true
+    );
+
+    setAiBeProactive(
+      profile.ai_be_proactive ?? true
+    );
+
+    setAiSuggestSolutions(
+      profile.ai_suggest_solutions ??
+        true
+    );
+
+    setAiUseEmojis(
+      profile.ai_use_emojis ?? false
+    );
+
+    setAiMentionPropertyName(
+      profile.ai_mention_property_name ??
+        true
+    );
+
+    setAiUseGuestFirstName(
+      profile.ai_use_guest_first_name ??
+        true
+    );
+
+    setAllowPropertyContextAi(
+      profile.allow_property_context_ai ??
+        true
+    );
+
+    setAllowAnalytics(
+      profile.allow_analytics ??
+        true
+    );
+
+    setMarketingEmails(
+      profile.marketing_emails ??
+        false
+    );
+  }, [profile]);
+
+  const handleSave = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setFormError("");
+    setSuccess("");
+    setSaving(true);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setFormError(
+          "Your session has expired. Please sign in again."
+        );
+        return;
+      }
+
+      const payload = {
+        id: user.id,
+
+        host_display_name:
+          emptyToNull(
+            hostDisplayName
+          ),
+
+        host_type:
+          emptyToNull(hostType),
+
+        country:
+          emptyToNull(country),
+
+        city:
+          emptyToNull(city),
+
+        phone:
+          emptyToNull(phone),
+
+        business_name:
+          emptyToNull(
+            businessName
+          ),
+
+        business_email:
+          emptyToNull(
+            businessEmail
+          ),
+
+        business_phone:
+          emptyToNull(
+            businessPhone
+          ),
+
+        website:
+          emptyToNull(website),
+
+        communication_tone:
+          communicationTone ||
+          "professional",
+
+        response_length:
+          responseLength ||
+          "medium",
+
+        emoji_usage:
+          emojiUsage ||
+          "minimal",
+
+        sign_off:
+          emptyToNull(signOff),
+
+        hosting_style:
+          emptyToNull(
+            hostingStyle
+          ),
+
+        ai_instructions:
+          emptyToNull(
+            aiInstructions
+          ),
+
+        always_do:
+          emptyToNull(alwaysDo),
+
+        never_do:
+          emptyToNull(neverDo),
+
+        ai_be_concise:
+          aiBeConcise,
+
+        ai_be_proactive:
+          aiBeProactive,
+
+        ai_suggest_solutions:
+          aiSuggestSolutions,
+
+        ai_use_emojis:
+          aiUseEmojis,
+
+        ai_mention_property_name:
+          aiMentionPropertyName,
+
+        ai_use_guest_first_name:
+          aiUseGuestFirstName,
+
+        allow_property_context_ai:
+          allowPropertyContextAi,
+
+        allow_analytics:
+          allowAnalytics,
+
+        marketing_emails:
+          marketingEmails,
+
+        updated_at:
+          new Date().toISOString(),
+      };
+
+      const {
+        data,
+        error: saveError,
+      } = await supabase
+        .from("profiles")
+        .upsert(payload, {
+          onConflict: "id",
+        })
+        .select("*")
+        .single();
+
+      if (saveError) {
+        throw saveError;
+      }
+
+      if (data) {
+        onProfileChange(
+          data as Profile
+        );
+      }
+
+      setSuccess(
+        "Profile saved successfully."
+      );
+    } catch (err) {
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : "Unable to save profile."
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
+        Loading your profile...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
+        Unable to load profile:{" "}
+        {error}
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSave}
+      className="space-y-8"
+    >
+      <PanelTitle
+        title="Account"
+        sub="Your host profile and how Webrya should communicate on your behalf."
+      />
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Profile
+        </p>
+
+        <p className="mt-2 text-sm text-muted-foreground">
+          Email is managed by your login and
+          cannot be changed here.
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Email"
+            htmlFor="account-email"
+            className="sm:col-span-2"
+          >
+            <input
+              id="account-email"
+              value={email}
+              readOnly
+              disabled
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Display name"
+            htmlFor="host-display-name"
+          >
+            <input
+              id="host-display-name"
+              value={hostDisplayName}
+              onChange={(e) =>
+                setHostDisplayName(
+                  e.target.value
+                )
+              }
+              placeholder="e.g. Alex & Team"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Host type"
+            htmlFor="host-type"
+          >
+            <select
+              id="host-type"
+              value={hostType}
+              onChange={(e) =>
+                setHostType(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="">
+                Select…
+              </option>
+
+              <option value="individual_host">
+                Individual host
+              </option>
+
+              <option value="professional_host">
+                Professional host
+              </option>
+
+              <option value="property_manager">
+                Property manager
+              </option>
+
+              <option value="co_host">
+                Co-host
+              </option>
+
+              <option value="hospitality_business">
+                Hospitality business
+              </option>
+
+              <option value="other">
+                Other
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Country"
+            htmlFor="profile-country"
+          >
+            <input
+              id="profile-country"
+              value={country}
+              onChange={(e) =>
+                setCountry(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="City"
+            htmlFor="profile-city"
+          >
+            <input
+              id="profile-city"
+              value={city}
+              onChange={(e) =>
+                setCity(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Phone"
+            htmlFor="profile-phone"
+          >
+            <input
+              id="profile-phone"
+              value={phone}
+              onChange={(e) =>
+                setPhone(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Business details
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Business name"
+            htmlFor="business-name"
+          >
+            <input
+              id="business-name"
+              value={businessName}
+              onChange={(e) =>
+                setBusinessName(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Website"
+            htmlFor="business-website"
+          >
+            <input
+              id="business-website"
+              value={website}
+              onChange={(e) =>
+                setWebsite(
+                  e.target.value
+                )
+              }
+              placeholder="https://"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Business email"
+            htmlFor="business-email"
+          >
+            <input
+              id="business-email"
+              type="email"
+              value={businessEmail}
+              onChange={(e) =>
+                setBusinessEmail(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Business phone"
+            htmlFor="business-phone"
+          >
+            <input
+              id="business-phone"
+              value={businessPhone}
+              onChange={(e) =>
+                setBusinessPhone(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Communication style
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Communication tone"
+            htmlFor="communication-tone"
+          >
+            <select
+              id="communication-tone"
+              value={communicationTone}
+              onChange={(e) =>
+                setCommunicationTone(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="professional">
+                Professional
+              </option>
+              <option value="friendly">
+                Friendly
+              </option>
+              <option value="warm">
+                Warm
+              </option>
+              <option value="casual">
+                Casual
+              </option>
+              <option value="luxury">
+                Luxury
+              </option>
+              <option value="direct">
+                Direct
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Response length"
+            htmlFor="response-length"
+          >
+            <select
+              id="response-length"
+              value={responseLength}
+              onChange={(e) =>
+                setResponseLength(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="short">
+                Short
+              </option>
+              <option value="medium">
+                Medium
+              </option>
+              <option value="detailed">
+                Detailed
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Emoji usage"
+            htmlFor="emoji-usage"
+          >
+            <select
+              id="emoji-usage"
+              value={emojiUsage}
+              onChange={(e) =>
+                setEmojiUsage(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="none">
+                None
+              </option>
+              <option value="minimal">
+                Minimal
+              </option>
+              <option value="moderate">
+                Moderate
+              </option>
+              <option value="frequent">
+                Frequent
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Sign-off"
+            htmlFor="sign-off"
+          >
+            <input
+              id="sign-off"
+              value={signOff}
+              onChange={(e) =>
+                setSignOff(
+                  e.target.value
+                )
+              }
+              placeholder="e.g. Best, Alex"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Hosting style"
+            htmlFor="hosting-style"
+            className="sm:col-span-2"
+          >
+            <select
+              id="hosting-style"
+              value={hostingStyle}
+              onChange={(e) =>
+                setHostingStyle(
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="">
+                Select…
+              </option>
+
+              <option value="friendly_personal">
+                Friendly and personal
+              </option>
+
+              <option value="professional_efficient">
+                Professional and efficient
+              </option>
+
+              <option value="warm_welcoming">
+                Warm and welcoming
+              </option>
+
+              <option value="premium_luxury">
+                Premium / luxury
+              </option>
+
+              <option value="casual_relaxed">
+                Casual and relaxed
+              </option>
+            </select>
+          </Field>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          AI instructions
+        </p>
+
+        <div className="mt-6 grid gap-5">
+          <Field
+            label="Additional instructions"
+            htmlFor="ai-instructions"
+          >
+            <textarea
+              id="ai-instructions"
+              value={aiInstructions}
+              onChange={(e) =>
+                setAiInstructions(
+                  e.target.value
+                )
+              }
+              rows={4}
+              placeholder="Tell Webrya anything specific about how you want your AI assistant to respond."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Always do"
+            htmlFor="always-do"
+          >
+            <textarea
+              id="always-do"
+              value={alwaysDo}
+              onChange={(e) =>
+                setAlwaysDo(
+                  e.target.value
+                )
+              }
+              rows={3}
+              placeholder="Things the AI should consistently do."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Never do"
+            htmlFor="never-do"
+          >
+            <textarea
+              id="never-do"
+              value={neverDo}
+              onChange={(e) =>
+                setNeverDo(
+                  e.target.value
+                )
+              }
+              rows={3}
+              placeholder="Things the AI must never do."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          AI behavior
+        </p>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {(
+            [
+              [
+                "ai_be_concise",
+                aiBeConcise,
+                setAiBeConcise,
+                "Be concise",
+                "Prefer shorter, clearer replies.",
+              ],
+              [
+                "ai_be_proactive",
+                aiBeProactive,
+                setAiBeProactive,
+                "Be proactive",
+                "Anticipate next steps when helpful.",
+              ],
+              [
+                "ai_suggest_solutions",
+                aiSuggestSolutions,
+                setAiSuggestSolutions,
+                "Suggest solutions",
+                "Offer practical alternatives when issues arise.",
+              ],
+              [
+                "ai_use_emojis",
+                aiUseEmojis,
+                setAiUseEmojis,
+                "Use emojis",
+                "Allow emojis according to emoji usage above.",
+              ],
+              [
+                "ai_mention_property_name",
+                aiMentionPropertyName,
+                setAiMentionPropertyName,
+                "Mention property name",
+                "Include the property name when relevant.",
+              ],
+              [
+                "ai_use_guest_first_name",
+                aiUseGuestFirstName,
+                setAiUseGuestFirstName,
+                "Use guest first name",
+                "Address the guest by first name when known.",
+              ],
+            ] as const
+          ).map(
+            ([
+              key,
+              value,
+              setter,
+              title,
+              desc,
+            ]) => (
+              <label
+                key={key}
+                className="flex cursor-pointer gap-3 rounded-lg border border-border p-4"
+              >
+                <input
+                  type="checkbox"
+                  checked={value}
+                  onChange={(e) =>
+                    setter(
+                      e.target.checked
+                    )
+                  }
+                  disabled={saving}
+                  className="mt-1 size-4"
+                />
+
+                <span>
+                  <span className="block text-sm font-medium">
+                    {title}
+                  </span>
+
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    {desc}
+                  </span>
+                </span>
+              </label>
+            )
+          )}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Privacy & settings
+        </p>
+
+        <div className="mt-5 grid gap-3">
+          <label className="flex cursor-pointer gap-3 rounded-lg border border-border p-4">
+            <input
+              type="checkbox"
+              checked={
+                allowPropertyContextAi
+              }
+              onChange={(e) =>
+                setAllowPropertyContextAi(
+                  e.target.checked
+                )
+              }
+              disabled={saving}
+              className="mt-1 size-4"
+            />
+
+            <span>
+              <span className="block text-sm font-medium">
+                Use property context for AI
+              </span>
+
+              <span className="mt-0.5 block text-xs text-muted-foreground">
+                Allow Webrya to use your saved property
+                details when generating responses.
+              </span>
+            </span>
+          </label>
+
+          <label className="flex cursor-pointer gap-3 rounded-lg border border-border p-4">
+            <input
+              type="checkbox"
+              checked={allowAnalytics}
+              onChange={(e) =>
+                setAllowAnalytics(
+                  e.target.checked
+                )
+              }
+              disabled={saving}
+              className="mt-1 size-4"
+            />
+
+            <span>
+              <span className="block text-sm font-medium">
+                Anonymous product analytics
+              </span>
+
+              <span className="mt-0.5 block text-xs text-muted-foreground">
+                Help improve Webrya with anonymous usage
+                data.
+              </span>
+            </span>
+          </label>
+
+          <label className="flex cursor-pointer gap-3 rounded-lg border border-border p-4">
+            <input
+              type="checkbox"
+              checked={marketingEmails}
+              onChange={(e) =>
+                setMarketingEmails(
+                  e.target.checked
+                )
+              }
+              disabled={saving}
+              className="mt-1 size-4"
+            />
+
+            <span>
+              <span className="block text-sm font-medium">
+                Marketing emails
+              </span>
+
+              <span className="mt-0.5 block text-xs text-muted-foreground">
+                Product updates and occasional offers.
+                Security emails are always sent.
+              </span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      {formError && (
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {formError}
+        </div>
+      )}
+
+      {success && (
+        <div className="rounded-lg border border-border bg-secondary px-4 py-3 text-sm">
+          {success}
+        </div>
+      )}
+
+      <div className="flex justify-end">
+        <Button
+          type="submit"
+          disabled={saving}
+        >
+          {saving
+            ? "Saving..."
+            : "Save changes"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+/* =========================================================
+   PROPERTY FORM DEFAULT
+========================================================= */
+
+function createEmptyPropertyForm() {
+  return {
+    name: "",
+    city: "",
+    country: "",
+    address: "",
+    listing_url: "",
+    status: "active",
+    property_type: "",
+    description: "",
+    bedrooms: "",
+    bathrooms: "",
+    max_guests: "",
+    bed_configuration: "",
+    living_room: "",
+    kitchen: "",
+    bathroom_details: "",
+    amenities: "",
+    check_in_time: "",
+    check_out_time: "",
+    quiet_hours: "",
+    smoking: "not_specified",
+    pets: "not_specified",
+    parties: "not_specified",
+    access_method: "",
+    check_in_instructions: "",
+    parking_instructions: "",
+    wifi_network: "",
+    wifi_password: "",
+    neighborhood: "",
+    nearby_attractions: "",
+    nearby_restaurants: "",
+    public_transport: "",
+    important_landmarks: "",
+    host_notes: "",
+  };
+}
+
+type PropertyFormState = ReturnType<
+  typeof createEmptyPropertyForm
+>;
+
+function propertyToForm(
+  property: Property
+): PropertyFormState {
+  return {
+    name: property.name ?? "",
+    city: property.city ?? "",
+    country: property.country ?? "",
+    address: property.address ?? "",
+    listing_url:
+      property.listing_url ?? "",
+    status:
+      property.status ?? "active",
+    property_type:
+      property.property_type ?? "",
+    description:
+      property.description ?? "",
+    bedrooms:
+      property.bedrooms == null
+        ? ""
+        : String(property.bedrooms),
+    bathrooms:
+      property.bathrooms == null
+        ? ""
+        : String(property.bathrooms),
+    max_guests:
+      property.max_guests == null
+        ? ""
+        : String(property.max_guests),
+    bed_configuration:
+      property.bed_configuration ??
+      "",
+    living_room:
+      property.living_room ?? "",
+    kitchen:
+      property.kitchen ?? "",
+    bathroom_details:
+      property.bathroom_details ??
+      "",
+    amenities:
+      property.amenities?.join(", ") ??
+      "",
+    check_in_time:
+      property.check_in_time ?? "",
+    check_out_time:
+      property.check_out_time ??
+      "",
+    quiet_hours:
+      property.quiet_hours ?? "",
+    smoking:
+      property.smoking ??
+      "not_specified",
+    pets:
+      property.pets ??
+      "not_specified",
+    parties:
+      property.parties ??
+      "not_specified",
+    access_method:
+      property.access_method ?? "",
+    check_in_instructions:
+      property.check_in_instructions ??
+      "",
+    parking_instructions:
+      property.parking_instructions ??
+      "",
+    wifi_network:
+      property.wifi_network ?? "",
+    wifi_password:
+      property.wifi_password ?? "",
+    neighborhood:
+      property.neighborhood ?? "",
+    nearby_attractions:
+      property.nearby_attractions ??
+      "",
+    nearby_restaurants:
+      property.nearby_restaurants ??
+      "",
+    public_transport:
+      property.public_transport ??
+      "",
+    important_landmarks:
+      property.important_landmarks ??
+      "",
+    host_notes:
+      property.host_notes ?? "",
+  };
+}
+
+/* =========================================================
+   PROPERTIES PANEL
+========================================================= */
 
 function PropertiesPanel({
   properties,
@@ -411,131 +1851,364 @@ function PropertiesPanel({
   properties: Property[];
   loading: boolean;
   error: string;
-  onPropertiesChange: (properties: Property[]) => void;
+  onPropertiesChange: (
+    properties: Property[]
+  ) => void;
 }) {
-  const [showForm, setShowForm] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState("");
+  const [
+    editingProperty,
+    setEditingProperty,
+  ] = useState<Property | null>(null);
 
-  const [propertyName, setPropertyName] = useState("");
-  const [propertyType, setPropertyType] = useState("apartment");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [description, setDescription] = useState("");
+  const [
+    showForm,
+    setShowForm,
+  ] = useState(false);
 
-  const [bedrooms, setBedrooms] = useState("");
-  const [bathrooms, setBathrooms] = useState("");
-  const [maxGuests, setMaxGuests] = useState("");
+  const [
+    deletingId,
+    setDeletingId,
+  ] = useState<string | null>(null);
 
-  const [bedConfiguration, setBedConfiguration] = useState("");
-  const [livingRoom, setLivingRoom] = useState("");
-  const [kitchen, setKitchen] = useState("");
-  const [bathroomDetails, setBathroomDetails] = useState("");
+  const [
+    actionError,
+    setActionError,
+  ] = useState("");
 
-  const [amenities, setAmenities] = useState<string[]>([]);
-
-  const [checkInTime, setCheckInTime] = useState("");
-  const [checkOutTime, setCheckOutTime] = useState("");
-  const [quietHours, setQuietHours] = useState("");
-
-  const [smoking, setSmoking] = useState("not_specified");
-  const [pets, setPets] = useState("not_specified");
-  const [parties, setParties] = useState("not_specified");
-
-  const [accessMethod, setAccessMethod] = useState("");
-  const [checkInInstructions, setCheckInInstructions] = useState("");
-  const [parkingInstructions, setParkingInstructions] = useState("");
-  const [wifiNetwork, setWifiNetwork] = useState("");
-  const [wifiPassword, setWifiPassword] = useState("");
-
-  const [neighborhood, setNeighborhood] = useState("");
-  const [nearbyAttractions, setNearbyAttractions] = useState("");
-  const [nearbyRestaurants, setNearbyRestaurants] = useState("");
-  const [publicTransport, setPublicTransport] = useState("");
-  const [importantLandmarks, setImportantLandmarks] = useState("");
-
-  const [hostNotes, setHostNotes] = useState("");
-
-  const propertyTypes = [
-    ["apartment", "Apartment"],
-    ["house", "House"],
-    ["villa", "Villa"],
-    ["studio", "Studio"],
-    ["loft", "Loft"],
-    ["cabin", "Cabin"],
-    ["room", "Room"],
-    ["other", "Other"],
-  ];
-
-  const amenityOptions = [
-    ["wifi", "Wi-Fi"],
-    ["air_conditioning", "Air conditioning"],
-    ["heating", "Heating"],
-    ["tv", "TV"],
-    ["washing_machine", "Washing machine"],
-    ["dishwasher", "Dishwasher"],
-    ["coffee_machine", "Coffee machine"],
-    ["iron", "Iron"],
-    ["hair_dryer", "Hair dryer"],
-    ["parking", "Parking"],
-    ["balcony", "Balcony"],
-    ["elevator", "Elevator"],
-  ];
-
-  const resetForm = () => {
-    setPropertyName("");
-    setPropertyType("apartment");
-    setAddress("");
-    setCity("");
-    setCountry("");
-    setDescription("");
-    setBedrooms("");
-    setBathrooms("");
-    setMaxGuests("");
-    setBedConfiguration("");
-    setLivingRoom("");
-    setKitchen("");
-    setBathroomDetails("");
-    setAmenities([]);
-    setCheckInTime("");
-    setCheckOutTime("");
-    setQuietHours("");
-    setSmoking("not_specified");
-    setPets("not_specified");
-    setParties("not_specified");
-    setAccessMethod("");
-    setCheckInInstructions("");
-    setParkingInstructions("");
-    setWifiNetwork("");
-    setWifiPassword("");
-    setNeighborhood("");
-    setNearbyAttractions("");
-    setNearbyRestaurants("");
-    setPublicTransport("");
-    setImportantLandmarks("");
-    setHostNotes("");
-    setFormError("");
+  const openCreate = () => {
+    setActionError("");
+    setEditingProperty(null);
+    setShowForm(true);
   };
 
-  const toggleAmenity = (value: string) => {
-    setAmenities((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value]
+  const openEdit = (
+    property: Property
+  ) => {
+    setActionError("");
+    setEditingProperty(property);
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingProperty(null);
+  };
+
+  const handleSaved = (
+    property: Property
+  ) => {
+    if (editingProperty) {
+      onPropertiesChange(
+        properties.map((item) =>
+          item.id === property.id
+            ? property
+            : item
+        )
+      );
+    } else {
+      onPropertiesChange([
+        property,
+        ...properties,
+      ]);
+    }
+
+    closeForm();
+  };
+
+  const handleDelete = async (
+    property: Property
+  ) => {
+    const confirmed =
+      window.confirm(
+        `Delete "${property.name}"? This cannot be undone.`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingId(property.id);
+    setActionError("");
+
+    try {
+      const { error: deleteError } =
+        await supabase
+          .from("properties")
+          .delete()
+          .eq("id", property.id);
+
+      if (deleteError) {
+        throw deleteError;
+      }
+
+      onPropertiesChange(
+        properties.filter(
+          (item) =>
+            item.id !== property.id
+        )
+      );
+    } catch (err) {
+      setActionError(
+        err instanceof Error
+          ? err.message
+          : "Unable to delete property."
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <PanelTitle
+          title="My Properties"
+          sub="Save property details once and use them across Webrya."
+        />
+
+        <div className="mt-6 rounded-xl border border-border bg-card p-8 text-sm text-muted-foreground">
+          Loading your properties...
+        </div>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <PanelTitle
+          title="My Properties"
+          sub="Save property details once and use them across Webrya."
+        />
+
+        <div className="mt-6 rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
+          Unable to load properties:{" "}
+          {error}
+        </div>
+      </div>
+    );
+  }
+
+  if (showForm) {
+    return (
+      <PropertyForm
+        property={editingProperty}
+        onCancel={closeForm}
+        onSaved={handleSaved}
+      />
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-start justify-between gap-4">
+        <PanelTitle
+          title="My Properties"
+          sub="Save property details once and use them across Webrya."
+        />
+
+        <Button onClick={openCreate}>
+          <Plus className="size-4" />
+          Add property
+        </Button>
+      </div>
+
+      {actionError && (
+        <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {actionError}
+        </div>
+      )}
+
+      {properties.length === 0 ? (
+        <div className="mt-6 rounded-xl border border-dashed border-border p-10 text-center">
+          <Home className="mx-auto size-8 text-muted-foreground" />
+
+          <h2 className="mt-4 text-lg">
+            No properties yet
+          </h2>
+
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+            Add your first property so Webrya
+            can use its details when generating
+            guest replies, listings, house rules
+            and other content.
+          </p>
+
+          <Button
+            className="mt-5"
+            onClick={openCreate}
+          >
+            <Plus className="size-4" />
+            Add your first property
+          </Button>
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-4">
+          {properties.map((property) => (
+            <div
+              key={property.id}
+              className="rounded-xl border border-border bg-card p-6"
+            >
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-xl">
+                      {property.name}
+                    </h2>
+
+                    <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground">
+                      {property.status ||
+                        "active"}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {[
+                      property.city,
+                      property.country,
+                    ]
+                      .filter(Boolean)
+                      .join(", ") ||
+                      "Location not specified"}
+                  </p>
+
+                  <div className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        Type
+                      </p>
+                      <p className="mt-1">
+                        {property.property_type ||
+                          "Not specified"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        Guests
+                      </p>
+                      <p className="mt-1">
+                        {property.max_guests ??
+                          "—"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-xs text-muted-foreground">
+                        Bedrooms
+                      </p>
+                      <p className="mt-1">
+                        {property.bedrooms ??
+                          "—"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex shrink-0 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      openEdit(property)
+                    }
+                  >
+                    <Pencil className="size-4" />
+                    Edit
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={
+                      deletingId ===
+                      property.id
+                    }
+                    onClick={() =>
+                      void handleDelete(
+                        property
+                      )
+                    }
+                  >
+                    <Trash2 className="size-4" />
+                    {deletingId ===
+                    property.id
+                      ? "Deleting..."
+                      : "Delete"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================
+   PROPERTY FORM
+========================================================= */
+
+function PropertyForm({
+  property,
+  onCancel,
+  onSaved,
+}: {
+  property: Property | null;
+  onCancel: () => void;
+  onSaved: (
+    property: Property
+  ) => void;
+}) {
+  const [
+    form,
+    setForm,
+  ] = useState<PropertyFormState>(() =>
+    property
+      ? propertyToForm(property)
+      : createEmptyPropertyForm()
+  );
+
+  const [
+    saving,
+    setSaving,
+  ] = useState(false);
+
+  const [
+    formError,
+    setFormError,
+  ] = useState("");
+
+  const [
+    success,
+    setSuccess,
+  ] = useState("");
+
+  const update = <
+    K extends keyof PropertyFormState
+  >(
+    key: K,
+    value: PropertyFormState[K]
+  ) => {
+    setForm((current) => ({
+      ...current,
+      [key]: value,
+    }));
   };
 
-  const handleAddProperty = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
+
     setFormError("");
+    setSuccess("");
 
-    const cleanName = propertyName.trim();
-    const cleanCity = city.trim();
-    const cleanCountry = country.trim();
-
-    if (!cleanName || !cleanCity || !cleanCountry) {
-      setFormError("Property name, city and country are required.");
+    if (!form.name.trim()) {
+      setFormError(
+        "Property name is required."
+      );
       return;
     }
 
@@ -547,61 +2220,226 @@ function PropertiesPanel({
       } = await supabase.auth.getUser();
 
       if (!user) {
-        setFormError("Your session has expired. Please sign in again.");
-        return;
+        throw new Error(
+          "Your session has expired. Please sign in again."
+        );
       }
 
-      const { data, error: insertError } = await supabase
-        .from("properties")
-        .insert({
-          user_id: user.id,
-          name: cleanName,
-          property_type: propertyType,
-          address: address.trim() || null,
-          city: cleanCity,
-          country: cleanCountry,
-          description: description.trim() || null,
-          bedrooms: bedrooms ? Number.parseInt(bedrooms, 10) : null,
-          bathrooms: bathrooms ? Number.parseFloat(bathrooms) : null,
-          max_guests: maxGuests ? Number.parseInt(maxGuests, 10) : null,
-          bed_configuration: bedConfiguration.trim() || null,
-          living_room: livingRoom.trim() || null,
-          kitchen: kitchen.trim() || null,
-          bathroom_details: bathroomDetails.trim() || null,
-          amenities,
-          check_in_time: checkInTime || null,
-          check_out_time: checkOutTime || null,
-          quiet_hours: quietHours.trim() || null,
-          smoking,
-          pets,
-          parties,
-          access_method: accessMethod.trim() || null,
-          check_in_instructions: checkInInstructions.trim() || null,
-          parking_instructions: parkingInstructions.trim() || null,
-          wifi_network: wifiNetwork.trim() || null,
-          wifi_password: wifiPassword.trim() || null,
-          neighborhood: neighborhood.trim() || null,
-          nearby_attractions: nearbyAttractions.trim() || null,
-          nearby_restaurants: nearbyRestaurants.trim() || null,
-          public_transport: publicTransport.trim() || null,
-          important_landmarks: importantLandmarks.trim() || null,
-          host_notes: hostNotes.trim() || null,
-          status: "active",
-        })
-        .select("*")
-        .single();
+      const amenities = form.amenities
+        .split(",")
+        .map((item) =>
+          item.trim()
+        )
+        .filter(Boolean);
 
-      if (insertError) throw insertError;
+      const payload = {
+        user_id: user.id,
 
-      if (data) {
-        onPropertiesChange([data as Property, ...properties]);
+        name: form.name.trim(),
+
+        city: emptyToNull(
+          form.city
+        ),
+
+        country: emptyToNull(
+          form.country
+        ),
+
+        address: emptyToNull(
+          form.address
+        ),
+
+        listing_url: emptyToNull(
+          form.listing_url
+        ),
+
+        status:
+          form.status ||
+          "active",
+
+        property_type:
+          emptyToNull(
+            form.property_type
+          ),
+
+        description:
+          emptyToNull(
+            form.description
+          ),
+
+        bedrooms:
+          numberOrNull(
+            form.bedrooms
+          ),
+
+        bathrooms:
+          numberOrNull(
+            form.bathrooms
+          ),
+
+        max_guests:
+          numberOrNull(
+            form.max_guests
+          ),
+
+        bed_configuration:
+          emptyToNull(
+            form.bed_configuration
+          ),
+
+        living_room:
+          emptyToNull(
+            form.living_room
+          ),
+
+        kitchen:
+          emptyToNull(
+            form.kitchen
+          ),
+
+        bathroom_details:
+          emptyToNull(
+            form.bathroom_details
+          ),
+
+        amenities:
+          amenities.length > 0
+            ? amenities
+            : null,
+
+        check_in_time:
+          emptyToNull(
+            form.check_in_time
+          ),
+
+        check_out_time:
+          emptyToNull(
+            form.check_out_time
+          ),
+
+        quiet_hours:
+          emptyToNull(
+            form.quiet_hours
+          ),
+
+        smoking:
+          form.smoking ||
+          "not_specified",
+
+        pets:
+          form.pets ||
+          "not_specified",
+
+        parties:
+          form.parties ||
+          "not_specified",
+
+        access_method:
+          emptyToNull(
+            form.access_method
+          ),
+
+        check_in_instructions:
+          emptyToNull(
+            form.check_in_instructions
+          ),
+
+        parking_instructions:
+          emptyToNull(
+            form.parking_instructions
+          ),
+
+        wifi_network:
+          emptyToNull(
+            form.wifi_network
+          ),
+
+        wifi_password:
+          emptyToNull(
+            form.wifi_password
+          ),
+
+        neighborhood:
+          emptyToNull(
+            form.neighborhood
+          ),
+
+        nearby_attractions:
+          emptyToNull(
+            form.nearby_attractions
+          ),
+
+        nearby_restaurants:
+          emptyToNull(
+            form.nearby_restaurants
+          ),
+
+        public_transport:
+          emptyToNull(
+            form.public_transport
+          ),
+
+        important_landmarks:
+          emptyToNull(
+            form.important_landmarks
+          ),
+
+        host_notes:
+          emptyToNull(
+            form.host_notes
+          ),
+      };
+
+      if (property) {
+        const {
+          data,
+          error,
+        } = await supabase
+          .from("properties")
+          .update(payload)
+          .eq("id", property.id)
+          .eq("user_id", user.id)
+          .select("*")
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        setSuccess(
+          "Property updated successfully."
+        );
+
+        onSaved(
+          data as Property
+        );
+      } else {
+        const {
+          data,
+          error,
+        } = await supabase
+          .from("properties")
+          .insert(payload)
+          .select("*")
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        setSuccess(
+          "Property created successfully."
+        );
+
+        onSaved(
+          data as Property
+        );
       }
-
-      resetForm();
-      setShowForm(false);
     } catch (err) {
       setFormError(
-        err instanceof Error ? err.message : "Unable to save property."
+        err instanceof Error
+          ? err.message
+          : "Unable to save property."
       );
     } finally {
       setSaving(false);
@@ -609,528 +2447,866 @@ function PropertiesPanel({
   };
 
   return (
-    <>
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-8"
+    >
+      <div className="flex items-start justify-between gap-4">
         <PanelTitle
-          title="My Properties"
-          sub="Listings connected to your Webrya account."
+          title={
+            property
+              ? "Edit Property"
+              : "Add Property"
+          }
+          sub={
+            property
+              ? "Update the property details used by Webrya."
+              : "Add the property information Webrya can use across your AI tools."
+          }
         />
+
         <Button
           type="button"
-          onClick={() => {
-            setFormError("");
-            setShowForm((v) => !v);
-          }}
+          variant="ghost"
+          onClick={onCancel}
+          disabled={saving}
         >
-          <Plus className="size-4" />
-          Add Property
+          <X className="size-4" />
+          Cancel
         </Button>
       </div>
 
-      {showForm && (
-  <form onSubmit={handleAddProperty} className="space-y-8">
-    {/* 1. BASIC INFORMATION */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Basic information
-      </p>
-      <h2 className="mt-2 text-xl">Tell us about your property</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Only the name, city and country are required.
-      </p>
+      {/* BASIC INFORMATION */}
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field
-          label="Property name *"
-          htmlFor="property-name"
-          className="sm:col-span-2"
-        >
-          <input
-            id="property-name"
-            value={propertyName}
-            onChange={(e) => setPropertyName(e.target.value)}
-            placeholder="e.g. Casa Olivia"
-            required
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Basic information
+        </p>
 
-        <Field label="Property type" htmlFor="property-type">
-          <select
-            id="property-type"
-            value={propertyType}
-            onChange={(e) => setPropertyType(e.target.value)}
-            disabled={saving}
-            className={inputClass}
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Property name *"
+            htmlFor="property-name"
+            className="sm:col-span-2"
           >
-            {propertyTypes.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </Field>
-
-        <Field label="Address" htmlFor="property-address">
-          <input
-            id="property-address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Street and number"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="City *" htmlFor="property-city">
-          <input
-            id="property-city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Athens"
-            required
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="Country *" htmlFor="property-country">
-          <input
-            id="property-country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            placeholder="Greece"
-            required
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field
-          label="Description"
-          htmlFor="property-description"
-          className="sm:col-span-2"
-        >
-          <textarea
-            id="property-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            placeholder="Describe the property..."
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-
-        <Field label="Bedrooms" htmlFor="property-bedrooms">
-          <input
-            id="property-bedrooms"
-            type="number"
-            min="0"
-            value={bedrooms}
-            onChange={(e) => setBedrooms(e.target.value)}
-            placeholder="2"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="Bathrooms" htmlFor="property-bathrooms">
-          <input
-            id="property-bathrooms"
-            type="number"
-            min="0"
-            step="0.5"
-            value={bathrooms}
-            onChange={(e) => setBathrooms(e.target.value)}
-            placeholder="1.5"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="Maximum guests" htmlFor="property-max-guests">
-          <input
-            id="property-max-guests"
-            type="number"
-            min="1"
-            value={maxGuests}
-            onChange={(e) => setMaxGuests(e.target.value)}
-            placeholder="4"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-      </div>
-    </div>
-
-    {/* 2. ACCOMMODATION */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Accommodation
-      </p>
-      <div className="mt-6 grid gap-5">
-        <Field label="Bed configuration" htmlFor="bed-configuration">
-          <textarea
-            id="bed-configuration"
-            value={bedConfiguration}
-            onChange={(e) => setBedConfiguration(e.target.value)}
-            rows={3}
-            placeholder="e.g. 1 king bed, 2 single beds"
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Living room" htmlFor="living-room">
-          <textarea
-            id="living-room"
-            value={livingRoom}
-            onChange={(e) => setLivingRoom(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Kitchen" htmlFor="kitchen">
-          <textarea
-            id="kitchen"
-            value={kitchen}
-            onChange={(e) => setKitchen(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Bathroom details" htmlFor="bathroom-details">
-          <textarea
-            id="bathroom-details"
-            value={bathroomDetails}
-            onChange={(e) => setBathroomDetails(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-      </div>
-    </div>
-
-    {/* 3. AMENITIES */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Amenities
-      </p>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Select everything available at the property.
-      </p>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {amenityOptions.map(([value, label]) => {
-          const selected = amenities.includes(value);
-          return (
-            <label
-              key={value}
-              className={
-                "flex cursor-pointer items-center gap-3 rounded-lg border p-4 text-sm transition-colors " +
-                (selected
-                  ? "border-primary bg-secondary"
-                  : "border-border hover:bg-secondary")
+            <input
+              id="property-name"
+              value={form.name}
+              onChange={(e) =>
+                update(
+                  "name",
+                  e.target.value
+                )
               }
+              placeholder="e.g. Seaside Apartment"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Property type"
+            htmlFor="property-type"
+          >
+            <select
+              id="property-type"
+              value={
+                form.property_type
+              }
+              onChange={(e) =>
+                update(
+                  "property_type",
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
             >
-              <input
-                type="checkbox"
-                checked={selected}
-                onChange={() => toggleAmenity(value)}
-                disabled={saving}
-                className="size-4"
-              />
-              <span>{label}</span>
-            </label>
-          );
-        })}
-      </div>
-    </div>
+              <option value="">
+                Select…
+              </option>
 
-    {/* 4. POLICIES */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Policies
-      </p>
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <Field label="Check-in time" htmlFor="check-in-time">
-          <input
-            id="check-in-time"
-            type="time"
-            value={checkInTime}
-            onChange={(e) => setCheckInTime(e.target.value)}
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Check-out time" htmlFor="check-out-time">
-          <input
-            id="check-out-time"
-            type="time"
-            value={checkOutTime}
-            onChange={(e) => setCheckOutTime(e.target.value)}
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Quiet hours" htmlFor="quiet-hours">
-          <input
-            id="quiet-hours"
-            value={quietHours}
-            onChange={(e) => setQuietHours(e.target.value)}
-            placeholder="e.g. 23:00 – 08:00"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-        <PolicySelect
-          label="Smoking"
-          value={smoking}
-          onChange={setSmoking}
-          disabled={saving}
-        />
-        <PolicySelect
-          label="Pets"
-          value={pets}
-          onChange={setPets}
-          disabled={saving}
-        />
-        <PolicySelect
-          label="Parties / events"
-          value={parties}
-          onChange={setParties}
-          disabled={saving}
-        />
-      </div>
-    </div>
+              <option value="apartment">
+                Apartment
+              </option>
 
-    {/* 5. GUEST ACCESS */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Guest access
-      </p>
-      <div className="mt-6 grid gap-5">
-        <Field label="Access method" htmlFor="access-method">
-          <input
-            id="access-method"
-            value={accessMethod}
-            onChange={(e) => setAccessMethod(e.target.value)}
-            placeholder="e.g. Self check-in with lockbox"
+              <option value="house">
+                House
+              </option>
+
+              <option value="villa">
+                Villa
+              </option>
+
+              <option value="studio">
+                Studio
+              </option>
+
+              <option value="room">
+                Private room
+              </option>
+
+              <option value="guesthouse">
+                Guesthouse
+              </option>
+
+              <option value="hotel">
+                Hotel
+              </option>
+
+              <option value="other">
+                Other
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Status"
+            htmlFor="property-status"
+          >
+            <select
+              id="property-status"
+              value={form.status}
+              onChange={(e) =>
+                update(
+                  "status",
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            >
+              <option value="active">
+                Active
+              </option>
+
+              <option value="inactive">
+                Inactive
+              </option>
+
+              <option value="draft">
+                Draft
+              </option>
+            </select>
+          </Field>
+
+          <Field
+            label="Country"
+            htmlFor="property-country"
+          >
+            <input
+              id="property-country"
+              value={form.country}
+              onChange={(e) =>
+                update(
+                  "country",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. Greece"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="City"
+            htmlFor="property-city"
+          >
+            <input
+              id="property-city"
+              value={form.city}
+              onChange={(e) =>
+                update(
+                  "city",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. Thessaloniki"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Address"
+            htmlFor="property-address"
+            className="sm:col-span-2"
+          >
+            <input
+              id="property-address"
+              value={form.address}
+              onChange={(e) =>
+                update(
+                  "address",
+                  e.target.value
+                )
+              }
+              placeholder="Street and number"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Listing URL"
+            htmlFor="property-listing-url"
+            className="sm:col-span-2"
+          >
+            <input
+              id="property-listing-url"
+              type="url"
+              value={
+                form.listing_url
+              }
+              onChange={(e) =>
+                update(
+                  "listing_url",
+                  e.target.value
+                )
+              }
+              placeholder="https://..."
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Description"
+            htmlFor="property-description"
+            className="sm:col-span-2"
+          >
+            <textarea
+              id="property-description"
+              rows={5}
+              value={
+                form.description
+              }
+              onChange={(e) =>
+                update(
+                  "description",
+                  e.target.value
+                )
+              }
+              placeholder="Describe the property, its atmosphere and its main selling points."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+        </div>
+      </div>
+
+      {/* CAPACITY */}
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Capacity & layout
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-3">
+          <Field
+            label="Bedrooms"
+            htmlFor="property-bedrooms"
+          >
+            <input
+              id="property-bedrooms"
+              type="number"
+              min="0"
+              value={
+                form.bedrooms
+              }
+              onChange={(e) =>
+                update(
+                  "bedrooms",
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Bathrooms"
+            htmlFor="property-bathrooms"
+          >
+            <input
+              id="property-bathrooms"
+              type="number"
+              min="0"
+              step="0.5"
+              value={
+                form.bathrooms
+              }
+              onChange={(e) =>
+                update(
+                  "bathrooms",
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Maximum guests"
+            htmlFor="property-max-guests"
+          >
+            <input
+              id="property-max-guests"
+              type="number"
+              min="1"
+              value={
+                form.max_guests
+              }
+              onChange={(e) =>
+                update(
+                  "max_guests",
+                  e.target.value
+                )
+              }
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Bed configuration"
+            htmlFor="bed-configuration"
+            className="sm:col-span-3"
+          >
+            <input
+              id="bed-configuration"
+              value={
+                form.bed_configuration
+              }
+              onChange={(e) =>
+                update(
+                  "bed_configuration",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. 1 king bed + 2 single beds + sofa bed"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Living room"
+            htmlFor="living-room"
+          >
+            <textarea
+              id="living-room"
+              rows={3}
+              value={
+                form.living_room
+              }
+              onChange={(e) =>
+                update(
+                  "living_room",
+                  e.target.value
+                )
+              }
+              placeholder="Living room details"
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Kitchen"
+            htmlFor="kitchen"
+          >
+            <textarea
+              id="kitchen"
+              rows={3}
+              value={
+                form.kitchen
+              }
+              onChange={(e) =>
+                update(
+                  "kitchen",
+                  e.target.value
+                )
+              }
+              placeholder="Kitchen details"
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Bathroom details"
+            htmlFor="bathroom-details"
+          >
+            <textarea
+              id="bathroom-details"
+              rows={3}
+              value={
+                form.bathroom_details
+              }
+              onChange={(e) =>
+                update(
+                  "bathroom_details",
+                  e.target.value
+                )
+              }
+              placeholder="Bathroom details"
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Amenities"
+            htmlFor="property-amenities"
+            className="sm:col-span-3"
+          >
+            <textarea
+              id="property-amenities"
+              rows={3}
+              value={
+                form.amenities
+              }
+              onChange={(e) =>
+                update(
+                  "amenities",
+                  e.target.value
+                )
+              }
+              placeholder="WiFi, air conditioning, washing machine, balcony, sea view..."
+              disabled={saving}
+              className={textareaClass}
+            />
+
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              Separate amenities with commas.
+            </p>
+          </Field>
+        </div>
+      </div>
+
+      {/* CHECK IN */}
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Check-in & house policies
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Check-in time"
+            htmlFor="check-in-time"
+          >
+            <input
+              id="check-in-time"
+              value={
+                form.check_in_time
+              }
+              onChange={(e) =>
+                update(
+                  "check_in_time",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. 15:00"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Check-out time"
+            htmlFor="check-out-time"
+          >
+            <input
+              id="check-out-time"
+              value={
+                form.check_out_time
+              }
+              onChange={(e) =>
+                update(
+                  "check_out_time",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. 11:00"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Quiet hours"
+            htmlFor="quiet-hours"
+            className="sm:col-span-2"
+          >
+            <input
+              id="quiet-hours"
+              value={
+                form.quiet_hours
+              }
+              onChange={(e) =>
+                update(
+                  "quiet_hours",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. 23:00–08:00"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <PolicySelect
+            label="Smoking"
+            value={form.smoking}
+            onChange={(value) =>
+              update(
+                "smoking",
+                value
+              )
+            }
             disabled={saving}
-            className={inputClass}
           />
-        </Field>
-        <Field label="Check-in instructions" htmlFor="check-in-instructions">
-          <textarea
-            id="check-in-instructions"
-            value={checkInInstructions}
-            onChange={(e) => setCheckInInstructions(e.target.value)}
-            rows={4}
+
+          <PolicySelect
+            label="Pets"
+            value={form.pets}
+            onChange={(value) =>
+              update(
+                "pets",
+                value
+              )
+            }
             disabled={saving}
-            className={textareaClass}
           />
-        </Field>
-        <Field label="Parking instructions" htmlFor="parking-instructions">
-          <textarea
-            id="parking-instructions"
-            value={parkingInstructions}
-            onChange={(e) => setParkingInstructions(e.target.value)}
-            rows={3}
+
+          <PolicySelect
+            label="Parties"
+            value={form.parties}
+            onChange={(value) =>
+              update(
+                "parties",
+                value
+              )
+            }
             disabled={saving}
-            className={textareaClass}
           />
-        </Field>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Wi-Fi network" htmlFor="wifi-network">
+
+          <Field
+            label="Access method"
+            htmlFor="access-method"
+            className="sm:col-span-2"
+          >
+            <input
+              id="access-method"
+              value={
+                form.access_method
+              }
+              onChange={(e) =>
+                update(
+                  "access_method",
+                  e.target.value
+                )
+              }
+              placeholder="e.g. Smart lock, lockbox, host meets guest"
+              disabled={saving}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Check-in instructions"
+            htmlFor="check-in-instructions"
+            className="sm:col-span-2"
+          >
+            <textarea
+              id="check-in-instructions"
+              rows={5}
+              value={
+                form.check_in_instructions
+              }
+              onChange={(e) =>
+                update(
+                  "check_in_instructions",
+                  e.target.value
+                )
+              }
+              placeholder="Detailed arrival and check-in instructions."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Parking instructions"
+            htmlFor="parking-instructions"
+            className="sm:col-span-2"
+          >
+            <textarea
+              id="parking-instructions"
+              rows={4}
+              value={
+                form.parking_instructions
+              }
+              onChange={(e) =>
+                update(
+                  "parking_instructions",
+                  e.target.value
+                )
+              }
+              placeholder="Parking location, access, restrictions, etc."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+        </div>
+      </div>
+
+      {/* WIFI */}
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Wi-Fi
+        </p>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Wi-Fi network"
+            htmlFor="wifi-network"
+          >
             <input
               id="wifi-network"
-              value={wifiNetwork}
-              onChange={(e) => setWifiNetwork(e.target.value)}
+              value={
+                form.wifi_network
+              }
+              onChange={(e) =>
+                update(
+                  "wifi_network",
+                  e.target.value
+                )
+              }
               disabled={saving}
               className={inputClass}
             />
           </Field>
-          <Field label="Wi-Fi password" htmlFor="wifi-password">
+
+          <Field
+            label="Wi-Fi password"
+            htmlFor="wifi-password"
+          >
             <input
               id="wifi-password"
-              type="password"
-              value={wifiPassword}
-              onChange={(e) => setWifiPassword(e.target.value)}
+              value={
+                form.wifi_password
+              }
+              onChange={(e) =>
+                update(
+                  "wifi_password",
+                  e.target.value
+                )
+              }
               disabled={saving}
               className={inputClass}
             />
           </Field>
         </div>
-        <div className="rounded-lg border border-border bg-secondary/50 p-4 text-sm text-muted-foreground">
-          Access details are used only to help Webrya generate accurate guest
-          messages for this property. They are visible only to your account.
+      </div>
+
+      {/* LOCATION */}
+
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Location & neighborhood
+        </p>
+
+        <div className="mt-6 grid gap-5">
+          <Field
+            label="Neighborhood"
+            htmlFor="neighborhood"
+          >
+            <textarea
+              id="neighborhood"
+              rows={3}
+              value={
+                form.neighborhood
+              }
+              onChange={(e) =>
+                update(
+                  "neighborhood",
+                  e.target.value
+                )
+              }
+              placeholder="Describe the neighborhood and atmosphere."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Nearby attractions"
+            htmlFor="nearby-attractions"
+          >
+            <textarea
+              id="nearby-attractions"
+              rows={4}
+              value={
+                form.nearby_attractions
+              }
+              onChange={(e) =>
+                update(
+                  "nearby_attractions",
+                  e.target.value
+                )
+              }
+              placeholder="Beaches, landmarks, museums, attractions..."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Nearby restaurants"
+            htmlFor="nearby-restaurants"
+          >
+            <textarea
+              id="nearby-restaurants"
+              rows={4}
+              value={
+                form.nearby_restaurants
+              }
+              onChange={(e) =>
+                update(
+                  "nearby_restaurants",
+                  e.target.value
+                )
+              }
+              placeholder="Recommended restaurants, cafes, bars..."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Public transport"
+            htmlFor="public-transport"
+          >
+            <textarea
+              id="public-transport"
+              rows={3}
+              value={
+                form.public_transport
+              }
+              onChange={(e) =>
+                update(
+                  "public_transport",
+                  e.target.value
+                )
+              }
+              placeholder="Bus, metro, train, taxi information..."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
+
+          <Field
+            label="Important landmarks"
+            htmlFor="important-landmarks"
+          >
+            <textarea
+              id="important-landmarks"
+              rows={3}
+              value={
+                form.important_landmarks
+              }
+              onChange={(e) =>
+                update(
+                  "important_landmarks",
+                  e.target.value
+                )
+              }
+              placeholder="Nearby landmarks and useful reference points."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
         </div>
       </div>
-    </div>
 
-    {/* 6. LOCATION */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Location
-      </p>
-      <div className="mt-6 grid gap-5">
-        <Field label="Neighborhood" htmlFor="neighborhood">
-          <input
-            id="neighborhood"
-            value={neighborhood}
-            onChange={(e) => setNeighborhood(e.target.value)}
-            placeholder="e.g. Koukaki"
-            disabled={saving}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Nearby attractions" htmlFor="nearby-attractions">
-          <textarea
-            id="nearby-attractions"
-            value={nearbyAttractions}
-            onChange={(e) => setNearbyAttractions(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Nearby restaurants" htmlFor="nearby-restaurants">
-          <textarea
-            id="nearby-restaurants"
-            value={nearbyRestaurants}
-            onChange={(e) => setNearbyRestaurants(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Public transport" htmlFor="public-transport">
-          <textarea
-            id="public-transport"
-            value={publicTransport}
-            onChange={(e) => setPublicTransport(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-        <Field label="Important landmarks" htmlFor="important-landmarks">
-          <textarea
-            id="important-landmarks"
-            value={importantLandmarks}
-            onChange={(e) => setImportantLandmarks(e.target.value)}
-            rows={3}
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-      </div>
-    </div>
+      {/* HOST NOTES */}
 
-    {/* 7. HOST NOTES */}
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        Host notes
-      </p>
-      <div className="mt-5">
-        <Field label="Anything else the AI should know" htmlFor="host-notes">
-          <textarea
-            id="host-notes"
-            value={hostNotes}
-            onChange={(e) => setHostNotes(e.target.value)}
-            rows={6}
-            placeholder="Anything specific about this property that would help Webrya generate better responses..."
-            disabled={saving}
-            className={textareaClass}
-          />
-        </Field>
-      </div>
-    </div>
+      <div className="rounded-xl border border-border bg-card p-6">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          Host notes
+        </p>
 
-    {formError && (
-      <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-        {formError}
-      </div>
-    )}
+        <div className="mt-6">
+          <Field
+            label="Private host notes"
+            htmlFor="host-notes"
+          >
+            <textarea
+              id="host-notes"
+              rows={6}
+              value={
+                form.host_notes
+              }
+              onChange={(e) =>
+                update(
+                  "host_notes",
+                  e.target.value
+                )
+              }
+              placeholder="Anything else Webrya should know about this property."
+              disabled={saving}
+              className={textareaClass}
+            />
+          </Field>
 
-    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-      <Button
-        type="button"
-        variant="outline"
-        disabled={saving}
-        onClick={() => {
-          resetForm();
-          setShowForm(false);
-        }}
-      >
-        Cancel
-      </Button>
-      <Button type="submit" disabled={saving}>
-        {saving ? "Saving property..." : "Save property"}
-      </Button>
-    </div>
-  </form>
-)}
-
-      {loading && (
-        <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
-          Loading your properties...
-        </div>
-      )}
-
-      {!loading && error && (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
-          Unable to load your properties: {error}
-        </div>
-      )}
-
-      {!loading && !error && !showForm && properties.length === 0 && (
-        <div className="rounded-xl border border-dashed border-border p-10 text-center">
-          <Home className="mx-auto size-8 text-muted-foreground" />
-          <h2 className="mt-4 text-lg">No properties yet</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            Add your first property to start building your Webrya workspace.
+          <p className="mt-2 text-xs text-muted-foreground">
+            Do not store highly sensitive information
+            here. These notes may be used as property
+            context by enabled AI features.
           </p>
-          <Button type="button" className="mt-5" onClick={() => setShowForm(true)}>
-            <Plus className="size-4" />
-            Add your first property
-          </Button>
+        </div>
+      </div>
+
+      {formError && (
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {formError}
         </div>
       )}
 
-      {!loading && !error && !showForm && properties.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {properties.map((property) => {
-            const location = [property.city, property.country]
-              .filter(Boolean)
-              .join(" · ");
-            return (
-              <div
-                key={property.id}
-                className="rounded-xl border border-border bg-card p-6"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h2 className="text-lg">{property.name}</h2>
-                  <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs">
-                    {property.status === "active" ? "Active" : property.status}
-                  </span>
-                </div>
-                {property.property_type && (
-                  <p className="mt-1 text-xs uppercase tracking-wide text-muted-foreground">
-                    {property.property_type}
-                  </p>
-                )}
-                {location && (
-                  <p className="mt-2 text-sm text-muted-foreground">{location}</p>
-                )}
-              </div>
-            );
-          })}
+      {success && (
+        <div className="rounded-lg border border-border bg-secondary px-4 py-3 text-sm">
+          {success}
         </div>
       )}
-    </>
+
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={saving}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={saving}
+        >
+          {saving
+            ? "Saving..."
+            : property
+              ? "Save property"
+              : "Create property"}
+        </Button>
+      </div>
+    </form>
   );
 }
