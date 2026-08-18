@@ -274,10 +274,12 @@ function PanelTitle({
 function Overview({
   name,
   propertyCount,
+  activity,
   onNavigate,
 }: {
   name: string;
   propertyCount: number;
+  activity: ActivityItem[];
   onNavigate: (s: SectionId) => void;
 }) {
   const stats = [
