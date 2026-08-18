@@ -15,7 +15,7 @@ Webrya combines:
 3. Professional Webrya packages
 4. The Webrya Workspace
 
-No mandatory subscription — the core products are one-time purchases.
+No mandatory subscription — the core products are one-time purchases
 
 ## Tech stack
 
