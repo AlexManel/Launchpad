@@ -9,6 +9,7 @@ import {
   User,
   ArrowUpRight,
   LogOut,
+  Plus,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -55,39 +56,20 @@ const owned = [
   "guest-communication-suite",
 ];
 
-const properties = [
-  {
-    name: "Casa Oliva",
-    location: "Athens · Koukaki",
-    status: "Live",
-    nights: 21,
-  },
-  {
-    name: "The Terrace Loft",
-    location: "Lisbon · Alfama",
-    status: "Live",
-    nights: 17,
-  },
-];
+type Property = {
+  id: string;
+  name: string;
+  city: string | null;
+  country: string | null;
+  address: string | null;
+  listing_url: string | null;
+  status: string;
+};
 
-const activity = [
-  {
-    text: "Review response generated for Casa Oliva",
-    when: "2 hours ago",
-  },
-  {
-    text: "Guest reply sent — early check-in request",
-    when: "Yesterday",
-  },
-  {
-    text: "AirCover Suite downloaded",
-    when: "3 days ago",
-  },
-  {
-    text: "Listing optimized — The Terrace Loft",
-    when: "Last week",
-  },
-];
+type ActivityItem = {
+  text: string;
+  when: string;
+};
 
 function Portal() {
   const navigate = useNavigate();
@@ -96,10 +78,16 @@ function Portal() {
   const [name, setName] = useState("Host");
   const [email, setEmail] = useState("");
 
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [propertiesLoading, setPropertiesLoading] = useState(true);
+  const [propertiesError, setPropertiesError] = useState("");
+
+  const [activity] = useState<ActivityItem[]>([]);
+
   useEffect(() => {
     let mounted = true;
 
-    const loadProfile = async () => {
+    const loadWorkspace = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -121,29 +109,46 @@ function Portal() {
           setName(metadataName);
           setEmail(user.email ?? "");
         }
-        return;
+      } else {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (mounted) {
+          setName(
+            profile?.full_name?.trim() ||
+              user.email?.split("@")[0] ||
+              "Host"
+          );
+          setEmail(user.email ?? "");
+        }
       }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("full_name")
-        .eq("id", user.id)
-        .maybeSingle();
+      const { data: propertyRows, error: propertyError } = await supabase
+        .from("properties")
+        .select(
+          "id, name, city, country, address, listing_url, status"
+        )
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
 
       if (!mounted) {
         return;
       }
 
-      setName(
-        profile?.full_name?.trim() ||
-          user.email?.split("@")[0] ||
-          "Host"
-      );
+      if (propertyError) {
+        setPropertiesError(propertyError.message);
+        setProperties([]);
+      } else {
+        setProperties(propertyRows ?? []);
+      }
 
-      setEmail(user.email ?? "");
+      setPropertiesLoading(false);
     };
 
-    void loadProfile();
+    void loadWorkspace();
 
     const {
       data: { subscription },
@@ -215,12 +220,25 @@ function Portal() {
 
         <main>
           {section === "overview" && (
-            <Overview name={name} onNavigate={setSection} />
+            <Overview
+              name={name}
+              propertyCount={properties.length}
+              onNavigate={setSection}
+            />
           )}
 
           {section === "tools" && <ToolsPanel />}
           {section === "products" && <ProductsPanel />}
-          {section === "properties" && <PropertiesPanel />}
+
+          {section === "properties" && (
+            <PropertiesPanel
+              properties={properties}
+              loading={propertiesLoading}
+              error={propertiesError}
+              onPropertiesChange={setProperties}
+            />
+          )}
+
           {section === "resources" && <ResourcesPanel />}
 
           {section === "account" && (
@@ -254,9 +272,11 @@ function PanelTitle({
 
 function Overview({
   name,
+  propertyCount,
   onNavigate,
 }: {
   name: string;
+  propertyCount: number;
   onNavigate: (s: SectionId) => void;
 }) {
   const stats = [
@@ -274,8 +294,8 @@ function Overview({
     },
     {
       label: "Properties",
-      value: "2",
-      note: "connected",
+      value: String(propertyCount),
+      note: propertyCount === 1 ? "connected" : "connected",
       to: "properties" as SectionId,
     },
   ];
@@ -339,16 +359,22 @@ function Overview({
         <div className="rounded-xl border border-border bg-card p-7">
           <p className="eyebrow">Recent activity</p>
 
-          <ul className="mt-5 space-y-4">
-            {activity.map((a) => (
-              <li key={a.text} className="text-sm">
-                <p>{a.text}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {a.when}
-                </p>
-              </li>
-            ))}
-          </ul>
+          {activity.length === 0 ? (
+            <p className="mt-5 text-sm text-muted-foreground">
+              No activity yet.
+            </p>
+          ) : (
+            <ul className="mt-5 space-y-4">
+              {activity.map((a) => (
+                <li key={a.text} className="text-sm">
+                  <p>{a.text}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {a.when}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </>
@@ -443,66 +469,336 @@ function ProductsPanel() {
   );
 }
 
-function PropertiesPanel() {
+function PropertiesPanel({
+  properties,
+  loading,
+  error,
+  onPropertiesChange,
+}: {
+  properties: Property[];
+  loading: boolean;
+  error: string;
+  onPropertiesChange: (properties: Property[]) => void;
+}) {
+  const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const [propertyName, setPropertyName] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [listingUrl, setListingUrl] = useState("");
+  const [formError, setFormError] = useState("");
+
+  const resetForm = () => {
+    setPropertyName("");
+    setCity("");
+    setCountry("");
+    setAddress("");
+    setListingUrl("");
+    setFormError("");
+  };
+
+  const handleAddProperty = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setFormError("");
+
+    const cleanName = propertyName.trim();
+
+    if (!cleanName) {
+      setFormError("Property name is required.");
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setFormError("Your session has expired. Please sign in again.");
+        return;
+      }
+
+      const { data, error: insertError } = await supabase
+        .from("properties")
+        .insert({
+          user_id: user.id,
+          name: cleanName,
+          city: city.trim() || null,
+          country: country.trim() || null,
+          address: address.trim() || null,
+          listing_url: listingUrl.trim() || null,
+          status: "active",
+        })
+        .select(
+          "id, name, city, country, address, listing_url, status"
+        )
+        .single();
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      if (data) {
+        onPropertiesChange([data, ...properties]);
+      }
+
+      resetForm();
+      setShowForm(false);
+    } catch (err) {
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : "Unable to add property."
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <>
-      <PanelTitle
-        title="My Properties"
-        sub="Listings connected to your Webrya account."
-      />
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <PanelTitle
+          title="My Properties"
+          sub="Listings connected to your Webrya account."
+        />
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {properties.map((p) => (
-          <div
-            key={p.name}
-            className="rounded-xl border border-border bg-card p-6"
+        <Button
+          type="button"
+          onClick={() => {
+            setFormError("");
+            setShowForm((value) => !value);
+          }}
+        >
+          <Plus className="size-4" />
+          Add Property
+        </Button>
+      </div>
+
+      {showForm && (
+        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+          <h2 className="text-lg">Add a property</h2>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            Add the basic details of your short-term rental.
+          </p>
+
+          <form
+            onSubmit={handleAddProperty}
+            className="mt-6 grid gap-4 sm:grid-cols-2"
           >
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg">{p.name}</h2>
+            <div className="space-y-2 sm:col-span-2">
+              <label
+                htmlFor="property-name"
+                className="text-sm font-medium"
+              >
+                Property name *
+              </label>
 
-              <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">
-                {p.status}
-              </span>
+              <input
+                id="property-name"
+                value={propertyName}
+                onChange={(e) => setPropertyName(e.target.value)}
+                placeholder="e.g. Casa Olivia"
+                required
+                disabled={saving}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
             </div>
 
-            <p className="mt-1 text-sm text-muted-foreground">
-              {p.location}
-            </p>
+            <div className="space-y-2">
+              <label
+                htmlFor="property-city"
+                className="text-sm font-medium"
+              >
+                City
+              </label>
 
-            <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <dt className="eyebrow">Nights booked</dt>
-                <dd className="mt-1 font-display text-2xl">
-                  {p.nights}
-                </dd>
+              <input
+                id="property-city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder="Athens"
+                disabled={saving}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="property-country"
+                className="text-sm font-medium"
+              >
+                Country
+              </label>
+
+              <input
+                id="property-country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                placeholder="Greece"
+                disabled={saving}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+
+            <div className="space-y-2 sm:col-span-2">
+              <label
+                htmlFor="property-address"
+                className="text-sm font-medium"
+              >
+                Address
+              </label>
+
+              <input
+                id="property-address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Optional"
+                disabled={saving}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+
+            <div className="space-y-2 sm:col-span-2">
+              <label
+                htmlFor="property-listing-url"
+                className="text-sm font-medium"
+              >
+                Listing URL
+              </label>
+
+              <input
+                id="property-listing-url"
+                type="url"
+                value={listingUrl}
+                onChange={(e) => setListingUrl(e.target.value)}
+                placeholder="https://www.airbnb.com/..."
+                disabled={saving}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+
+            {formError && (
+              <div className="sm:col-span-2 rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+                {formError}
               </div>
+            )}
 
-              <div>
-                <dt className="eyebrow">Guidebook</dt>
-                <dd className="mt-1 font-display text-2xl">
-                  Live
-                </dd>
-              </div>
-            </dl>
-          </div>
-        ))}
+            <div className="flex gap-2 sm:col-span-2">
+              <Button type="submit" disabled={saving}>
+                {saving ? "Saving..." : "Save Property"}
+              </Button>
 
-        <div className="grid place-items-center rounded-xl border border-dashed border-border p-6 text-center">
-          <div>
-            <p className="text-sm text-muted-foreground">
-              Add another property
-            </p>
-
-            <Button
-              variant="ghost"
-              className="mt-2"
-              disabled
-            >
-              Coming soon
-            </Button>
-          </div>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={saving}
+                onClick={() => {
+                  resetForm();
+                  setShowForm(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
         </div>
-      </div>
+      )}
+
+      {loading && (
+        <div className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
+          Loading your properties...
+        </div>
+      )}
+
+      {!loading && error && (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
+          Unable to load your properties: {error}
+        </div>
+      )}
+
+      {!loading && !error && properties.length === 0 && (
+        <div className="rounded-xl border border-dashed border-border p-10 text-center">
+          <Home className="mx-auto size-8 text-muted-foreground" />
+
+          <h2 className="mt-4 text-lg">
+            No properties yet
+          </h2>
+
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
+            Add your first property to start building your Webrya
+            workspace around your rental.
+          </p>
+
+          <Button
+            type="button"
+            className="mt-5"
+            onClick={() => setShowForm(true)}
+          >
+            <Plus className="size-4" />
+            Add your first property
+          </Button>
+        </div>
+      )}
+
+      {!loading && !error && properties.length > 0 && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {properties.map((property) => {
+            const location = [property.city, property.country]
+              .filter(Boolean)
+              .join(" · ");
+
+            return (
+              <div
+                key={property.id}
+                className="rounded-xl border border-border bg-card p-6"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-lg">{property.name}</h2>
+
+                  <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">
+                    {property.status === "active"
+                      ? "Active"
+                      : property.status}
+                  </span>
+                </div>
+
+                {location && (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {location}
+                  </p>
+                )}
+
+                {property.address && (
+                  <p className="mt-3 text-sm text-muted-foreground">
+                    {property.address}
+                  </p>
+                )}
+
+                {property.listing_url && (
+                  <a
+                    href={property.listing_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent"
+                  >
+                    View listing
+                    <ArrowUpRight className="size-4" />
+                  </a>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }
