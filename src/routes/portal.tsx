@@ -220,11 +220,12 @@ function Portal() {
 
         <main>
           {section === "overview" && (
-            <Overview
-              name={name}
-              propertyCount={properties.length}
-              onNavigate={setSection}
-            />
+         <Overview
+  name={name}
+  propertyCount={properties.length}
+  activity={activity}
+  onNavigate={setSection}
+/>
           )}
 
           {section === "tools" && <ToolsPanel />}
