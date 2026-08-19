@@ -27,12 +27,12 @@ export const AI_TEMPERATURE: Partial<Record<AiTool, number>> = {
  * full sections (title, description, improvements, missing info,
  * recommendations) — 300 tokens was silently truncating it mid-report.
  */
-export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 500;
+export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 900;
 
 export const AI_MAX_OUTPUT_TOKENS: Partial<Record<AiTool, number>> = {
-  "listing-optimizer": 1100,
-  "house-rules-generator": 700,
-  "welcome-message-generator": 600,
+  "listing-optimizer": 1800,
+  "house-rules-generator": 1100,
+  "welcome-message-generator": 1000,
 };
 
 export function getTemperature(tool: AiTool): number {

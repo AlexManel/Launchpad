@@ -48,6 +48,15 @@ export async function generateAI(
       generationConfig: {
         temperature: getTemperature(request.tool),
         maxOutputTokens: getMaxOutputTokens(request.tool),
+        // Gemini 3.x models "think" before answering, and those invisible
+        // reasoning tokens are counted against maxOutputTokens by default.
+        // Without this, the model can burn most of the budget on hidden
+        // reasoning and cut the visible answer off mid-sentence. "low"
+        // keeps a bit of reasoning (Gemini 3 Flash can't fully disable it)
+        // while leaving far more room for the actual response.
+        thinkingConfig: {
+          thinkingLevel: "low",
+        },
       },
     }),
   });
