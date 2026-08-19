@@ -1121,3 +1121,46 @@ footer {
     color: black;
   }
 }
+/* =========================================================
+   WEBRYA CINEMATIC HOMEPAGE
+   ========================================================= */
+
+.webrya-hero {
+  background: #111817;
+}
+
+.webrya-hero video {
+  filter: saturate(0.88) contrast(1.02);
+}
+
+.webrya-tool-card {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.webrya-tool-card:hover {
+  transform: translateY(-3px);
+  border-color: oklch(0.78 0.02 185);
+  box-shadow: var(--shadow-lift);
+}
+
+.webrya-dashboard {
+  box-shadow:
+    0 30px 80px -50px rgba(20, 30, 28, 0.35),
+    0 10px 30px -20px rgba(20, 30, 28, 0.18);
+}
+
+@media (max-width: 767px) {
+  .webrya-hero {
+    min-height: 760px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .webrya-tool-card,
+  .webrya-tool-card:hover {
+    transform: none;
+  }
+}

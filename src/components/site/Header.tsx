@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 
@@ -6,29 +6,51 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 
 const nav = [
-  { to: "/", label: "Home" },
   { to: "/ai-tools", label: "AI Tools" },
-  { to: "/products", label: "Digital Products" },
-  { to: "/portal", label: "Webrya Workspace" },
-  { to: "/pricing", label: "Pricing" },
+  { to: "/products", label: "Products" },
   { to: "/resources", label: "Resources" },
+  { to: "/pricing", label: "Pricing" },
 ] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 lg:px-8">
-        <Logo />
+    <header
+      className={[
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        scrolled
+          ? "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl"
+          : "border-b border-white/10 bg-transparent",
+      ].join(" ")}
+    >
+      <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
+        <Logo tone={scrolled ? "default" : "hero"} />
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground data-[status=active]:text-foreground data-[status=active]:font-medium"
+              className={[
+                "text-sm transition-colors",
+                scrolled
+                  ? "text-muted-foreground hover:text-foreground"
+                  : "text-white/75 hover:text-white",
+              ].join(" ")}
             >
               {item.label}
             </Link>
@@ -36,18 +58,37 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/login">Login</Link>
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className={
+              scrolled
+                ? "text-foreground hover:bg-secondary"
+                : "text-white hover:bg-white/10 hover:text-white"
+            }
+          >
+            <Link to="/login">Log in</Link>
           </Button>
-          <Button asChild size="sm">
-            <Link to="/ai-tools">Start Free</Link>
+
+          <Button
+            asChild
+            size="sm"
+            className="bg-teal-700 text-white hover:bg-teal-600"
+          >
+            <Link to="/ai-tools">Get Started</Link>
           </Button>
         </div>
 
         <button
-          className="grid size-9 place-items-center rounded-md border border-border lg:hidden"
+          className={[
+            "grid size-9 place-items-center rounded-md border lg:hidden",
+            scrolled
+              ? "border-border text-foreground"
+              : "border-white/25 text-white",
+          ].join(" ")}
           aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen((value) => !value)}
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -55,26 +96,28 @@ export function Header() {
 
       {open && (
         <div className="border-t border-border bg-background lg:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col px-5 py-3">
+          <nav className="mx-auto flex max-w-6xl flex-col px-5 py-4">
             {nav.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="py-2.5 text-sm text-foreground"
+                className="border-b border-border/60 py-3 text-sm text-foreground"
               >
                 {item.label}
               </Link>
             ))}
-            <div className="mt-3 flex gap-2 pb-3">
+
+            <div className="mt-4 flex gap-2 pb-2">
               <Button asChild variant="outline" size="sm" className="flex-1">
                 <Link to="/login" onClick={() => setOpen(false)}>
-                  Login
+                  Log in
                 </Link>
               </Button>
+
               <Button asChild size="sm" className="flex-1">
                 <Link to="/ai-tools" onClick={() => setOpen(false)}>
-                  Start Free
+                  Get Started
                 </Link>
               </Button>
             </div>
