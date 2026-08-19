@@ -18,6 +18,7 @@ import { Route as AiToolsIndexRouteImport } from './routes/ai-tools.index'
 import { Route as AiToolsSlugRouteImport } from './routes/ai-tools.$slug'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,15 +65,21 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ResourcesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
-  '/resources': typeof ResourcesRoute
+  '/resources': typeof ResourcesRouteWithChildren
   '/ai-tools/$slug': typeof AiToolsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
   '/ai-tools/': typeof AiToolsIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
@@ -81,9 +88,10 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
-  '/resources': typeof ResourcesRoute
+  '/resources': typeof ResourcesRouteWithChildren
   '/ai-tools/$slug': typeof AiToolsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
   '/ai-tools': typeof AiToolsIndexRoute
   '/products': typeof ProductsIndexRoute
 }
@@ -93,9 +101,10 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
-  '/resources': typeof ResourcesRoute
+  '/resources': typeof ResourcesRouteWithChildren
   '/ai-tools/$slug': typeof AiToolsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
   '/ai-tools/': typeof AiToolsIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/ai-tools/$slug'
     | '/products/$slug'
+    | '/resources/$slug'
     | '/ai-tools/'
     | '/products/'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/ai-tools/$slug'
     | '/products/$slug'
+    | '/resources/$slug'
     | '/ai-tools'
     | '/products'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/ai-tools/$slug'
     | '/products/$slug'
+    | '/resources/$slug'
     | '/ai-tools/'
     | '/products/'
   fileRoutesById: FileRoutesById
@@ -140,7 +152,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PortalRoute: typeof PortalRoute
   PricingRoute: typeof PricingRoute
-  ResourcesRoute: typeof ResourcesRoute
+  ResourcesRoute: typeof ResourcesRouteWithChildren
   AiToolsSlugRoute: typeof AiToolsSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   AiToolsIndexRoute: typeof AiToolsIndexRoute
@@ -212,15 +224,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resources/$slug': {
+      id: '/resources/$slug'
+      path: '/$slug'
+      fullPath: '/resources/$slug'
+      preLoaderRoute: typeof ResourcesSlugRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
   }
 }
+
+interface ResourcesRouteChildren {
+  ResourcesSlugRoute: typeof ResourcesSlugRoute
+}
+
+const ResourcesRouteChildren: ResourcesRouteChildren = {
+  ResourcesSlugRoute: ResourcesSlugRoute,
+}
+
+const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
+  ResourcesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   PortalRoute: PortalRoute,
   PricingRoute: PricingRoute,
-  ResourcesRoute: ResourcesRoute,
+  ResourcesRoute: ResourcesRouteWithChildren,
   AiToolsSlugRoute: AiToolsSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   AiToolsIndexRoute: AiToolsIndexRoute,
