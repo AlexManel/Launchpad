@@ -5,9 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * WEBRYA DESIGN SYSTEM
- * Premium host operations platform
- * Warm neutral / charcoal / muted teal
+ * =========================================================
+ * WEBRYA — PREMIUM HOST OPERATIONS DESIGN SYSTEM
+ * Cinematic / Editorial / Product-led
+ * =========================================================
  */
 
 @theme inline {
@@ -70,21 +71,36 @@
 
   /*
    * Typography
-   * Use one strong modern sans-serif system.
-   * This removes the previous editorial serif treatment.
    */
-  --font-display: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display:
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --font-sans:
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 
   /*
    * Shadows
-   * Extremely restrained.
    */
   --shadow-card:
-    0 1px 2px oklch(0.2 0.01 180 / 0.03);
+    0 1px 2px oklch(0.2 0.01 180 / 0.025);
 
   --shadow-lift:
-    0 12px 32px -24px oklch(0.2 0.01 180 / 0.18);
+    0 20px 45px -30px oklch(0.2 0.01 180 / 0.22);
+
+  --shadow-premium:
+    0 30px 80px -40px oklch(0.15 0.01 180 / 0.28);
 }
 
 /* =========================================================
@@ -94,61 +110,64 @@
 :root {
   --radius: 0.625rem;
 
-  /* Warm off-white page */
-  --background: oklch(0.985 0.004 90);
+  /* Warm premium background */
+  --background: oklch(0.982 0.005 90);
 
   /* Deep charcoal */
-  --foreground: oklch(0.22 0.012 180);
+  --foreground: oklch(0.20 0.012 180);
 
-  /* Slightly darker neutral surface */
-  --surface: oklch(0.975 0.004 90);
-  --surface-foreground: oklch(0.22 0.012 180);
+  /* Surfaces */
+  --surface: oklch(0.970 0.005 90);
+  --surface-foreground: oklch(0.20 0.012 180);
 
-  /* Near-white cards */
   --card: oklch(0.998 0.001 90);
-  --card-foreground: oklch(0.22 0.012 180);
+  --card-foreground: oklch(0.20 0.012 180);
 
   --popover: oklch(0.998 0.001 90);
-  --popover-foreground: oklch(0.22 0.012 180);
+  --popover-foreground: oklch(0.20 0.012 180);
 
   /*
-   * Primary muted teal.
-   * Used for main CTAs and important interactive elements.
+   * Webrya muted teal
    */
-  --primary: oklch(0.39 0.055 185);
+  --primary: oklch(0.385 0.060 185);
   --primary-foreground: oklch(0.99 0.003 90);
 
-  --ink: oklch(0.19 0.012 180);
+  --ink: oklch(0.155 0.012 180);
   --ink-foreground: oklch(0.97 0.003 90);
 
-  --secondary: oklch(0.955 0.005 90);
+  --secondary: oklch(0.950 0.005 90);
   --secondary-foreground: oklch(0.30 0.012 180);
 
-  --muted: oklch(0.955 0.005 90);
-  --muted-foreground: oklch(0.50 0.012 180);
+  --muted: oklch(0.950 0.005 90);
+  --muted-foreground: oklch(0.485 0.012 180);
 
-  /*
-   * Secondary teal accent.
-   */
-  --accent: oklch(0.48 0.075 185);
+  --accent: oklch(0.455 0.075 185);
   --accent-foreground: oklch(0.99 0.003 90);
 
   --destructive: oklch(0.55 0.19 27);
   --destructive-foreground: oklch(0.98 0.005 90);
 
-  /* Subtle neutral borders */
-  --border: oklch(0.90 0.006 90);
-  --input: oklch(0.90 0.006 90);
+  /*
+   * Hairline borders
+   */
+  --border: oklch(0.885 0.007 90);
+  --input: oklch(0.885 0.007 90);
 
-  --ring: oklch(0.48 0.075 185);
+  --ring: oklch(0.455 0.075 185);
 
-  --chart-1: oklch(0.39 0.055 185);
-  --chart-2: oklch(0.48 0.075 185);
+  /*
+   * Charts
+   */
+  --chart-1: oklch(0.385 0.060 185);
+  --chart-2: oklch(0.455 0.075 185);
   --chart-3: oklch(0.55 0.04 180);
   --chart-4: oklch(0.70 0.025 90);
   --chart-5: oklch(0.45 0.02 200);
 
-  --sidebar: oklch(0.19 0.012 180);
+  /*
+   * Sidebar
+   */
+  --sidebar: oklch(0.155 0.012 180);
   --sidebar-foreground: oklch(0.94 0.004 90);
 
   --sidebar-primary: oklch(0.72 0.055 185);
@@ -166,22 +185,22 @@
    ========================================================= */
 
 .dark {
-  --background: oklch(0.18 0.012 180);
+  --background: oklch(0.17 0.012 180);
   --foreground: oklch(0.95 0.004 90);
 
-  --surface: oklch(0.22 0.014 180);
+  --surface: oklch(0.21 0.014 180);
   --surface-foreground: oklch(0.95 0.004 90);
 
-  --card: oklch(0.23 0.014 180);
+  --card: oklch(0.225 0.014 180);
   --card-foreground: oklch(0.95 0.004 90);
 
-  --popover: oklch(0.23 0.014 180);
+  --popover: oklch(0.225 0.014 180);
   --popover-foreground: oklch(0.95 0.004 90);
 
   --primary: oklch(0.78 0.05 185);
   --primary-foreground: oklch(0.18 0.012 180);
 
-  --ink: oklch(0.15 0.012 180);
+  --ink: oklch(0.14 0.012 180);
   --ink-foreground: oklch(0.95 0.004 90);
 
   --secondary: oklch(0.27 0.014 180);
@@ -208,16 +227,27 @@
 
 @layer base {
 
-  * {
+  *,
+  *::before,
+  *::after {
     border-color: var(--color-border);
   }
 
   html {
     scroll-behavior: smooth;
+    background: var(--color-background);
   }
 
   body {
-    background-color: var(--color-background);
+    margin: 0;
+
+    background:
+      linear-gradient(
+        180deg,
+        oklch(0.985 0.004 90),
+        oklch(0.982 0.005 90)
+      );
+
     color: var(--color-foreground);
 
     font-family: var(--font-sans);
@@ -226,91 +256,170 @@
     -moz-osx-font-smoothing: grayscale;
 
     text-rendering: optimizeLegibility;
+
+    overflow-x: hidden;
   }
 
   /*
-   * Strong modern SaaS typography.
+   * Premium heading system
    */
+
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     font-family: var(--font-display);
     font-weight: 650;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.038em;
   }
 
   h1 {
-    line-height: 0.98;
+    line-height: 0.96;
   }
 
   h2 {
-    line-height: 1.05;
+    line-height: 1.02;
   }
 
   h3 {
-    line-height: 1.15;
+    line-height: 1.12;
   }
 
   p {
     line-height: 1.65;
   }
 
-  button,
-  a {
+  a,
+  button {
     -webkit-tap-highlight-color: transparent;
   }
 
   ::selection {
-    background: oklch(0.48 0.075 185 / 0.18);
+    background: oklch(0.455 0.075 185 / 0.20);
   }
 }
 
 /* =========================================================
-   WEBRYA UTILITIES
+   WEBRYA CONTAINER
+   ========================================================= */
+
+@utility container-webrya {
+  width: min(100% - 2rem, 77.5rem);
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .container-webrya {
+    width: min(100% - 3rem, 77.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-webrya {
+    width: min(100% - 5rem, 77.5rem);
+  }
+}
+
+/* =========================================================
+   EYEBROW
    ========================================================= */
 
 @utility eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 0.675rem;
+  line-height: 1;
+
+  font-weight: 700;
+  letter-spacing: 0.18em;
+
   text-transform: uppercase;
+
   color: var(--color-muted-foreground);
+}
+
+/*
+ * Optional eyebrow indicator
+ */
+
+.eyebrow::before {
+  content: "";
+
+  width: 1.5rem;
+  height: 1px;
+
+  background: currentColor;
+
+  opacity: 0.45;
+}
+
+/* =========================================================
+   PREMIUM CARDS
+   ========================================================= */
+
+@utility premium-card {
+  position: relative;
+
+  border: 1px solid var(--color-border);
+
+  background:
+    linear-gradient(
+      180deg,
+      oklch(1 0 0 / 0.72),
+      oklch(0.998 0.001 90)
+    );
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
 }
 
 @utility hairline {
   border-top: 1px solid var(--color-border);
 }
 
-@utility premium-card {
-  border: 1px solid var(--color-border);
-  background: var(--color-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-
-@utility container-webrya {
-  width: min(100% - 2.5rem, 77.5rem);
-  margin-inline: auto;
-}
-
-@media (min-width: 768px) {
-  .container-webrya {
-    width: min(100% - 4rem, 77.5rem);
-  }
-}
-
 /* =========================================================
-   BUTTON POLISH
+   CARD INTERACTIONS
    ========================================================= */
 
 @layer components {
 
+  [class*="rounded-lg"][class*="border"],
+  [class*="rounded-xl"][class*="border"] {
+    transition:
+      border-color 180ms ease,
+      box-shadow 220ms ease,
+      transform 220ms ease;
+  }
+
+  [class*="rounded-lg"][class*="border"]:hover,
+  [class*="rounded-xl"][class*="border"]:hover {
+    border-color: oklch(0.82 0.012 90);
+  }
+
   /*
-   * Primary buttons:
-   * compact, confident, not oversized.
+   * Product cards
    */
+
+  .group:hover {
+    --tw-translate-y: -2px;
+  }
+
+  /*
+   * Primary CTA
+   */
+
   button.bg-primary,
   a.bg-primary {
+    position: relative;
+
     transition:
       background-color 160ms ease,
       transform 160ms ease,
@@ -320,42 +429,659 @@
   button.bg-primary:hover,
   a.bg-primary:hover {
     background-color: var(--color-accent);
+
     transform: translateY(-1px);
-    box-shadow: var(--shadow-lift);
+
+    box-shadow:
+      0 12px 30px -18px
+      oklch(0.30 0.05 185 / 0.55);
   }
 
   /*
-   * Cards should lift very slightly on interaction.
+   * CTA arrow movement
    */
-  [class*="rounded-lg"][class*="border"] {
-    transition:
-      border-color 160ms ease,
-      box-shadow 160ms ease,
-      transform 160ms ease;
+
+  a:hover svg,
+  button:hover svg {
+    transition: transform 160ms ease;
   }
 
-  [class*="rounded-lg"][class*="border"]:hover {
-    border-color: oklch(0.82 0.012 90);
+  a:hover svg.lucide-arrow-right,
+  button:hover svg.lucide-arrow-right {
+    transform: translateX(3px);
   }
 }
 
 /* =========================================================
-   RESPONSIVE TYPOGRAPHY
+   CINEMATIC HERO
    ========================================================= */
+
+/*
+ * The existing hero image gets treated like a cinematic
+ * photography asset.
+ */
+
+img[alt*="short-term rental living room"] {
+  object-fit: cover;
+
+  object-position: center center;
+
+  filter:
+    saturate(0.92)
+    contrast(1.04)
+    brightness(0.92);
+
+  transform: scale(1.015);
+
+  transition:
+    transform 1.2s cubic-bezier(.2,.7,.2,1),
+    filter 500ms ease;
+}
+
+/*
+ * Hero image hover / cinematic movement
+ */
+
+section:first-of-type:hover img[alt*="short-term rental living room"] {
+  transform: scale(1.025);
+
+  filter:
+    saturate(0.98)
+    contrast(1.05)
+    brightness(0.96);
+}
+
+/*
+ * Cinematic image frame
+ */
+
+section:first-of-type img[alt*="short-term rental living room"] {
+  border-radius: 1rem;
+
+  box-shadow:
+    0 35px 80px -45px
+    oklch(0.15 0.01 180 / 0.40);
+}
+
+/* =========================================================
+   HERO VISUAL OVERLAY
+   ========================================================= */
+
+/*
+ * Add cinematic depth to image containers.
+ * This works with the current static hero while preparing
+ * the layout for a future video background.
+ */
+
+section:first-of-type {
+  position: relative;
+}
+
+/*
+ * Images inside hero become more premium without affecting
+ * other page imagery.
+ */
+
+section:first-of-type figure,
+section:first-of-type > div {
+  position: relative;
+}
+
+/* =========================================================
+   SECTION RHYTHM
+   ========================================================= */
+
+main > section {
+  scroll-margin-top: 5rem;
+}
+
+/*
+ * Large screens need breathing room.
+ */
+
+@media (min-width: 1024px) {
+
+  main > section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+/* =========================================================
+   EDITORIAL IMAGES
+   ========================================================= */
+
+img {
+  max-width: 100%;
+}
+
+img[class*="object-cover"] {
+  transition:
+    transform 500ms cubic-bezier(.2,.7,.2,1),
+    filter 350ms ease;
+}
+
+/*
+ * Image cards
+ */
+
+.group:hover img[class*="object-cover"] {
+  transform: scale(1.025);
+}
+
+/* =========================================================
+   BUTTON SYSTEM
+   ========================================================= */
+
+@layer components {
+
+  /*
+   * Primary
+   */
+
+  .bg-primary {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /*
+   * Secondary
+   */
+
+  .border-border {
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .border-border:hover {
+    border-color: oklch(0.78 0.012 90);
+    background-color: oklch(0.99 0.002 90);
+  }
+}
+
+/* =========================================================
+   NAVBAR POLISH
+   ========================================================= */
+
+/*
+ * Sticky navigation gets subtle premium blur.
+ *
+ * This does NOT force a new navbar design.
+ * It improves the existing one.
+ */
+
+header {
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+/*
+ * Navigation links
+ */
+
+header a:not(.bg-primary) {
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+header a:not(.bg-primary):hover {
+  opacity: 0.72;
+}
+
+/*
+ * Logo
+ */
+
+header a[href="/"] {
+  letter-spacing: -0.025em;
+}
+
+/* =========================================================
+   PRODUCT / TOOL VISUAL LANGUAGE
+   ========================================================= */
+
+[data-slot="card"],
+[class*="premium-card"] {
+
+  background-color:
+    oklch(0.998 0.001 90);
+
+  backdrop-filter: blur(8px);
+}
+
+/*
+ * Tool labels
+ */
+
+.text-xs.uppercase,
+.text-\[0\.6875rem\] {
+  letter-spacing: 0.12em;
+}
+
+/* =========================================================
+   SUBTLE TEAL HIGHLIGHTS
+   ========================================================= */
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+/*
+ * Accent utility for future hero copy:
+ *
+ * <span class="webrya-highlight">smarter.</span>
+ */
+
+.webrya-highlight {
+  color: var(--color-primary);
+
+  position: relative;
+}
+
+.webrya-highlight::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: -0.12em;
+
+  height: 1px;
+
+  background: currentColor;
+
+  opacity: 0.35;
+
+  transform-origin: left;
+
+  transform: scaleX(0.75);
+
+  transition: transform 300ms ease;
+}
+
+.webrya-highlight:hover::after {
+  transform: scaleX(1);
+}
+
+/* =========================================================
+   PREMIUM HERO VIDEO SUPPORT
+   ========================================================= */
+
+/*
+ * These classes are intentionally ready for the next step.
+ *
+ * When we replace the current hero image with:
+ *
+ * <video class="webrya-hero-video" ...>
+ *
+ * this CSS will immediately style it correctly.
+ */
+
+.webrya-hero {
+  position: relative;
+
+  min-height: min(88vh, 58rem);
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background:
+    #171918;
+}
+
+.webrya-hero-video,
+.webrya-hero-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  z-index: -3;
+}
+
+.webrya-hero-video {
+  filter:
+    saturate(0.92)
+    contrast(1.06)
+    brightness(0.72);
+}
+
+/*
+ * Cinematic overlay
+ */
+
+.webrya-hero::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -2;
+
+  background:
+    linear-gradient(
+      90deg,
+      oklch(0.10 0.012 180 / 0.82) 0%,
+      oklch(0.10 0.012 180 / 0.55) 36%,
+      oklch(0.10 0.012 180 / 0.18) 72%,
+      oklch(0.10 0.012 180 / 0.28) 100%
+    );
+}
+
+/*
+ * Bottom fade into Webrya warm background
+ */
+
+.webrya-hero::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 22%;
+
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      oklch(0.982 0.005 90)
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
+
+.webrya-hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  min-height: min(88vh, 58rem);
+
+  display: flex;
+
+  align-items: center;
+}
+
+/*
+ * Hero title
+ */
+
+.webrya-hero h1 {
+  max-width: 900px;
+
+  color: white;
+
+  font-size: clamp(
+    3.25rem,
+    7vw,
+    7.25rem
+  );
+
+  line-height: 0.91;
+
+  letter-spacing: -0.065em;
+
+  text-wrap: balance;
+}
+
+/*
+ * Hero paragraph
+ */
+
+.webrya-hero p {
+  max-width: 650px;
+
+  color:
+    oklch(0.96 0.004 90 / 0.78);
+
+  font-size: clamp(
+    1rem,
+    1.3vw,
+    1.25rem
+  );
+
+  line-height: 1.65;
+}
+
+/* =========================================================
+   HERO NAV
+   ========================================================= */
+
+.webrya-hero header,
+.webrya-hero .webrya-nav {
+  color: white;
+}
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
+
+.webrya-hero .bg-primary {
+  background-color:
+    oklch(0.43 0.065 185);
+
+  color: white;
+
+  box-shadow:
+    0 15px 35px -20px
+    oklch(0 0 0 / 0.55);
+}
+
+.webrya-hero .bg-primary:hover {
+  background-color:
+    oklch(0.48 0.075 185);
+}
+
+.webrya-hero a:not(.bg-primary) {
+  color: white;
+}
+
+/* =========================================================
+   PRODUCT SHOWCASE
+   ========================================================= */
+
+.webrya-product-frame {
+  position: relative;
+
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 1rem;
+
+  background:
+    oklch(0.998 0.001 90);
+
+  box-shadow:
+    var(--shadow-premium);
+}
+
+.webrya-product-frame::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      oklch(1 0 0 / 0.55),
+      transparent 45%
+    );
+}
+
+/* =========================================================
+   FINAL CTA
+   ========================================================= */
+
+.webrya-final-cta {
+  position: relative;
+
+  overflow: hidden;
+
+  border:
+    1px solid var(--color-border);
+
+  border-radius: 1rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      oklch(0.975 0.006 90),
+      oklch(0.955 0.008 90)
+    );
+}
+
+.webrya-final-cta::after {
+  content: "";
+
+  position: absolute;
+
+  width: 24rem;
+  height: 24rem;
+
+  right: -10rem;
+  bottom: -14rem;
+
+  border-radius: 999px;
+
+  background:
+    oklch(0.455 0.075 185 / 0.08);
+
+  filter: blur(20px);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  border-top:
+    1px solid var(--color-border);
+
+  background:
+    oklch(0.982 0.005 90);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1023px) {
+
+  .webrya-hero {
+    min-height: 78vh;
+  }
+
+  .webrya-hero-content {
+    min-height: 78vh;
+  }
+
+  .webrya-hero h1 {
+    font-size: clamp(
+      3rem,
+      9vw,
+      5.5rem
+    );
+  }
+}
 
 @media (max-width: 767px) {
 
+  body {
+    overflow-x: hidden;
+  }
+
   h1 {
-    letter-spacing: -0.04em;
-    line-height: 1.02;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
   }
 
   h2 {
-    letter-spacing: -0.035em;
+    letter-spacing: -0.04em;
   }
 
-  body {
-    overflow-x: hidden;
+  .container-webrya {
+    width: min(100% - 2rem, 77.5rem);
+  }
+
+  .webrya-hero {
+    min-height: 88svh;
+
+    border-radius: 0;
+  }
+
+  .webrya-hero-content {
+    min-height: 88svh;
+
+    align-items: flex-end;
+
+    padding-bottom: 5rem;
+  }
+
+  .webrya-hero h1 {
+    font-size: clamp(
+      3rem,
+      14vw,
+      5rem
+    );
+
+    line-height: 0.94;
+
+    letter-spacing: -0.055em;
+  }
+
+  .webrya-hero p {
+    font-size: 1rem;
+
+    line-height: 1.55;
+  }
+
+  .webrya-hero::before {
+    background:
+      linear-gradient(
+        180deg,
+        oklch(0.08 0.012 180 / 0.28),
+        oklch(0.08 0.012 180 / 0.78) 65%,
+        oklch(0.08 0.012 180 / 0.92)
+      );
+  }
+
+  .webrya-hero::after {
+    display: none;
   }
 }
 
@@ -376,5 +1102,22 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .webrya-hero {
+    min-height: auto;
+    color: black;
   }
 }
