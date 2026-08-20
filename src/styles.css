@@ -127,10 +127,11 @@
   --popover-foreground: oklch(0.20 0.012 180);
 
   /*
-   * Webrya muted teal
+   * Webrya professional — deep forest teal
+   * Calm, host-grade, less "startup mint"
    */
-  --primary: oklch(0.385 0.060 185);
-  --primary-foreground: oklch(0.99 0.003 90);
+  --primary: oklch(0.36 0.055 175);
+  --primary-foreground: oklch(0.99 0.002 95);
 
   --ink: oklch(0.155 0.012 180);
   --ink-foreground: oklch(0.97 0.003 90);
@@ -141,8 +142,8 @@
   --muted: oklch(0.950 0.005 90);
   --muted-foreground: oklch(0.485 0.012 180);
 
-  --accent: oklch(0.455 0.075 185);
-  --accent-foreground: oklch(0.99 0.003 90);
+  --accent: oklch(0.42 0.065 175);
+  --accent-foreground: oklch(0.99 0.002 95);
 
   --destructive: oklch(0.55 0.19 27);
   --destructive-foreground: oklch(0.98 0.005 90);
@@ -153,13 +154,13 @@
   --border: oklch(0.885 0.007 90);
   --input: oklch(0.885 0.007 90);
 
-  --ring: oklch(0.455 0.075 185);
+  --ring: oklch(0.42 0.065 175);
 
   /*
    * Charts
    */
-  --chart-1: oklch(0.385 0.060 185);
-  --chart-2: oklch(0.455 0.075 185);
+  --chart-1: oklch(0.36 0.055 175);
+  --chart-2: oklch(0.42 0.065 175);
   --chart-3: oklch(0.55 0.04 180);
   --chart-4: oklch(0.70 0.025 90);
   --chart-5: oklch(0.45 0.02 200);
@@ -197,7 +198,8 @@
   --popover: oklch(0.225 0.014 180);
   --popover-foreground: oklch(0.95 0.004 90);
 
-  --primary: oklch(0.78 0.05 185);
+  --primary: oklch(0.72 0.06 175);
+  --primary-foreground: oklch(0.18 0.02 175);
   --primary-foreground: oklch(0.18 0.012 180);
 
   --ink: oklch(0.14 0.012 180);

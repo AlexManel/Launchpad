@@ -98,10 +98,10 @@ function ProductPage() {
 
             {checkout ? (
               <div className="mt-6 rounded-lg border border-dashed border-border bg-surface p-5 text-sm">
-                <p className="font-medium">Checkout placeholder</p>
+                <p className="font-medium">Coming soon</p>
                 <p className="mt-2 leading-relaxed text-muted-foreground">
-                  Payments aren't connected yet in this MVP. In production this opens a secure
-                  one-time checkout and unlocks the product in your Webrya Workspace.
+                  One-time checkout is not connected yet. While we finish payments, use the free
+                  AI tools and Webrya Workspace — products will unlock here after purchase.
                 </p>
                 <Button asChild variant="outline" className="mt-4 w-full">
                   <Link to="/portal">Preview in Webrya Workspace</Link>
@@ -113,7 +113,7 @@ function ProductPage() {
                 className="mt-6 w-full"
                 onClick={() => {
                   setCheckout(true);
-                  toast.success("Checkout opened (demo)");
+                  toast.message("Payments are not connected yet — early access coming soon.");
                 }}
               >
                 Get Access

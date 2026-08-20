@@ -64,6 +64,16 @@ function ToolPage() {
   const [extra, setExtra] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+
+  const loadSample = () => {
+    setInput(tool.placeholder);
+    if (tool.secondaryPlaceholder) {
+      setExtra(tool.secondaryPlaceholder);
+    }
+    setFeedback(null);
+    toast.message("Sample loaded — press Generate when ready.");
+  };
 
   const generate = async () => {
     if (!input.trim()) {
@@ -72,6 +82,7 @@ function ToolPage() {
     }
     setLoading(true);
     setOutput("");
+    setFeedback(null);
 
     try {
       const res = await generateToolOutput({
@@ -138,12 +149,24 @@ function ToolPage() {
                   />
                 </div>
               )}
-              <Button onClick={generate} disabled={loading} className="w-full" size="lg">
-                {loading && <Loader2 className="size-4 animate-spin" />}
-                {loading ? "Generating…" : "Generate"}
-              </Button>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button onClick={generate} disabled={loading} className="w-full" size="lg">
+                  {loading && <Loader2 className="size-4 animate-spin" />}
+                  {loading ? "Generating…" : "Generate"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto shrink-0"
+                  disabled={loading}
+                  onClick={loadSample}
+                >
+                  Try sample
+                </Button>
+              </div>
               <p className="text-xs text-muted-foreground">
-                Free preview. Sign in to save results to your Webrya Workspace.
+                Free to use. No account required for a preview.
               </p>
             </div>
           </div>
@@ -171,6 +194,33 @@ function ToolPage() {
                 <span className="text-muted-foreground">Your generated text will appear here.</span>
               )}
             </div>
+            {output ? (
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4 text-sm text-muted-foreground">
+                <span>Was this useful?</span>
+                <Button
+                  type="button"
+                  variant={feedback === "up" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    setFeedback("up");
+                    toast.success("Thanks — that helps us improve Webrya.");
+                  }}
+                >
+                  Yes
+                </Button>
+                <Button
+                  type="button"
+                  variant={feedback === "down" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    setFeedback("down");
+                    toast.message("Thanks — we will keep improving the tools.");
+                  }}
+                >
+                  Needs work
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
 

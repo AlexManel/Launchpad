@@ -1,31 +1,15 @@
 /**
- * Gemini provider is handled directly through the Gemini REST API
- * in engine.server.ts.
+ * Gemini provider compatibility stub.
  *
- * This file is intentionally kept as a compatibility placeholder.
+ * All production generation goes through the Gemini REST API in
+ * `engine.server.ts` (reads GEMINI_API_KEY server-side).
+ *
+ * This module exists so older imports do not break the build.
+ * Do not add a second getAIModel implementation here.
  */
 
 export function getAIModel(): never {
   throw new Error(
     "getAIModel() is no longer used. Gemini requests are handled by engine.server.ts."
   );
-}
-import { AI_MODEL } from "./config";
-
-/**
- * Google Gemini provider.
- * The API key is read server-side from GEMINI_API_KEY.
- */
-export function getAIModel() {
-  const key = process.env["GEMINI_API_KEY"];
-
-  if (!key) {
-    throw new Error("AI is not configured.");
-  }
-
-  const googleProvider = createGoogleGenerativeAI({
-    apiKey: key,
-  });
-
-  return googleProvider(AI_MODEL);
 }
