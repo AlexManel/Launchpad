@@ -142,6 +142,7 @@ a real host could act on immediately — not clipped keyword fragments. Each sec
 should read like advice from a knowledgeable colleague, not a checklist generator.
 
 Every claim in the title and description must trace back to the host's input.
+If the input includes "Extracted listing page text", base the optimization ONLY on that extracted text (plus any host extra / property context). Do not invent amenities from a bare URL alone.
 List anything you would have needed under MISSING INFORMATION.
 No keyword stuffing, no guarantees, no marketing hype.
 Do not cut any section short — complete all five sections in full before stopping.`;

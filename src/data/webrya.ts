@@ -44,7 +44,7 @@ export const tools: Tool[] = [
       "Rewrite your title and description so they lead with what guests actually search for, without sounding like a generic ad.",
     icon: "sparkles",
     inputLabel: "Current listing title & description",
-    placeholder: "Nice apartment in the city center, 2 bedrooms, near everything…",
+    placeholder: "Paste listing title & description — or a public Airbnb / Booking URL.",
     secondaryLabel: "Location & standout feature",
     secondaryPlaceholder: "Lisbon, Alfama — rooftop terrace with river view",
   },

@@ -1,6 +1,6 @@
 import type { AiTool } from "./types";
 
-/** Model that works with your API key. */
+/** Model that works with typical Webrya Gemini API keys. */
 export const AI_MODEL = "gemini-3.6-flash";
 
 export const AI_DEFAULT_TEMPERATURE = 0.7;
@@ -15,12 +15,12 @@ export const AI_TEMPERATURE: Partial<Record<AiTool, number>> = {
 
 /**
  * Gemini 3.x counts thinking tokens against this budget.
- * Keep these high enough so visible answers are not cut mid-sentence.
+ * Keep high enough so answers are not cut mid-sentence.
  */
 export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 900;
 
 export const AI_MAX_OUTPUT_TOKENS: Partial<Record<AiTool, number>> = {
-  "listing-optimizer": 1800,
+  "listing-optimizer": 2500,
   "house-rules-generator": 1100,
   "welcome-message-generator": 1000,
   "review-response-generator": 900,

@@ -1,59 +1,40 @@
-# Webrya Ship Pack (safe upgrades)
+# Webrya update pack (Aug 2026)
 
-This archive is based on your Launchpad source with **minimal, non-breaking** production polish.
+## Included fixes
 
-## What changed
+1. **Public AI tools feedback** → saves to Supabase `ai_feedback` (Yes / Needs work).
+2. **Guest Reply prompts** → must use host policy when relevant; property context when provided.
+3. **Sample** for guest-reply aligned to parking Q&A.
+4. **Faster AI**: `gemini-2.5-flash`, lower max tokens, `thinkingBudget: 0`.
+5. **Portal → AI Tools (login only)**  
+   - Select a saved property  
+   - Generate with property context (parking, check-in, access, notes…)  
+   - Wi-Fi **password is never** sent to the model  
+   - Public `/ai-tools/*` remain without property data
 
-1. **`src/lib/ai/provider.server.ts`**
-   - Removed duplicate/broken second `getAIModel` (missing import, dead AI SDK path).
-   - Single stub remains; real generation stays in `engine.server.ts`.
-
-2. **`src/routes/products.$slug.tsx`**
-   - Removed fake “Checkout opened (demo)” success.
-   - Honest “Coming soon” messaging for payments.
-
-3. **`src/routes/ai-tools.$slug.tsx`**
-   - **Try sample** loads the tool placeholder (faster first success).
-   - **Was this useful?** Yes / Needs work after a result (for early feedback).
-   - Softened “sign in to save” copy (save not fully built).
-
-4. **Removed** `index-backup.tsx` (unused backup).
-
-5. **`package.json`** name set to `webrya`.
-
-## What was intentionally NOT changed
-
-- Auth / login / signup
-- `portal.tsx` properties CRUD & account profile
-- Supabase client
-- Gemini `engine.server.ts` + prompts
-- Vite / `@lovable.dev/vite-tanstack-config` (required for Cloudflare)
-- Database schema
-
-## Deploy checklist
+## Deploy
 
 ```bash
-# env (local / Cloudflare)
-VITE_SUPABASE_URL=...
-VITE_SUPABASE_ANON_KEY=...
-GEMINI_API_KEY=...
-
-bun install   # or npm install
+bun install
 bun run build
-# deploy as you already do (nitro / wrangler)
+git add -A
+git commit -m "Workspace AI with property context; feedback save; faster Gemini"
+git push
 ```
 
-## Startup focus
+Env unchanged: VITE_SUPABASE_*, GEMINI_API_KEY.
 
-- Drive hosts to **Try sample → Generate → feedback**
-- Collect real quotes before heavy Stripe / portal depth
+If gemini-2.5-flash fails on your key, set AI_MODEL in src/lib/ai/config.ts to gemini-2.0-flash.
 
-## Brand (included in this pack)
+## Free tool limit (public /ai-tools only)
 
-6. **`src/components/site/Logo.tsx`**
-   - Professional monogram mark in rounded square
-   - Uses primary color on default tone
+- Max **3** successful generations per browser without login (`localStorage`).
+- After the 3rd (or on further clicks), a dialog asks to **Sign in / Create account**.
+- Logged-in users: unlimited on public free tools.
+- Portal workspace tools: not affected by this counter (already requires login).
 
-7. **`src/styles.css`**
-   - Primary/accent/ring shifted to deep forest-teal
-   - Backgrounds and surfaces unchanged
+## Listing Optimizer + URLs
+
+- `src/lib/ai/fetch-listing.server.ts` fetches public listing HTML server-side when input is a URL.
+- If the site blocks bots (common on Booking/Airbnb), the UI result starts with a warning and asks for pasted text.
+- Model restored to `gemini-3.6-flash` with higher maxOutputTokens and `thinkingLevel: "low"`.
