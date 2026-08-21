@@ -1,7 +1,7 @@
 import type { AiTool } from "./types";
 
 /** Faster model for host tools (public + workspace). */
-export const AI_MODEL = "gemini-2.5-flash";
+export const AI_MODEL = "gemini-3.6-flash";
 
 export const AI_DEFAULT_TEMPERATURE = 0.7;
 

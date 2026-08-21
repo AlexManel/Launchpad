@@ -56,9 +56,9 @@ export async function generateAI(
         // keeps a bit of reasoning (Gemini 3 Flash can't fully disable it)
         // while leaving far more room for the actual response.
         // Minimize thinking latency on Flash models
-        thinkingConfig: {
-          thinkingBudget: 0,
-        },
+       thinkingConfig: {
+  thinkingLevel: "low",
+},
       },
     }),
   });
