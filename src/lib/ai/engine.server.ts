@@ -13,9 +13,19 @@ export async function generateAI(
     throw new Error("GEMINI_API_KEY is not configured.");
   }
 
+  let resolvedInput = request.input;
+  let fetchWarning: string | undefined;
+
+  if (request.tool === "listing-optimizer") {
+    const { resolveListingInput } = await import("./fetch-listing.server");
+    const resolved = await resolveListingInput(request.input);
+    resolvedInput = resolved.text;
+    fetchWarning = resolved.warning;
+  }
+
   const userPrompt = buildUserPrompt(
     request.tool,
-    request.input,
+    resolvedInput,
     request.extra,
     request.propertyContext
   );
@@ -49,8 +59,7 @@ export async function generateAI(
       generationConfig: {
         temperature: getTemperature(request.tool),
         maxOutputTokens: getMaxOutputTokens(request.tool),
-        // Gemini 3.x "thinks" before answering; those tokens count against
-        // maxOutputTokens. "low" leaves room for the full visible reply.
+        // Gemini 3.x thinks before answering; those tokens count against budget.
         thinkingConfig: {
           thinkingLevel: "low",
         },
@@ -104,6 +113,6 @@ export async function generateAI(
   }
 
   return {
-    text,
+    text: fetchWarning ? `${fetchWarning}\n\n---\n\n${text}` : text,
   };
 }
