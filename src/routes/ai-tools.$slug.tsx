@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -13,6 +13,14 @@ import {
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +28,7 @@ import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiTool } from "@/lib/ai/types";
+import { supabase } from "@/lib/supabase";
 
 const iconMap = {
   star: Star,
@@ -65,6 +74,38 @@ function ToolPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  const [freeUses, setFreeUses] = useState(0);
+  const [limitOpen, setLimitOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const FREE_LIMIT = 3;
+  const STORAGE_KEY = "webrya_free_ai_uses";
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const n = raw ? Number.parseInt(raw, 10) : 0;
+      setFreeUses(Number.isFinite(n) && n > 0 ? n : 0);
+    } catch {
+      setFreeUses(0);
+    }
+
+    let mounted = true;
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      if (mounted) setIsLoggedIn(!!session);
+    });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_e, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const remainingFree = Math.max(0, FREE_LIMIT - freeUses);
 
   const loadSample = () => {
     setInput(tool.placeholder);
@@ -75,11 +116,46 @@ function ToolPage() {
     toast.message("Sample loaded — press Generate when ready.");
   };
 
+  const saveFeedback = async (rating: "up" | "down") => {
+    setFeedback(rating);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { error } = await supabase.from("ai_feedback").insert({
+        tool: slug,
+        rating,
+        input_preview: input.trim().slice(0, 500) || null,
+        output_preview: output.trim().slice(0, 500) || null,
+        user_id: user?.id ?? null,
+      });
+
+      if (error) throw error;
+
+      toast.success(
+        rating === "up"
+          ? "Thanks — that helps us improve Webrya."
+          : "Thanks — we will keep improving the tools."
+      );
+    } catch {
+      toast.error("Could not save feedback. Please try again.");
+      setFeedback(null);
+    }
+  };
+
   const generate = async () => {
     if (!input.trim()) {
       toast.error("Add some input first so the tool has something to work with.");
       return;
     }
+
+    // Free tools: max 3 uses without an account (tracked in this browser)
+    if (!isLoggedIn && freeUses >= FREE_LIMIT) {
+      setLimitOpen(true);
+      return;
+    }
+
     setLoading(true);
     setOutput("");
     setFeedback(null);
@@ -93,6 +169,20 @@ function ToolPage() {
         },
       });
       setOutput(res.text);
+
+      if (!isLoggedIn) {
+        const next = freeUses + 1;
+        setFreeUses(next);
+        try {
+          localStorage.setItem(STORAGE_KEY, String(next));
+        } catch {
+          /* ignore quota / private mode */
+        }
+        if (next >= FREE_LIMIT) {
+          // Soft prompt after the last free generation
+          setTimeout(() => setLimitOpen(true), 600);
+        }
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not generate a response.");
     } finally {
@@ -166,7 +256,11 @@ function ToolPage() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Free to use. No account required for a preview.
+                {isLoggedIn
+                  ? "Signed in — unlimited generations on free tools."
+                  : remainingFree > 0
+                    ? `Free preview: ${remainingFree} of ${FREE_LIMIT} left in this browser. Sign in for unlimited use.`
+                    : "Free limit reached. Create a free account to continue."}
               </p>
             </div>
           </div>
@@ -201,10 +295,7 @@ function ToolPage() {
                   type="button"
                   variant={feedback === "up" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => {
-                    setFeedback("up");
-                    toast.success("Thanks — that helps us improve Webrya.");
-                  }}
+                  onClick={() => void saveFeedback("up")}
                 >
                   Yes
                 </Button>
@@ -212,10 +303,7 @@ function ToolPage() {
                   type="button"
                   variant={feedback === "down" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => {
-                    setFeedback("down");
-                    toast.message("Thanks — we will keep improving the tools.");
-                  }}
+                  onClick={() => void saveFeedback("down")}
                 >
                   Needs work
                 </Button>
@@ -241,6 +329,33 @@ function ToolPage() {
           </div>
         </div>
       </Section>
+
+      <Dialog open={limitOpen} onOpenChange={setLimitOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Free limit reached</DialogTitle>
+            <DialogDescription className="text-left leading-relaxed">
+              You have used your {FREE_LIMIT} free AI generations in this browser.
+              Create a free Webrya account to keep generating guest replies, review
+              responses and more — and unlock property-aware tools in your Workspace.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex-col gap-2 sm:flex-col">
+            <Button asChild className="w-full">
+              <Link to="/login">Create free account / Sign in</Link>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => setLimitOpen(false)}
+            >
+              Not now
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </>
   );
 }

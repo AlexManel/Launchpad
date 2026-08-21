@@ -31,9 +31,10 @@ export const tools: Tool[] = [
       "Turn a guest message into a warm, clear reply in seconds — early check-in, late checkout, extra guests, refunds and everything in between.",
     icon: "message",
     inputLabel: "Paste the guest message",
-    placeholder: "Hi! Would it be possible to check in around 11am instead of 3pm?",
+    placeholder: "Hi! Is there parking at the apartment?",
     secondaryLabel: "Your answer / policy",
-    secondaryPlaceholder: "Early check-in possible from 1pm for €25",
+    secondaryPlaceholder:
+      "Street parking is free on our road. Spots are usually available after 18:00. No private garage.",
   },
   {
     slug: "listing-optimizer",

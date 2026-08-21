@@ -16,6 +16,7 @@ export type AiGenerationRequest = {
   tool: AiTool;
   input: string;
   extra?: string | undefined;
+  propertyContext?: string | undefined;
 };
 
 export type AiGenerationResult = {

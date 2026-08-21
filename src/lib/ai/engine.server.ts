@@ -16,7 +16,8 @@ export async function generateAI(
   const userPrompt = buildUserPrompt(
     request.tool,
     request.input,
-    request.extra
+    request.extra,
+    request.propertyContext
   );
 
   const systemPrompt = getSystemPrompt(request.tool);
@@ -54,8 +55,9 @@ export async function generateAI(
         // reasoning and cut the visible answer off mid-sentence. "low"
         // keeps a bit of reasoning (Gemini 3 Flash can't fully disable it)
         // while leaving far more room for the actual response.
+        // Minimize thinking latency on Flash models
         thinkingConfig: {
-          thinkingLevel: "low",
+          thinkingBudget: 0,
         },
       },
     }),

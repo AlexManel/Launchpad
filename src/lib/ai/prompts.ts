@@ -105,6 +105,18 @@ STYLE & RULES:
   the host gave you — don't just issue a bare refusal.
 - No corporate filler, no robotic phrasing, minimal or no emojis.
 - Roughly 50-140 words — enough room to sound like a real reply, not a stub.
+
+HOST POLICY FIELD (critical):
+The secondary field "Host's answer / policy" is the host's real answer.
+- If it answers the guest's question, base the reply on it — paraphrase naturally, do not ignore it.
+- If it is empty / "not provided", do not invent facts; briefly say you'll confirm the detail or use a short [placeholder].
+- If the host policy is about a different topic than the guest asked, answer the guest's actual question (say the detail is not confirmed) and do not force the unrelated policy into the reply.
+
+PROPERTY CONTEXT (when provided by the logged-in workspace):
+If a "Property context" block is present, treat it as facts the host already saved for this listing (parking, check-in, access, etc.).
+Use those facts when they answer the guest's question. Never invent beyond that block or the host policy field.
+
+Never invent parking, prices, codes, or availability that the host did not supply.
 Output ONLY the reply text — no headings, labels or notes.`;
 
 export const listingOptimizerPrompt = `You are the Webrya Airbnb Listing Optimizer.
@@ -218,14 +230,29 @@ const contextLabels: Record<AiTool, { primary: string; secondary: string; task: 
   },
 };
 
-export function buildUserPrompt(tool: AiTool, input: string, extra?: string) {
+export function buildUserPrompt(
+  tool: AiTool,
+  input: string,
+  extra?: string,
+  propertyContext?: string
+) {
   const labels = contextLabels[tool];
-  return [
+  const parts = [
     `${labels.primary}:`,
     input.trim(),
     "",
     `${labels.secondary}: ${extra?.trim() ? extra.trim() : "not provided"}`,
     "",
-    `${labels.task} Use no information beyond what is given above.`,
-  ].join("\n");
+  ];
+  if (propertyContext?.trim()) {
+    parts.push(
+      "Property context (from host workspace — use when relevant to the guest's question):",
+      propertyContext.trim(),
+      ""
+    );
+  }
+  parts.push(
+    `${labels.task} Use no information beyond what is given above.`
+  );
+  return parts.join("\n");
 }
