@@ -49,16 +49,11 @@ export async function generateAI(
       generationConfig: {
         temperature: getTemperature(request.tool),
         maxOutputTokens: getMaxOutputTokens(request.tool),
-        // Gemini 3.x models "think" before answering, and those invisible
-        // reasoning tokens are counted against maxOutputTokens by default.
-        // Without this, the model can burn most of the budget on hidden
-        // reasoning and cut the visible answer off mid-sentence. "low"
-        // keeps a bit of reasoning (Gemini 3 Flash can't fully disable it)
-        // while leaving far more room for the actual response.
-        // Minimize thinking latency on Flash models
-       thinkingConfig: {
-  thinkingLevel: "low",
-},
+        // Gemini 3.x "thinks" before answering; those tokens count against
+        // maxOutputTokens. "low" leaves room for the full visible reply.
+        thinkingConfig: {
+          thinkingLevel: "low",
+        },
       },
     }),
   });
@@ -71,9 +66,7 @@ export async function generateAI(
       body: responseText,
     });
 
-    throw new Error(
-      `Gemini API request failed (${response.status}).`
-    );
+    throw new Error(`Gemini API request failed (${response.status}).`);
   }
 
   let data: {
@@ -104,9 +97,6 @@ export async function generateAI(
     throw new Error("The AI returned an empty response.");
   }
 
-  // If Gemini stopped because it hit the token ceiling rather than
-  // finishing naturally, log it — this is the exact failure mode that
-  // used to silently clip the Listing Optimizer's report.
   if (data.candidates?.[0]?.finishReason === "MAX_TOKENS") {
     console.warn(
       `Gemini output for "${request.tool}" was cut off at the token limit — consider raising AI_MAX_OUTPUT_TOKENS for this tool.`

@@ -1,6 +1,6 @@
 import type { AiTool } from "./types";
 
-/** Faster model for host tools (public + workspace). */
+/** Model that works with your API key. */
 export const AI_MODEL = "gemini-3.6-flash";
 
 export const AI_DEFAULT_TEMPERATURE = 0.7;
@@ -13,14 +13,18 @@ export const AI_TEMPERATURE: Partial<Record<AiTool, number>> = {
   "house-rules-generator": 0.55,
 };
 
-export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 500;
+/**
+ * Gemini 3.x counts thinking tokens against this budget.
+ * Keep these high enough so visible answers are not cut mid-sentence.
+ */
+export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 900;
 
 export const AI_MAX_OUTPUT_TOKENS: Partial<Record<AiTool, number>> = {
-  "listing-optimizer": 1200,
-  "house-rules-generator": 700,
-  "welcome-message-generator": 600,
-  "review-response-generator": 450,
-  "guest-reply-generator": 400,
+  "listing-optimizer": 1800,
+  "house-rules-generator": 1100,
+  "welcome-message-generator": 1000,
+  "review-response-generator": 900,
+  "guest-reply-generator": 900,
 };
 
 export function getTemperature(tool: AiTool): number {
