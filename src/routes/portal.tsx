@@ -9,6 +9,8 @@ import {
   User,
   LogOut,
   ArrowLeft,
+  Download,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,7 @@ import { supabase, supabaseConfigured } from "@/lib/supabase";
 import { toast } from "sonner";
 import { products, tools } from "@/data/webrya";
 import { fulfillPurchase } from "@/lib/stripe.functions";
+import { downloadProductKit } from "@/lib/kits.functions";
 import {
   AccountPanel,
   PanelTitle,
@@ -56,6 +59,7 @@ function PortalPage() {
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState("");
   const [ownedSlugs, setOwnedSlugs] = useState<string[]>([]);
+  const [downloading, setDownloading] = useState<string | null>(null);
 
   useEffect(() => {
     if (!supabaseConfigured) {
@@ -156,6 +160,33 @@ function PortalPage() {
   const signOut = async () => {
     await supabase.auth.signOut();
     void navigate({ to: "/login" });
+  };
+
+  const downloadKit = async (slug: string) => {
+    setDownloading(slug);
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) {
+        toast.error("Sign in again to download.");
+        return;
+      }
+      const kit = await downloadProductKit({ data: { slug, accessToken: token } });
+      const blob = new Blob([kit.markdown], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = kit.filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast.success("Kit downloaded.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not download kit.");
+    } finally {
+      setDownloading(null);
+    }
   };
 
   if (!ready) {
@@ -280,6 +311,19 @@ function PortalPage() {
                         <h3 className="mt-2 text-lg font-semibold">{p.name}</h3>
                         <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
                         <p className="mt-4 text-sm">{p.format}</p>
+                        <Button
+                          className="mt-5 w-full"
+                          variant="outline"
+                          disabled={downloading === p.slug}
+                          onClick={() => void downloadKit(p.slug)}
+                        >
+                          {downloading === p.slug ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            <Download className="size-4" />
+                          )}
+                          {downloading === p.slug ? "Preparing…" : "Download kit (.md)"}
+                        </Button>
                       </div>
                     ))}
                 </div>
