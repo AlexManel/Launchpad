@@ -839,7 +839,7 @@ header a[href="/"] {
 .webrya-hero h1 {
   max-width: 900px;
 
-  color: white;
+  /* color controlled by Tailwind on the element */
 
   font-size: clamp(
     3.25rem,
