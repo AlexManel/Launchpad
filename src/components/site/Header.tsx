@@ -21,11 +21,26 @@ export function Header() {
   const isHome = pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      if (!isHome) {
+        setScrolled(window.scrollY > 8);
+        return;
+      }
+      const hero = document.querySelector(".webrya-hero");
+      if (!hero) {
+        setScrolled(window.scrollY > 40);
+        return;
+      }
+      setScrolled(hero.getBoundingClientRect().bottom <= 80);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [isHome]);
 
   useEffect(() => {
     if (!supabaseConfigured) return;
@@ -55,7 +70,8 @@ export function Header() {
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         heroTone
-          ? "border-b border-white/10 bg-transparent"
+          ? "border-b border-white/10 bg-black/20 backdrop-blur-[6px]"
+          : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
           : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
       ].join(" ")}
     >
