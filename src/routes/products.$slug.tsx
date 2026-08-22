@@ -59,6 +59,10 @@ function ProductPage() {
         const { data } = await supabase.auth.getSession();
         accessToken = data.session?.access_token;
       }
+      if (!accessToken) {
+        window.location.href = `/login?next=/products/${product.slug}`;
+        return;
+      }
       const session = await createCheckoutSession({
         data: { slug: product.slug, accessToken },
       });

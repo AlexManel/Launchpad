@@ -32,14 +32,14 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     const body = new URLSearchParams();
     body.set("mode", "payment");
-    body.set("success_url", `${origin}/portal?purchase=success&product=${product.slug}`);
+    body.set(
+      "success_url",
+      `${origin}/portal?purchase=success&session_id={CHECKOUT_SESSION_ID}`,
+    );
     body.set("cancel_url", `${origin}/products/${product.slug}`);
     body.set("allow_promotion_codes", "true");
     body.set("client_reference_id", product.slug);
-    if (data.accessToken) {
-      // Store so a later webhook can attach the purchase to the user
-      body.set("metadata[product_slug]", product.slug);
-    }
+    body.set("metadata[product_slug]", product.slug);
 
     if (priceId) {
       body.set("line_items[0][price]", priceId);
@@ -69,4 +69,74 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       throw new Error(json.error?.message || "Could not start checkout.");
     }
     return { url: json.url };
+  });
+
+export const fulfillPurchase = createServerFn({ method: "POST" })
+  .validator((input: unknown) =>
+    z.object({ sessionId: z.string().min(1), accessToken: z.string().min(1) }).parse(input),
+  )
+  .handler(async ({ data }) => {
+    const secret = process.env.STRIPE_SECRET_KEY?.trim();
+    if (!secret) throw new Error("Stripe is not connected yet.");
+
+    const sessionRes = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(data.sessionId)}`,
+      { headers: { Authorization: `Bearer ${secret}` } },
+    );
+    const session = (await sessionRes.json()) as {
+      id?: string;
+      payment_status?: string;
+      amount_total?: number;
+      currency?: string;
+      client_reference_id?: string;
+      metadata?: { product_slug?: string };
+      error?: { message?: string };
+    };
+    if (!sessionRes.ok) {
+      throw new Error(session.error?.message || "Could not verify payment.");
+    }
+    if (session.payment_status !== "paid") {
+      throw new Error("Payment is not complete yet.");
+    }
+
+    const slug = session.metadata?.product_slug || session.client_reference_id;
+    if (!slug) throw new Error("Missing product on this payment.");
+
+    const { resolveAuthedUser } = await import("@/lib/ai/quota.server");
+    const user = await resolveAuthedUser(data.accessToken);
+    if (!user) throw new Error("Sign in to unlock this purchase in your Workspace.");
+
+    const url = (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "").replace(
+      /\/$/,
+      "",
+    );
+    const anon = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+    if (!url || !anon) throw new Error("Database is not connected.");
+
+    const insert = await fetch(`${url}/rest/v1/purchases?on_conflict=user_id,product_slug`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${data.accessToken}`,
+        apikey: anon,
+        "Content-Type": "application/json",
+        Prefer: "return=representation,resolution=merge-duplicates",
+      },
+      body: JSON.stringify({
+        user_id: user.id,
+        product_slug: slug,
+        stripe_session_id: session.id,
+        amount_cents: session.amount_total ?? null,
+        currency: session.currency ?? "usd",
+        status: "paid",
+      }),
+    });
+
+    if (!insert.ok) {
+      const errText = await insert.text();
+      if (!errText.includes("duplicate") && insert.status !== 409) {
+        throw new Error("Payment succeeded, but unlocking the product failed. Contact support.");
+      }
+    }
+
+    return { slug, unlocked: true };
   });

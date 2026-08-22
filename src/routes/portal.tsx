@@ -14,7 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/site/Logo";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
-import { tools } from "@/data/webrya";
+import { toast } from "sonner";
+import { products, tools } from "@/data/webrya";
+import { fulfillPurchase } from "@/lib/stripe.functions";
 import {
   AccountPanel,
   PanelTitle,
@@ -24,6 +26,10 @@ import {
 import type { Profile, Property, SectionId } from "@/lib/portal/types";
 
 export const Route = createFileRoute("/portal")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    purchase: typeof search.purchase === "string" ? search.purchase : undefined,
+    session_id: typeof search.session_id === "string" ? search.session_id : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Webrya Workspace" },
@@ -38,6 +44,7 @@ export const Route = createFileRoute("/portal")({
 
 function PortalPage() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const [section, setSection] = useState<SectionId>("overview");
   const [name, setName] = useState("Host");
   const [email, setEmail] = useState("");
@@ -48,6 +55,7 @@ function PortalPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState("");
+  const [ownedSlugs, setOwnedSlugs] = useState<string[]>([]);
 
   useEffect(() => {
     if (!supabaseConfigured) {
@@ -100,6 +108,35 @@ function PortalPage() {
       if (profileErr) setProfileError(profileErr.message);
       else setProfile((profileData as Profile | null) ?? null);
       setProfileLoading(false);
+
+      const { data: purchaseRows } = await supabase
+        .from("purchases")
+        .select("product_slug")
+        .eq("user_id", user.id)
+        .eq("status", "paid");
+      if (mounted) {
+        setOwnedSlugs(
+          (purchaseRows ?? []).map((row: { product_slug: string }) => row.product_slug),
+        );
+      }
+
+      if (search.session_id && session.access_token) {
+        try {
+          const result = await fulfillPurchase({
+            data: { sessionId: search.session_id, accessToken: session.access_token },
+          });
+          if (mounted) {
+            setOwnedSlugs((prev) =>
+              prev.includes(result.slug) ? prev : [...prev, result.slug],
+            );
+            setSection("products");
+            toast.success("Purchase unlocked in your Workspace.");
+            void navigate({ to: "/portal", search: {}, replace: true });
+          }
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : "Could not unlock purchase.");
+        }
+      }
     };
 
     void load();
@@ -114,7 +151,7 @@ function PortalPage() {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, search.session_id]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -217,11 +254,36 @@ function PortalPage() {
             <div>
               <PanelTitle
                 title="My Products"
-                sub="Downloads for products you own will appear here."
+                sub="One-time purchases unlocked for your account."
               />
-              <div className="mt-6 rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-                No purchased products yet.
-              </div>
+              {ownedSlugs.length === 0 ? (
+                <div className="mt-6 rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
+                  No purchased products yet.
+                  <div className="mt-4">
+                    <Button asChild variant="outline" size="sm">
+                      <Link to="/products">Browse products</Link>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {products
+                    .filter((p) => ownedSlugs.includes(p.slug))
+                    .map((p) => (
+                      <div
+                        key={p.slug}
+                        className="rounded-xl border border-border bg-card p-6"
+                      >
+                        <p className="text-xs font-semibold uppercase tracking-wider text-accent">
+                          Owned
+                        </p>
+                        <h3 className="mt-2 text-lg font-semibold">{p.name}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
+                        <p className="mt-4 text-sm">{p.format}</p>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           )}
 
