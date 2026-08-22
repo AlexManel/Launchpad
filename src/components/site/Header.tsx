@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 const nav = [
   { to: "/ai-tools", label: "AI Tools" },
@@ -15,36 +16,51 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
+  const [signedIn, setSignedIn] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
-  // White logo/nav only on the dark homepage hero (before scroll)
-  const lightOnDark = isHome && !scrolled;
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
-
     window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    let mounted = true;
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      if (mounted) setSignedIn(!!session);
+    });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSignedIn(!!session);
+    });
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const heroTone = isHome && !scrolled;
+  const accountTo = signedIn ? "/portal" : "/login";
+  const accountLabel = signedIn ? "Workspace" : "Log in";
+  const ctaTo = signedIn ? "/portal" : "/ai-tools";
+  const ctaLabel = signedIn ? "Open workspace" : "Get Started";
 
   return (
     <header
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        
-                lightOnDark
-          ? "border-b border-white/10 bg-black/25 backdrop-blur-sm"
+        heroTone
+          ? "border-b border-white/10 bg-transparent"
           : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
       ].join(" ")}
     >
       <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
-        <Logo tone={lightOnDark ? "hero" : "default"} />
+        <Logo tone={heroTone ? "hero" : "default"} />
 
         <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
@@ -53,7 +69,7 @@ export function Header() {
               to={item.to}
               className={[
                 "text-sm transition-colors",
-                lightOnDark
+                heroTone
                   ? "text-white/75 hover:text-white"
                   : "text-muted-foreground hover:text-foreground",
               ].join(" ")}
@@ -69,32 +85,27 @@ export function Header() {
             variant="ghost"
             size="sm"
             className={
-              lightOnDark
+              heroTone
                 ? "text-white hover:bg-white/10 hover:text-white"
                 : "text-foreground hover:bg-secondary"
             }
           >
-            <Link to="/login">Log in</Link>
+            <Link to={accountTo}>{accountLabel}</Link>
           </Button>
 
-          <Button
-            asChild
-            size="sm"
-            className="bg-teal-700 text-white hover:bg-teal-600"
-          >
-            <Link to="/ai-tools">Get Started</Link>
+          <Button asChild size="sm">
+            <Link to={ctaTo}>{ctaLabel}</Link>
           </Button>
         </div>
 
         <button
           className={[
-            "grid size-9 place-items-center rounded-md border lg:hidden",
-            lightOnDark
-              ? "border-white/25 text-white"
-              : "border-border text-foreground",
+            "grid size-11 place-items-center rounded-md border lg:hidden",
+            heroTone ? "border-white/25 text-white" : "border-border text-foreground",
           ].join(" ")}
           aria-label="Toggle menu"
           onClick={() => setOpen((value) => !value)}
+          type="button"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -116,14 +127,13 @@ export function Header() {
 
             <div className="mt-4 flex gap-2 pb-2">
               <Button asChild variant="outline" size="sm" className="flex-1">
-                <Link to="/login" onClick={() => setOpen(false)}>
-                  Log in
+                <Link to={accountTo} onClick={() => setOpen(false)}>
+                  {accountLabel}
                 </Link>
               </Button>
-
               <Button asChild size="sm" className="flex-1">
-                <Link to="/ai-tools" onClick={() => setOpen(false)}>
-                  Get Started
+                <Link to={ctaTo} onClick={() => setOpen(false)}>
+                  {ctaLabel}
                 </Link>
               </Button>
             </div>

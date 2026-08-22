@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/site/Logo";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -16,13 +16,10 @@ export const Route = createFileRoute("/login")({
         content:
           "Sign in to the Webrya Workspace to access your AI tools, purchased digital products and saved content.",
       },
-      { property: "og:title", content: "Login — Webrya Workspace" },
       {
         property: "og:description",
         content: "Access your Webrya tools, products and resources.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: LoginPage,
@@ -30,17 +27,16 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if (!supabaseConfigured) return;
     let mounted = true;
 
     const checkSession = async () => {
@@ -62,6 +58,7 @@ function LoginPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabaseConfigured) return;
 
     setLoading(true);
     setError("");
@@ -126,6 +123,21 @@ function LoginPage() {
       setLoading(false);
     }
   };
+
+  if (!supabaseConfigured) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <div className="max-w-md text-center">
+          <Logo />
+          <h1 className="mt-8 text-2xl">Workspace login is not connected yet</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to connect your existing Webrya
+            database.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
