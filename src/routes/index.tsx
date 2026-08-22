@@ -80,7 +80,7 @@ function Home() {
     <>
       <section className="webrya-hero relative flex min-h-[88vh] items-end overflow-hidden">
         <video
-          className="absolute inset-0 z-0 h-full w-full object-cover"
+          className="webrya-hero-video absolute inset-0 z-0 h-full w-full object-cover"
           autoPlay
           muted
           loop
@@ -91,23 +91,23 @@ function Home() {
           <source src="/hero.mp4" type="video/mp4" />
         </video>
 
-        <div className="absolute inset-0 z-10 bg-black/30" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/55 via-black/10 to-transparent" />
+        <div className="absolute inset-0 z-10 bg-black/50" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/45 to-black/35" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/70 via-black/30 to-black/15" />
 
         <div className="relative z-20 mx-auto w-full max-w-[1240px] px-5 pb-20 pt-32 lg:px-8 lg:pb-28">
           <div className="max-w-4xl">
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
               Smart operations for modern hosts
             </p>
 
             <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] text-white sm:text-6xl lg:text-[5.5rem]">
-              Run your properties <span className="text-teal-300">smarter.</span>
+              Run your properties <span className="text-teal-200">smarter.</span>
               <br />
               Not harder.
             </h1>
 
-            <p className="mt-7 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">
+            <p className="mt-7 max-w-2xl text-base leading-7 text-white/85 sm:text-lg">
               AI-powered tools, operational resources and practical systems built for Airbnb
               hosts, co-hosts and property managers.
             </p>
