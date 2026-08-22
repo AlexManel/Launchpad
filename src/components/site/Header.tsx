@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,11 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isHome = pathname === "/";
+  // White logo/nav only on the dark homepage hero (before scroll)
+  const lightOnDark = isHome && !scrolled;
 
   useEffect(() => {
     const onScroll = () => {
@@ -32,13 +37,13 @@ export function Header() {
     <header
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl"
-          : "border-b border-white/10 bg-transparent",
+        lightOnDark
+          ? "border-b border-white/10 bg-transparent"
+          : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
       ].join(" ")}
     >
       <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
-        <Logo tone={scrolled ? "default" : "hero"} />
+        <Logo tone={lightOnDark ? "hero" : "default"} />
 
         <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
@@ -47,9 +52,9 @@ export function Header() {
               to={item.to}
               className={[
                 "text-sm transition-colors",
-                scrolled
-                  ? "text-muted-foreground hover:text-foreground"
-                  : "text-white/75 hover:text-white",
+                lightOnDark
+                  ? "text-white/75 hover:text-white"
+                  : "text-muted-foreground hover:text-foreground",
               ].join(" ")}
             >
               {item.label}
@@ -63,9 +68,9 @@ export function Header() {
             variant="ghost"
             size="sm"
             className={
-              scrolled
-                ? "text-foreground hover:bg-secondary"
-                : "text-white hover:bg-white/10 hover:text-white"
+              lightOnDark
+                ? "text-white hover:bg-white/10 hover:text-white"
+                : "text-foreground hover:bg-secondary"
             }
           >
             <Link to="/login">Log in</Link>
@@ -83,9 +88,9 @@ export function Header() {
         <button
           className={[
             "grid size-9 place-items-center rounded-md border lg:hidden",
-            scrolled
-              ? "border-border text-foreground"
-              : "border-white/25 text-white",
+            lightOnDark
+              ? "border-white/25 text-white"
+              : "border-border text-foreground",
           ].join(" ")}
           aria-label="Toggle menu"
           onClick={() => setOpen((value) => !value)}
