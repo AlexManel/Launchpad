@@ -21,4 +21,6 @@ export type AiGenerationRequest = {
 
 export type AiGenerationResult = {
   text: string;
+  unlimited?: boolean;
+  remaining?: number | null;
 };

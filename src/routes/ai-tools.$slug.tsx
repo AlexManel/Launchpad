@@ -74,6 +74,7 @@ function ToolPage() {
   const [freeUses, setFreeUses] = useState(0);
   const [limitOpen, setLimitOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | undefined>();
 
   const FREE_LIMIT = 3;
   const STORAGE_KEY = "webrya_free_ai_uses";
@@ -91,12 +92,16 @@ function ToolPage() {
 
     let mounted = true;
     void supabase.auth.getSession().then(({ data: { session } }) => {
-      if (mounted) setIsLoggedIn(!!session);
+      if (mounted) {
+        setIsLoggedIn(!!session);
+        setAccessToken(session?.access_token);
+      }
     });
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_e, session) => {
       setIsLoggedIn(!!session);
+      setAccessToken(session?.access_token);
     });
     return () => {
       mounted = false;
@@ -165,25 +170,27 @@ function ToolPage() {
           tool: slug as AiTool,
           input: input.trim(),
           ...(extra.trim() ? { extra: extra.trim() } : {}),
+          ...(accessToken ? { accessToken } : {}),
         },
       });
       setOutput(res.text);
 
-      if (!isLoggedIn) {
-        const next = freeUses + 1;
+      if (!res.unlimited && typeof res.remaining === "number") {
+        const next = FREE_LIMIT - res.remaining;
         setFreeUses(next);
         try {
           localStorage.setItem(STORAGE_KEY, String(next));
         } catch {
           /* ignore quota / private mode */
         }
-        if (next >= FREE_LIMIT) {
-          // Soft prompt after the last free generation
+        if (res.remaining <= 0) {
           setTimeout(() => setLimitOpen(true), 600);
         }
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not generate a response.");
+      const msg = error instanceof Error ? error.message : "Could not generate a response.";
+      if (msg.toLowerCase().includes("free limit")) setLimitOpen(true);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }

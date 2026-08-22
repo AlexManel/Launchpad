@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Check, Download, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Check, Download, ShieldCheck, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/Section";
 import { products } from "@/data/webrya";
+import { createCheckoutSession, getPaymentsStatus } from "@/lib/stripe.functions";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -37,6 +39,35 @@ function ProductPage() {
   const { slug } = Route.useParams();
   const product = products.find((p) => p.slug === slug)!;
   const [checkout, setCheckout] = useState(false);
+  const [stripeOn, setStripeOn] = useState(false);
+  const [paying, setPaying] = useState(false);
+
+  useEffect(() => {
+    void getPaymentsStatus().then((s) => setStripeOn(s.enabled)).catch(() => setStripeOn(false));
+  }, []);
+
+  const startCheckout = async () => {
+    if (!stripeOn) {
+      setCheckout(true);
+      toast.message("Payments are not connected yet — add your Stripe keys to go live.");
+      return;
+    }
+    setPaying(true);
+    try {
+      let accessToken: string | undefined;
+      if (supabaseConfigured) {
+        const { data } = await supabase.auth.getSession();
+        accessToken = data.session?.access_token;
+      }
+      const session = await createCheckoutSession({
+        data: { slug: product.slug, accessToken },
+      });
+      window.location.href = session.url;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not start checkout.");
+      setPaying(false);
+    }
+  };
 
   return (
     <>
@@ -96,12 +127,12 @@ function ProductPage() {
             </p>
             <p className="mt-5 text-sm text-muted-foreground">{product.format}</p>
 
-            {checkout ? (
+            {checkout && !stripeOn ? (
               <div className="mt-6 rounded-lg border border-dashed border-border bg-surface p-5 text-sm">
                 <p className="font-medium">Coming soon</p>
                 <p className="mt-2 leading-relaxed text-muted-foreground">
-                  One-time checkout is not connected yet. While we finish payments, use the free
-                  AI tools and Webrya Workspace — products will unlock here after purchase.
+                  One-time checkout is not connected yet. Create a Stripe account, add
+                  STRIPE_SECRET_KEY in Cloudflare, then products unlock here after purchase.
                 </p>
                 <Button asChild variant="outline" className="mt-4 w-full">
                   <Link to="/portal">Preview in Webrya Workspace</Link>
@@ -111,12 +142,11 @@ function ProductPage() {
               <Button
                 size="lg"
                 className="mt-6 w-full"
-                onClick={() => {
-                  setCheckout(true);
-                  toast.message("Payments are not connected yet — early access coming soon.");
-                }}
+                disabled={paying}
+                onClick={() => void startCheckout()}
               >
-                Get Access
+                {paying && <Loader2 className="size-4 animate-spin" />}
+                {paying ? "Redirecting to Stripe…" : "Get Access"}
               </Button>
             )}
 

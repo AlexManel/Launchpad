@@ -20,6 +20,8 @@ export const AiToolInput = z.object({
     .trim()
     .max(4000, "Property context is too long.")
     .optional(),
+  /** Supabase access token so the server can skip the anonymous free limit. */
+  accessToken: z.string().max(4000).optional(),
 });
 
 export type AiToolInput = z.infer<typeof AiToolInput>;

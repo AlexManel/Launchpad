@@ -38,6 +38,10 @@ export function WorkspaceAIPanel({ properties }: { properties: Property[] }) {
           ? buildPropertyContext(selected)
           : undefined;
 
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       const res = await generateToolOutput({
         data: {
           tool: tool.slug as AiTool,
@@ -46,6 +50,7 @@ export function WorkspaceAIPanel({ properties }: { properties: Property[] }) {
           ...(propertyContext
             ? { propertyContext }
             : {}),
+          ...(session?.access_token ? { accessToken: session.access_token } : {}),
         },
       });
       setOutput(res.text);
