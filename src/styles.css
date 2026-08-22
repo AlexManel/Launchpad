@@ -862,18 +862,7 @@ header a[href="/"] {
   max-width: 650px;
   font-size: clamp(1rem, 1.3vw, 1.25rem);
   line-height: 1.65;
-}
-
-  color:
-    oklch(0.96 0.004 90 / 0.78);
-
-  font-size: clamp(
-    1rem,
-    1.3vw,
-    1.25rem
-  );
-
-  line-height: 1.65;
+  color: oklch(0.96 0.004 90 / 0.78);
 }
 
 /* =========================================================
