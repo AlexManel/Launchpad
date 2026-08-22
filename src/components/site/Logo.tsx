@@ -9,16 +9,10 @@ export function Logo({
   const isInverse = tone === "inverse";
 
   const textClass = isHero
-    ? "text-white"
+    ? "text-white drop-shadow-sm"
     : isInverse
       ? "text-ink-foreground"
       : "text-foreground";
-
-  const markClass = isHero
-    ? "text-white"
-    : isInverse
-      ? "text-ink-foreground"
-      : "text-primary";
 
   return (
     <Link
@@ -26,16 +20,12 @@ export function Logo({
       className="group inline-flex items-center gap-2.5"
       aria-label="Webrya home"
     >
-      {/* Monogram mark — W in a soft square */}
+      {/* Solid teal mark — always readable on light or dark backgrounds */}
       <span
-        className={`relative grid size-8 place-items-center rounded-lg ${
-          isHero || isInverse
-            ? "bg-white/15 ring-1 ring-white/25"
-            : "bg-primary text-primary-foreground"
-        }`}
+        className="relative grid size-8 place-items-center rounded-lg bg-teal-700 text-white shadow-sm ring-1 ring-black/10"
         aria-hidden="true"
       >
-        <svg viewBox="0 0 32 32" className={`size-5 ${isHero || isInverse ? markClass : ""}`} fill="none">
+        <svg viewBox="0 0 32 32" className="size-5" fill="none">
           <path
             d="M6 8.5L10.2 23h2.35L16 12.2 19.45 23H21.8L26 8.5h-2.4l-2.55 10.4L18.2 8.5h-2.4l-2.85 10.4L10.4 8.5H6z"
             fill="currentColor"

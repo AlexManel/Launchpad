@@ -37,8 +37,9 @@ export function Header() {
     <header
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        lightOnDark
-          ? "border-b border-white/10 bg-transparent"
+        
+                lightOnDark
+          ? "border-b border-white/10 bg-black/25 backdrop-blur-sm"
           : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
       ].join(" ")}
     >
