@@ -1,18 +1,10 @@
 import type { AiGenerationRequest, AiGenerationResult } from "./types";
 import { buildUserPrompt, getSystemPrompt } from "./prompts";
-import { AI_MODEL, getMaxOutputTokens, getTemperature } from "./config";
-
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent`;
+import { getMaxOutputTokens, getTemperature } from "./config";
 
 export async function generateAI(
-  request: AiGenerationRequest
+  request: AiGenerationRequest,
 ): Promise<AiGenerationResult> {
-  const key = process.env["GEMINI_API_KEY"];
-
-  if (!key) {
-    throw new Error("GEMINI_API_KEY is not configured.");
-  }
-
   let resolvedInput = request.input;
   let fetchWarning: string | undefined;
 
@@ -27,92 +19,67 @@ export async function generateAI(
     request.tool,
     resolvedInput,
     request.extra,
-    request.propertyContext
+    request.propertyContext,
   );
-
   const systemPrompt = getSystemPrompt(request.tool);
+  const max_tokens = getMaxOutputTokens(request.tool);
+  const temperature = getTemperature(request.tool);
 
-  const response = await fetch(GEMINI_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": key,
-    },
-    body: JSON.stringify({
-      systemInstruction: {
-        parts: [
-          {
-            text: systemPrompt,
-          },
+  const xai = process.env.XAI_API_KEY;
+  const gemini = process.env.GEMINI_API_KEY;
+
+  let text = "";
+
+  if (xai) {
+    const res = await fetch("https://api.x.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${xai}`,
+      },
+      body: JSON.stringify({
+        model: "grok-4.5",
+        temperature,
+        max_tokens,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
         ],
-      },
-      contents: [
-        {
-          role: "user",
-          parts: [
-            {
-              text: userPrompt,
-            },
-          ],
-        },
-      ],
-      generationConfig: {
-        temperature: getTemperature(request.tool),
-        maxOutputTokens: getMaxOutputTokens(request.tool),
-        // Gemini 3.x thinks before answering; those tokens count against budget.
-        thinkingConfig: {
-          thinkingLevel: "low",
-        },
-      },
-    }),
-  });
-
-  const responseText = await response.text();
-
-  if (!response.ok) {
-    console.error("Gemini API error:", {
-      status: response.status,
-      body: responseText,
+      }),
     });
-
-    throw new Error(`Gemini API request failed (${response.status}).`);
+    if (!res.ok) throw new Error(`AI request failed (${res.status}).`);
+    const body = (await res.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    text = body.choices?.[0]?.message?.content?.trim() ?? "";
+  } else if (gemini) {
+    const geminiUrl =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
+    const res = await fetch(geminiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": gemini,
+      },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+        generationConfig: { temperature, maxOutputTokens: max_tokens },
+      }),
+    });
+    if (!res.ok) throw new Error(`AI request failed (${res.status}).`);
+    const data = (await res.json()) as {
+      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    };
+    text =
+      data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? "")
+        .join("")
+        .trim() ?? "";
+  } else {
+    throw new Error("AI is not available in this environment yet.");
   }
 
-  let data: {
-    candidates?: Array<{
-      content?: {
-        parts?: Array<{
-          text?: string;
-        }>;
-      };
-      finishReason?: string;
-    }>;
-  };
-
-  try {
-    data = JSON.parse(responseText);
-  } catch {
-    throw new Error("Gemini returned an invalid JSON response.");
-  }
-
-  const text =
-    data.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text ?? "")
-      .join("")
-      .trim() ?? "";
-
-  if (!text) {
-    console.error("Gemini returned no text:", data);
-    throw new Error("The AI returned an empty response.");
-  }
-
-  if (data.candidates?.[0]?.finishReason === "MAX_TOKENS") {
-    console.warn(
-      `Gemini output for "${request.tool}" was cut off at the token limit — consider raising AI_MAX_OUTPUT_TOKENS for this tool.`
-    );
-  }
-
-  return {
-    text: fetchWarning ? `${fetchWarning}\n\n---\n\n${text}` : text,
-  };
+  if (!text) throw new Error("The AI returned an empty response.");
+  return { text: fetchWarning ? `${fetchWarning}\n\n---\n\n${text}` : text };
 }

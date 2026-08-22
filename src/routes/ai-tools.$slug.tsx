@@ -28,7 +28,7 @@ import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiTool } from "@/lib/ai/types";
-import { supabase } from "@/lib/supabase";
+import { supabase, supabaseConfigured } from "@/lib/supabase";
 
 const iconMap = {
   star: Star,
@@ -55,9 +55,6 @@ export const Route = createFileRoute("/ai-tools/$slug")({
         { title: `${loaderData.name} — Free AI Tool | Webrya` },
         { name: "description", content: loaderData.short },
         { property: "og:title", content: `${loaderData.name} — Webrya` },
-        { property: "og:description", content: loaderData.short },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
@@ -89,6 +86,8 @@ function ToolPage() {
     } catch {
       setFreeUses(0);
     }
+
+    if (!supabaseConfigured) return;
 
     let mounted = true;
     void supabase.auth.getSession().then(({ data: { session } }) => {
@@ -192,7 +191,7 @@ function ToolPage() {
 
   return (
     <>
-      <div className="border-b border-border bg-surface">
+      <div className="border-b border-border bg-surface pt-[72px]">
         <div className="mx-auto max-w-6xl px-5 py-12 lg:px-8 lg:py-16">
           <Link
             to="/ai-tools"
