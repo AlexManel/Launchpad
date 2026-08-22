@@ -32,7 +32,25 @@ export const Route = createFileRoute("/")({
 
 const heroImage = "/hero-interior.jpg";
 const terraceImage = "/terrace.jpg";
-const workspaceImage = "/workspace-still.jpg";
+const workspaceImage = "/desk.jpg";
+const villaImage = "/villa.jpg";
+const bedroomImage = "/bedroom.jpg";
+const kitchenImage = "/kitchen.jpg";
+const welcomeImage = "/welcome.jpg";
+
+const mosaic = [
+  { src: villaImage, alt: "Mediterranean villa at golden hour", label: "The property" },
+  { src: bedroomImage, alt: "Linen bedroom in a short-term rental", label: "Guest rooms" },
+  { src: kitchenImage, alt: "Sunlit rental kitchen and dining space", label: "Living spaces" },
+  { src: terraceImage, alt: "Terrace breakfast overlooking olive trees", label: "The stay" },
+];
+
+const productImages: Record<string, string> = {
+  "aircover-suite": welcomeImage,
+  "review-protection-suite": workspaceImage,
+  "guest-communication-suite": bedroomImage,
+  "ultimate-host-bundle": villaImage,
+};
 
 const toolIcons = [MessageCircle, MessageCircle, BarChart3, FileText, Mail];
 
@@ -177,16 +195,45 @@ function Home() {
         </div>
       </Section>
 
+      <section className="px-5 pb-4 lg:px-8">
+        <div className="mx-auto grid max-w-[1240px] grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+          {mosaic.map((shot) => (
+            <figure
+              key={shot.src}
+              className="group relative aspect-[4/5] overflow-hidden rounded-2xl sm:aspect-[4/3]"
+            >
+              <img
+                src={shot.src}
+                alt={shot.alt}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-4 pt-12 text-sm text-white">
+                {shot.label}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <Section className="py-20 lg:py-28">
-        <div className="max-w-3xl">
-          <p className="eyebrow">AI TOOLS</p>
-          <h2 className="mt-4 text-3xl tracking-tight sm:text-4xl lg:text-5xl">
-            Start with the tools you’ll use today.
-          </h2>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-            Practical AI tools designed around the everyday work of hosting. Less repetitive
-            writing. Less time spent on routine tasks.
-          </p>
+        <div className="grid items-end gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="max-w-3xl">
+            <p className="eyebrow">AI TOOLS</p>
+            <h2 className="mt-4 text-3xl tracking-tight sm:text-4xl lg:text-5xl">
+              Start with the tools you’ll use today.
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+              Practical AI tools designed around the everyday work of hosting. Less repetitive
+              writing. Less time spent on routine tasks.
+            </p>
+          </div>
+          <div className="overflow-hidden rounded-2xl">
+            <img
+              src={welcomeImage}
+              alt="Guest keys and welcome still life"
+              className="aspect-[4/3] h-full w-full object-cover"
+            />
+          </div>
         </div>
 
         <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
@@ -223,8 +270,8 @@ function Home() {
         <div className="mx-auto grid max-w-[1240px] items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:px-8 lg:py-28">
           <div className="overflow-hidden rounded-2xl">
             <img
-              src={terraceImage}
-              alt="Sunlit terrace of a short-term rental"
+              src={kitchenImage}
+              alt="Sunlit kitchen of a short-term rental"
               className="aspect-[4/3] h-full w-full object-cover"
             />
           </div>
@@ -397,26 +444,35 @@ function Home() {
                 title: "Reducing late-night guest messages",
                 category: "GUEST COMMUNICATION",
                 time: "6 min read",
+                image: bedroomImage,
               },
               {
                 title: "Creating a seamless co-host handover",
                 category: "OPERATIONS",
                 time: "5 min read",
+                image: villaImage,
               },
             ].map((article) => (
               <Link
                 key={article.title}
                 to="/resources"
-                className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-7 transition-all hover:shadow-[var(--shadow-lift)]"
+                className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-[var(--shadow-lift)]"
               >
-                <div>
-                  <p className="eyebrow">{article.category}</p>
-                  <h3 className="mt-5 text-xl font-semibold tracking-tight">{article.title}</h3>
+                <img
+                  src={article.image}
+                  alt=""
+                  className="aspect-[16/8] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <div className="flex flex-col justify-between p-6">
+                  <div>
+                    <p className="eyebrow">{article.category}</p>
+                    <h3 className="mt-3 text-xl font-semibold tracking-tight">{article.title}</h3>
+                  </div>
+                  <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                    {article.time}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </span>
                 </div>
-                <span className="mt-10 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                  {article.time}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
               </Link>
             ))}
           </div>
@@ -440,12 +496,18 @@ function Home() {
               to="/products/$slug"
               params={{ slug: product.slug }}
               className={
-                "flex flex-col rounded-xl border p-6 transition-shadow hover:shadow-[var(--shadow-lift)] " +
+                "group flex flex-col overflow-hidden rounded-xl border transition-shadow hover:shadow-[var(--shadow-lift)] " +
                 (product.featured
                   ? "border-transparent bg-ink text-ink-foreground"
                   : "border-border bg-card")
               }
             >
+              <img
+                src={productImages[product.slug] ?? villaImage}
+                alt=""
+                className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              <div className="flex flex-1 flex-col p-6">
               {product.featured && <p className="eyebrow text-accent">Best value</p>}
               <h3 className="mt-1 text-lg">{product.name}</h3>
               <p
@@ -457,6 +519,7 @@ function Home() {
                 {product.tagline}
               </p>
               <p className="mt-5 text-base font-medium">{product.priceLabel}</p>
+              </div>
             </Link>
           ))}
         </div>
