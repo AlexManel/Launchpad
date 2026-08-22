@@ -116,7 +116,10 @@ function Home () {
 
         <div className="relative z-20 mx-auto w-full max-w-[1240px] px-5 pb-20 pt-32 lg:px-8 lg:pb-28">
           <div className="max-w-4xl">
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/90 drop-shadow-sm">
+                       <p
+              className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] drop-shadow-sm"
+              style={{ color: "#99f6e4" }}
+            >
               Smart operations for modern hosts
             </p>
 
