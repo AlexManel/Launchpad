@@ -57,7 +57,6 @@ export function Header() {
         heroTone
           ? "border-b border-white/10 bg-transparent"
           : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
-          : "border-b border-border bg-background/95 shadow-sm backdrop-blur-xl",
       ].join(" ")}
     >
       <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
