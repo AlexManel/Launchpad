@@ -106,11 +106,17 @@ export const fulfillPurchase = createServerFn({ method: "POST" })
     const user = await resolveAuthedUser(data.accessToken);
     if (!user) throw new Error("Sign in to unlock this purchase in your Workspace.");
 
-    const url = (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "").replace(
-      /\/$/,
-      "",
-    );
-    const anon = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+    const url = (
+      process.env.VITE_SUPABASE_URL ||
+      process.env.SUPABASE_URL ||
+      (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+      ""
+    ).replace(/\/$/, "");
+    const anon =
+      process.env.VITE_SUPABASE_ANON_KEY ||
+      process.env.SUPABASE_ANON_KEY ||
+      (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+      "";
     if (!url || !anon) throw new Error("Database is not connected.");
 
     const insert = await fetch(`${url}/rest/v1/purchases?on_conflict=user_id,product_slug`, {

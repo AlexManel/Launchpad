@@ -60,8 +60,21 @@ export async function setAnonymousUses(count: number): Promise<void> {
 export async function resolveAuthedUser(accessToken?: string) {
   const token = accessToken?.trim();
   if (!token) return null;
-  const url = (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || "").replace(/\/$/, "");
-  const anon = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "";
+  const url = (
+    process.env.VITE_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    (typeof import.meta !== "undefined"
+      ? (import.meta.env.VITE_SUPABASE_URL as string | undefined)
+      : "") ||
+    ""
+  ).replace(/\/$/, "");
+  const anon =
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    (typeof import.meta !== "undefined"
+      ? (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)
+      : "") ||
+    "";
   if (!url || !anon) return null;
   try {
     const res = await fetch(`${url}/auth/v1/user`, {
