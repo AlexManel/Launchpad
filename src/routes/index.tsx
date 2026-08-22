@@ -120,7 +120,7 @@ function Home () {
               Smart operations for modern hosts
             </p>
 
-                       <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] text-teal-300 drop-shadow-md sm:text-6xl lg:text-[5.5rem]">
+          <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] text-teal-300 drop-shadow-md sm:text-6xl lg:text-[5.5rem]">
               Run your properties{" "}
               <span className="text-white">smarter.</span>
               <br />
