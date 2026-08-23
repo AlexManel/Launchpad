@@ -3,7 +3,8 @@ import type { Locale } from "./locales";
 type Dict = Record<string, string>;
 
 const en: Dict = {
-  "page.products.eyebrow": "Digital products · Pay once. Own it.",
+  "stays.copy": "Copy message",
+  "stays.copied": "Copied",
   "page.products.title": "Ready-to-use systems for hosts who want it handled.",
   "page.products.intro":
     "Every product is a one-time purchase with lifetime access. No mandatory subscription, no seats, no renewal emails.",
@@ -71,7 +72,8 @@ const en: Dict = {
 };
 
 const el: Dict = {
-  "page.products.eyebrow": "Ψηφιακά προϊόντα · Πληρώνεις μία φορά.",
+  "stays.copy": "Αντιγραφή",
+  "stays.copied": "Αντιγράφηκε",
   "page.products.title": "Έτοιμα συστήματα για hosts που θέλουν να το έχουν λυμένο.",
   "page.products.intro":
     "Κάθε προϊόν είναι μία πληρωμή, με πρόσβαση για πάντα. Χωρίς υποχρεωτική συνδρομή.",
@@ -139,7 +141,8 @@ const el: Dict = {
 };
 
 const de: Dict = {
-  "page.products.eyebrow": "Digitale Produkte · Einmal zahlen.",
+  "stays.copy": "Nachricht kopieren",
+  "stays.copied": "Kopiert",
   "page.products.title": "Fertige Systeme für Hosts, die es geregelt haben wollen.",
   "page.products.intro":
     "Jedes Produkt ist ein Einmalkauf mit lebenslangem Zugang. Kein Pflicht-Abo.",
@@ -207,7 +210,8 @@ const de: Dict = {
 };
 
 const ru: Dict = {
-  "page.products.eyebrow": "Цифровые продукты · Один платёж.",
+  "stays.copy": "Копировать",
+  "stays.copied": "Скопировано",
   "page.products.title": "Готовые системы для хостов, которым нужно «закрыто».",
   "page.products.intro": "Каждый продукт — разовая покупка с доступом навсегда. Без обязательной подписки.",
   "page.products.get": "Купить",
@@ -266,7 +270,8 @@ const ru: Dict = {
 };
 
 const tr: Dict = {
-  "page.products.eyebrow": "Dijital ürünler · Bir kez öde.",
+  "stays.copy": "Kopyala",
+  "stays.copied": "Kopyalandı",
   "page.products.title": "İşi kapatmak isteyen ev sahipleri için hazır sistemler.",
   "page.products.intro": "Her ürün tek ödeme, ömür boyu erişim. Zorunlu abonelik yok.",
   "page.products.get": "Satın al",
@@ -325,7 +330,8 @@ const tr: Dict = {
 };
 
 const fr: Dict = {
-  "page.products.eyebrow": "Produits digitaux · Un paiement.",
+  "stays.copy": "Copier",
+  "stays.copied": "Copié",
   "page.products.title": "Des systèmes prêts pour les hôtes qui veulent que ce soit réglé.",
   "page.products.intro":
     "Chaque produit est un achat unique avec accès à vie. Pas d’abonnement obligatoire.",

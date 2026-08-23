@@ -17,14 +17,14 @@ export const AI_TEMPERATURE: Partial<Record<AiTool, number>> = {
  * Gemini 3.x counts thinking tokens against this budget.
  * Keep high enough so answers are not cut mid-sentence.
  */
-export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 900;
+export const AI_DEFAULT_MAX_OUTPUT_TOKENS = 3500;
 
 export const AI_MAX_OUTPUT_TOKENS: Partial<Record<AiTool, number>> = {
-  "listing-optimizer": 2500,
-  "house-rules-generator": 1100,
-  "welcome-message-generator": 1000,
-  "review-response-generator": 900,
-  "guest-reply-generator": 900,
+  "listing-optimizer": 4000,
+  "house-rules-generator": 2500,
+  "welcome-message-generator": 3500,
+  "review-response-generator": 2500,
+  "guest-reply-generator": 3500,
 };
 
 export function getTemperature(tool: AiTool): number {

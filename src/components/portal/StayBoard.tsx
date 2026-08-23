@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,8 @@ export function StayBoard({ properties }: { properties: Property[] }) {
   const [saving, setSaving] = useState(false);
   const [draft, setDraft] = useState("");
   const [drafting, setDrafting] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const draftRef = useRef<HTMLDivElement>(null);
 
   const load = async () => {
     const {
@@ -134,6 +136,9 @@ export function StayBoard({ properties }: { properties: Property[] }) {
         },
       });
       setDraft(`— ${stay.guest_name} · ${langName} —\n\n${res.text}`);
+      requestAnimationFrame(() => {
+        draftRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not draft.");
     } finally {
@@ -250,9 +255,29 @@ export function StayBoard({ properties }: { properties: Property[] }) {
       )}
 
       {draft && (
-        <pre className="mt-8 whitespace-pre-wrap rounded-xl border border-border bg-surface p-5 text-sm leading-relaxed">
-          {draft}
-        </pre>
+        <div
+          ref={draftRef}
+          className="mt-8 overflow-visible rounded-xl border border-border bg-surface p-5"
+        >
+          <div className="mb-3 flex items-center justify-end">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                void navigator.clipboard.writeText(draft);
+                setCopied(true);
+                toast.success(t("stays.copied"));
+                setTimeout(() => setCopied(false), 1500);
+              }}
+            >
+              <Copy className="size-3.5" />
+              {copied ? t("stays.copied") : t("stays.copy")}
+            </Button>
+          </div>
+          <pre className="max-h-none whitespace-pre-wrap break-words text-sm leading-relaxed">
+            {draft}
+          </pre>
+        </div>
       )}
     </div>
   );
