@@ -17,7 +17,17 @@ type I18nValue = {
   t: (key: MessageKey) => string;
 };
 
-const I18nContext = createContext<I18nValue | null>(null);
+const fallback: I18nValue = {
+  locale: "en",
+  setLocale: () => {},
+  t: (key) => messages.en[key] ?? key,
+};
+
+const I18nContext = createContext<I18nValue>(fallback);
+
+export function useI18n() {
+  return useContext(I18nContext);
+}
 
 function detectLocale(): Locale {
   try {
@@ -59,12 +69,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
-}
-
-export function useI18n() {
-  const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error("useI18n must be used within I18nProvider");
-  return ctx;
 }
 
 export { LOCALES, LOCALE_LABELS };
