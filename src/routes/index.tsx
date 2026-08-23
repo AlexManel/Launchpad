@@ -26,7 +26,16 @@ export const Route = createFileRoute("/")({
         content:
           "AI-powered tools, operational resources and practical systems built for Airbnb hosts, co-hosts and property managers.",
       },
+      { property: "og:title", content: "Webrya — Run your properties smarter" },
+      {
+        property: "og:description",
+        content:
+          "AI-powered tools, operational resources and practical systems built for Airbnb hosts, co-hosts and property managers.",
+      },
+      { property: "og:url", content: "https://webrya.com/" },
+      { property: "og:image", content: "https://webrya.com/villa.jpg" },
     ],
+    links: [{ rel: "canonical", href: "https://webrya.com/" }],
   }),
   component: Home,
 });

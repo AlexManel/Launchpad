@@ -86,7 +86,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Webrya" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Webrya" },
+      { property: "og:image", content: "https://webrya.com/villa.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://webrya.com/villa.jpg" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
