@@ -8,6 +8,7 @@ import { Section } from "@/components/site/Section";
 import { products } from "@/data/webrya";
 import { createCheckoutSession, getPaymentsStatus } from "@/lib/stripe.functions";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -36,6 +37,7 @@ export const Route = createFileRoute("/products/$slug")({
 });
 
 function ProductPage() {
+  const { t } = useI18n();
   const { slug } = Route.useParams();
   const product = products.find((p) => p.slug === slug)!;
   const [checkout, setCheckout] = useState(false);
@@ -81,12 +83,12 @@ function ProductPage() {
             to="/products"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="size-4" /> All digital products
+            <ArrowLeft className="size-4" /> {t("page.products.back")}
           </Link>
-          <p className="eyebrow mt-6">One-time purchase</p>
+          <p className="eyebrow mt-6">{t("page.products.otp")}</p>
           <h1 className="mt-3 max-w-3xl text-4xl leading-tight sm:text-5xl">{product.name}</h1>
           <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
-            {product.description}
+            {t(`p.${product.slug}.desc`)}
           </p>
         </div>
       </div>
@@ -94,7 +96,7 @@ function ProductPage() {
       <Section className="py-12 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-2xl">What's included</h2>
+            <h2 className="text-2xl">{t("page.products.included")}</h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {product.includes.map((i) => (
                 <li
@@ -107,19 +109,19 @@ function ProductPage() {
               ))}
             </ul>
 
-            <h2 className="mt-12 text-2xl">How hosts use it</h2>
+            <h2 className="mt-12 text-2xl">{t("page.products.how")}</h2>
             <ol className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground">
               <li>
-                <span className="font-medium text-foreground">1. Download instantly.</span> Files
-                arrive in your Webrya Workspace the moment checkout completes.
+                <span className="font-medium text-foreground">1. {t("page.products.h1")}</span>{" "}
+                {t("page.products.h1b")}
               </li>
               <li>
-                <span className="font-medium text-foreground">2. Adapt once.</span> Swap in your
-                property name, tone and policies — everything is fully editable.
+                <span className="font-medium text-foreground">2. {t("page.products.h2")}</span>{" "}
+                {t("page.products.h2b")}
               </li>
               <li>
-                <span className="font-medium text-foreground">3. Reuse forever.</span> Keep it as
-                your standard operating material across every listing you run.
+                <span className="font-medium text-foreground">3. {t("page.products.h3")}</span>{" "}
+                {t("page.products.h3b")}
               </li>
             </ol>
           </div>
@@ -127,7 +129,7 @@ function ProductPage() {
           <aside className="h-fit rounded-xl border border-border bg-card p-7 lg:sticky lg:top-24">
             <p className="font-display text-4xl">{product.priceLabel}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              One-time payment · lifetime access
+              {t("page.products.life")}
             </p>
             <p className="mt-5 text-sm text-muted-foreground">{product.format}</p>
 
@@ -150,7 +152,7 @@ function ProductPage() {
                 onClick={() => void startCheckout()}
               >
                 {paying && <Loader2 className="size-4 animate-spin" />}
-                {paying ? "Redirecting to Stripe…" : "Get Access"}
+                {paying ? t("page.products.redirect") : t("page.products.pay")}
               </Button>
             )}
 

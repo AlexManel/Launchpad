@@ -209,16 +209,16 @@ function ToolPage() {
             to="/ai-tools"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="size-4" /> All AI tools
+            <ArrowLeft className="size-4" /> {t("page.tools.eyebrow")}
           </Link>
           <div className="mt-6 flex items-start gap-4">
             <span className="grid size-11 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
               <Icon className="size-5" />
             </span>
             <div>
-              <h1 className="text-4xl leading-tight sm:text-5xl">{tool.name}</h1>
+              <h1 className="text-4xl leading-tight sm:text-5xl">{t(`tool.${tool.slug}.name`)}</h1>
               <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
-                {tool.description}
+                {t(`tool.${tool.slug}.short`)}
               </p>
             </div>
           </div>
@@ -270,7 +270,7 @@ function ToolPage() {
               <div className="flex flex-col gap-2 sm:flex-row">
                 <Button onClick={generate} disabled={loading} className="w-full" size="lg">
                   {loading && <Loader2 className="size-4 animate-spin" />}
-                  {loading ? "Generating…" : "Generate"}
+                  {loading ? t("page.tools.generating") : t("page.tools.generate")}
                 </Button>
                 <Button
                   type="button"
@@ -280,7 +280,7 @@ function ToolPage() {
                   disabled={loading}
                   onClick={loadSample}
                 >
-                  Try sample
+                  {t("page.tools.sample")}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -295,7 +295,7 @@ function ToolPage() {
 
           <div className="flex flex-col rounded-xl border border-border bg-surface p-7">
             <div className="flex items-center justify-between">
-              <p className="eyebrow">Result</p>
+              <p className="eyebrow">{t("page.tools.result")}</p>
               {output && (
                 <Button
                   size="sm"

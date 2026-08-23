@@ -8,19 +8,20 @@ import {
   type Locale,
   type MessageKey,
 } from "./locales";
+import { extra } from "./extra";
 
 const STORAGE_KEY = "webrya_locale";
 
 type I18nValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: MessageKey) => string;
+  t: (key: string) => string;
 };
 
 const fallback: I18nValue = {
   locale: "en",
   setLocale: () => {},
-  t: (key) => messages.en[key] ?? key,
+  t: (key) => extra.en[key] ?? messages.en[key as MessageKey] ?? key,
 };
 
 const I18nContext = createContext<I18nValue>(fallback);
@@ -63,7 +64,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     () => ({
       locale,
       setLocale: setLocaleState,
-      t: (key) => messages[locale][key] ?? messages.en[key] ?? key,
+      t: (key) =>
+        extra[locale][key] ??
+        messages[locale][key as MessageKey] ??
+        extra.en[key] ??
+        messages.en[key as MessageKey] ??
+        key,
     }),
     [locale],
   );

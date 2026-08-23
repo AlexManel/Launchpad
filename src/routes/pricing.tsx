@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { PageHeader, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { packages } from "@/data/webrya";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -54,12 +55,13 @@ const faqs = [
 ];
 
 function Pricing() {
+  const { t } = useI18n();
   return (
     <>
       <PageHeader
-        eyebrow="Professional Webrya Solutions"
-        title="Professional solutions, paid once."
-        intro="Webrya isn't sold as a monthly seat. Choose the level of solution your hosting business needs and it's set up for you as a one-time professional Webrya solution."
+        eyebrow={t("page.pricing.eyebrow")}
+        title={t("page.pricing.title")}
+        intro={t("page.pricing.intro")}
       />
 
 

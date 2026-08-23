@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen } from "lucide-react";
 import { PageHeader, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { resources, resourceCategories } from "@/data/webrya";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/resources/")({
   head: () => ({
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/resources/")({
 });
 
 function Resources() {
+  const { t } = useI18n();
   const [active, setActive] = useState("All");
 
   const categories = ["All", ...resourceCategories];
@@ -46,9 +48,9 @@ function Resources() {
   return (
     <>
       <PageHeader
-        eyebrow="Resources"
-        title="How experienced hosts actually operate."
-        intro="Guides, playbooks and frameworks covering hosting operations, AI, guest communication, reviews and property management."
+        eyebrow={t("page.resources.eyebrow")}
+        title={t("page.resources.title")}
+        intro={t("page.resources.intro")}
       />
 
       <Section className="py-14 lg:py-20">
@@ -65,7 +67,7 @@ function Resources() {
                   : "border-border text-muted-foreground hover:text-foreground")
               }
             >
-              {category}
+              {category === "All" ? t("page.resources.all") : category}
             </button>
           ))}
         </div>

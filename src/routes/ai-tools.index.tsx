@@ -4,6 +4,7 @@ import { Star, MessageSquare, Sparkles, ScrollText, KeyRound, ArrowRight } from 
 import { PageHeader, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { tools } from "@/data/webrya";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/ai-tools/")({
   head: () => ({
@@ -35,33 +36,34 @@ export const icons = {
 };
 
 function ToolsIndex() {
+  const { t } = useI18n();
   return (
     <>
       <PageHeader
-        eyebrow="AI Tools"
-        title="Practical AI for everyday hosting work."
-        intro="Five free tools built around the tasks hosts actually repeat every week. No credit card, no setup — open a tool and use it."
+        eyebrow={t("page.tools.eyebrow")}
+        title={t("page.tools.title")}
+        intro={t("page.tools.intro")}
       />
 
       <Section className="py-14 lg:py-20">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {tools.map((t) => {
-            const Icon = icons[t.icon];
+          {tools.map((tool) => {
+            const Icon = icons[tool.icon];
             return (
               <div
-                key={t.slug}
+                key={tool.slug}
                 className="flex flex-col rounded-xl border border-border bg-card p-7 transition-shadow hover:shadow-[var(--shadow-card)]"
               >
                 <span className="grid size-10 place-items-center rounded-md bg-secondary text-secondary-foreground">
                   <Icon className="size-5" />
                 </span>
-                <h2 className="mt-6 text-xl">{t.name}</h2>
+                <h2 className="mt-6 text-xl">{t(`tool.${tool.slug}.name`)}</h2>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {t.short}
+                  {t(`tool.${tool.slug}.short`)}
                 </p>
                 <Button asChild variant="outline" className="mt-6 w-full">
-                  <Link to="/ai-tools/$slug" params={{ slug: t.slug }}>
-                    Try Free <ArrowRight className="size-4" />
+                  <Link to="/ai-tools/$slug" params={{ slug: tool.slug }}>
+                    {t("page.tools.try")} <ArrowRight className="size-4" />
                   </Link>
                 </Button>
               </div>
@@ -69,13 +71,12 @@ function ToolsIndex() {
           })}
 
           <div className="flex flex-col justify-center rounded-xl border border-dashed border-border bg-surface p-7">
-            <h2 className="text-xl">More tools coming</h2>
+            <h2 className="text-xl">{t("page.tools.more")}</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Pricing assistant, cleaning schedule builder and damage claim writer are in
-              development for the Webrya Workspace.
+              {t("page.tools.moreBody")}
             </p>
             <Button asChild variant="ghost" className="mt-6 justify-start px-0">
-              <Link to="/portal">See the Webrya Workspace</Link>
+              <Link to="/portal">{t("page.tools.seeWs")}</Link>
             </Button>
           </div>
         </div>

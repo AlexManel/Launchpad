@@ -4,6 +4,7 @@ import { Check, ArrowRight } from "lucide-react";
 import { PageHeader, Section } from "@/components/site/Section";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/webrya";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/products/")({
   head: () => ({
@@ -27,15 +28,16 @@ export const Route = createFileRoute("/products/")({
 });
 
 function ProductsIndex() {
+  const { t } = useI18n();
   const standard = products.filter((p) => !p.featured);
   const bundle = products.find((p) => p.featured)!;
 
   return (
     <>
       <PageHeader
-        eyebrow="Digital Products · Pay once. Own it."
-        title="Ready-to-use systems for hosts who want it handled."
-        intro="Every product is a one-time purchase with lifetime access. No mandatory subscription, no seats, no renewal emails."
+        eyebrow={t("page.products.eyebrow")}
+        title={t("page.products.title")}
+        intro={t("page.products.intro")}
       />
 
       <Section className="py-14 lg:py-20">
@@ -43,8 +45,10 @@ function ProductsIndex() {
           {standard.map((p) => (
             <div key={p.slug} className="flex flex-col rounded-xl border border-border bg-card p-7">
               <h2 className="text-xl">{p.name}</h2>
-              <p className="mt-2 text-sm text-accent">{p.tagline}</p>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+              <p className="mt-2 text-sm text-accent">{t(`p.${p.slug}.tagline`)}</p>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                {t(`p.${p.slug}.desc`)}
+              </p>
               <ul className="mt-6 space-y-2.5">
                 {p.includes.map((i) => (
                   <li key={i} className="flex gap-2.5 text-sm">
@@ -55,10 +59,10 @@ function ProductsIndex() {
               </ul>
               <div className="mt-auto pt-7">
                 <p className="font-display text-3xl">{p.priceLabel}</p>
-                <p className="mt-1 text-xs text-muted-foreground">Pay once. Own it.</p>
+                <p className="mt-1 text-xs text-muted-foreground">{t("page.products.once")}</p>
                 <Button asChild className="mt-4 w-full">
                   <Link to="/products/$slug" params={{ slug: p.slug }}>
-                    Get Access
+                    {t("page.products.get")}
                   </Link>
                 </Button>
               </div>
@@ -69,18 +73,16 @@ function ProductsIndex() {
         <div className="mt-8 overflow-hidden rounded-2xl bg-ink text-ink-foreground">
           <div className="grid gap-10 p-9 lg:grid-cols-[1.2fr_1fr] lg:p-12">
             <div>
-              <p className="eyebrow text-accent">Best value · complete library</p>
+              <p className="eyebrow text-accent">{t("page.products.best")}</p>
               <h2 className="mt-4 text-4xl leading-tight">{bundle.name}</h2>
-              <p className="mt-4 max-w-xl leading-relaxed opacity-80">{bundle.description}</p>
+              <p className="mt-4 max-w-xl leading-relaxed opacity-80">{t(`p.${bundle.slug}.desc`)}</p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <span className="font-display text-4xl">{bundle.priceLabel}</span>
-                <span className="text-sm opacity-70">
-                  <s>$117 separately</s> · save $18 · lifetime updates
-                </span>
+                <span className="text-sm opacity-70">{t("page.products.save")}</span>
               </div>
               <Button asChild size="lg" variant="secondary" className="mt-7">
                 <Link to="/products/$slug" params={{ slug: bundle.slug }}>
-                  Get Access <ArrowRight className="size-4" />
+                  {t("page.products.get")} <ArrowRight className="size-4" />
                 </Link>
               </Button>
             </div>
