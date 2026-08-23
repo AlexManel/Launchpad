@@ -4,16 +4,12 @@ import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
-
-const nav = [
-  { to: "/ai-tools", label: "AI Tools" },
-  { to: "/products", label: "Products" },
-  { to: "/resources", label: "Resources" },
-  { to: "/pricing", label: "Pricing" },
-] as const;
+import { useI18n } from "@/i18n/I18nProvider";
 
 export function Header() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
@@ -46,9 +42,15 @@ export function Header() {
 
   const heroTone = isHome && !scrolled;
   const accountTo = signedIn ? "/portal" : "/login";
-  const accountLabel = signedIn ? "Workspace" : "Log in";
+  const accountLabel = signedIn ? t("nav.workspace") : t("nav.login");
   const ctaTo = signedIn ? "/portal" : "/ai-tools";
-  const ctaLabel = signedIn ? "Open workspace" : "Get Started";
+  const ctaLabel = signedIn ? t("nav.openWorkspace") : t("nav.getStarted");
+  const nav = [
+    { to: "/ai-tools" as const, label: t("nav.aiTools") },
+    { to: "/products" as const, label: t("nav.products") },
+    { to: "/resources" as const, label: t("nav.resources") },
+    { to: "/pricing" as const, label: t("nav.pricing") },
+  ];
 
   return (
     <header
@@ -80,6 +82,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
+          <LanguageSwitcher tone={heroTone ? "hero" : "default"} />
           <Button
             asChild
             variant="ghost"
@@ -103,7 +106,7 @@ export function Header() {
             "grid size-11 place-items-center rounded-md border lg:hidden",
             heroTone ? "border-white/25 text-white" : "border-border text-foreground",
           ].join(" ")}
-          aria-label="Toggle menu"
+          aria-label={t("nav.menu")}
           onClick={() => setOpen((value) => !value)}
           type="button"
         >
@@ -126,6 +129,9 @@ export function Header() {
             ))}
 
             <div className="mt-4 flex gap-2 pb-2">
+              <LanguageSwitcher />
+            </div>
+            <div className="mt-2 flex gap-2 pb-2">
               <Button asChild variant="outline" size="sm" className="flex-1">
                 <Link to={accountTo} onClick={() => setOpen(false)}>
                   {accountLabel}

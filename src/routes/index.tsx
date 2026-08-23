@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/Section";
 import { tools, products } from "@/data/webrya";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,13 +39,6 @@ const bedroomImage = "/bedroom.jpg";
 const kitchenImage = "/kitchen.jpg";
 const welcomeImage = "/welcome.jpg";
 
-const mosaic = [
-  { src: villaImage, alt: "Mediterranean villa at golden hour", label: "The property" },
-  { src: bedroomImage, alt: "Linen bedroom in a short-term rental", label: "Guest rooms" },
-  { src: kitchenImage, alt: "Sunlit rental kitchen and dining space", label: "Living spaces" },
-  { src: terraceImage, alt: "Terrace breakfast overlooking olive trees", label: "The stay" },
-];
-
 const productImages: Record<string, string> = {
   "aircover-suite": welcomeImage,
   "review-protection-suite": workspaceImage,
@@ -62,38 +56,44 @@ const toolDescriptions = [
   "Warm, professional welcome messages in seconds.",
 ];
 
-const pillars = [
-  {
-    icon: Sparkles,
-    title: "Free AI Tools",
-    body: "Try Webrya for free — practical AI tools for everyday hosting tasks.",
-    to: "/ai-tools" as const,
-    cta: "Explore AI Tools",
-  },
-  {
-    icon: Package,
-    title: "Digital Products",
-    body: "Buy ready-made hosting systems. Pay once. Own it.",
-    to: "/products" as const,
-    cta: "View Products",
-  },
-  {
-    icon: LayoutDashboard,
-    title: "Webrya Workspace",
-    body: "Keep your tools, purchases and saved work together in one place.",
-    to: "/portal" as const,
-    cta: "See the Workspace",
-  },
-  {
-    icon: Check,
-    title: "Professional Solutions",
-    body: "Get a complete Webrya setup for your property or business.",
-    to: "/pricing" as const,
-    cta: "View Solutions",
-  },
-];
-
 function Home() {
+  const { t } = useI18n();
+  const mosaic = [
+    { src: villaImage, alt: "Mediterranean villa at golden hour", label: t("home.mosaic1") },
+    { src: bedroomImage, alt: "Linen bedroom in a short-term rental", label: t("home.mosaic2") },
+    { src: kitchenImage, alt: "Sunlit rental kitchen and dining space", label: t("home.mosaic3") },
+    { src: terraceImage, alt: "Terrace breakfast overlooking olive trees", label: t("home.mosaic4") },
+  ];
+  const pillars = [
+    {
+      icon: Sparkles,
+      title: t("home.pillarTools"),
+      body: t("home.pillarToolsBody"),
+      to: "/ai-tools" as const,
+      cta: t("home.pillarToolsCta"),
+    },
+    {
+      icon: Package,
+      title: t("home.pillarProducts"),
+      body: t("home.pillarProductsBody"),
+      to: "/products" as const,
+      cta: t("home.pillarProductsCta"),
+    },
+    {
+      icon: LayoutDashboard,
+      title: t("home.pillarWs"),
+      body: t("home.pillarWsBody"),
+      to: "/portal" as const,
+      cta: t("home.pillarWsCta"),
+    },
+    {
+      icon: Check,
+      title: t("home.pillarSol"),
+      body: t("home.pillarSolBody"),
+      to: "/pricing" as const,
+      cta: t("home.pillarSolCta"),
+    },
+  ];
   return (
     <>
       <section className="webrya-hero relative flex min-h-[88vh] items-end overflow-hidden">
@@ -116,24 +116,23 @@ function Home() {
         <div className="relative z-20 mx-auto w-full max-w-[1240px] px-5 pb-20 pt-32 lg:px-8 lg:pb-28">
           <div className="max-w-4xl">
             <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
-              Smart operations for modern hosts
+              {t("hero.eyebrow")}
             </p>
 
             <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.045em] text-white sm:text-6xl lg:text-[5.5rem]">
-              Run your properties <span className="text-teal-200">smarter.</span>
+              {t("hero.title1")} <span className="text-teal-200">{t("hero.title2")}</span>
               <br />
-              Not harder.
+              {t("hero.title3")}
             </h1>
 
             <p className="mt-7 max-w-2xl text-base leading-7 text-white/85 sm:text-lg">
-              AI-powered tools, operational resources and practical systems built for Airbnb
-              hosts, co-hosts and property managers.
+              {t("hero.sub")}
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Button asChild size="lg">
                 <Link to="/ai-tools">
-                  Explore AI Tools
+                  {t("hero.ctaTools")}
                   <ArrowRight className="ml-1 size-4" />
                 </Link>
               </Button>
@@ -144,22 +143,22 @@ function Home() {
                 variant="outline"
                 className="border-white/35 bg-white/5 text-white backdrop-blur-sm hover:bg-white/10 hover:text-white"
               >
-                <Link to="/resources">Explore Resources</Link>
+                <Link to="/resources">{t("hero.ctaResources")}</Link>
               </Button>
             </div>
 
             <div className="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-sm text-white/60">
               <span className="inline-flex items-center gap-2">
                 <Check className="size-4 text-teal-300" />
-                Free AI tools
+                {t("hero.chip1")}
               </span>
               <span className="inline-flex items-center gap-2">
                 <Check className="size-4 text-teal-300" />
-                Practical systems
+                {t("hero.chip2")}
               </span>
               <span className="inline-flex items-center gap-2">
                 <Check className="size-4 text-teal-300" />
-                Built for hosts
+                {t("hero.chip3")}
               </span>
             </div>
           </div>
@@ -167,9 +166,9 @@ function Home() {
       </section>
 
       <Section className="py-16 lg:py-24">
-        <p className="eyebrow">THE WEBRYA ECOSYSTEM</p>
+        <p className="eyebrow">{t("home.ecoEyebrow")}</p>
         <h2 className="mt-4 max-w-3xl text-3xl leading-tight sm:text-4xl">
-          One connected system: start free, own what you buy, grow into a full setup.
+          {t("home.ecoTitle")}
         </h2>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -216,15 +215,67 @@ function Home() {
       </section>
 
       <Section className="py-20 lg:py-28">
-        <div className="grid items-end gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="max-w-3xl">
-            <p className="eyebrow">AI TOOLS</p>
-            <h2 className="mt-4 text-3xl tracking-tight sm:text-4xl lg:text-5xl">
-              Start with the tools you’ll use today.
+        <p className="eyebrow">{t("ops.eyebrow")}</p>
+        <div className="mt-4 grid items-start gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <h2 className="max-w-3xl text-3xl tracking-tight sm:text-4xl lg:text-5xl">
+              {t("ops.title")}
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-              Practical AI tools designed around the everyday work of hosting. Less repetitive
-              writing. Less time spent on routine tasks.
+              {t("ops.body")}
+            </p>
+            <ul className="mt-8 space-y-3 text-sm">
+              <li className="flex gap-2.5">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                {t("ops.b1")}
+              </li>
+              <li className="flex gap-2.5">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                {t("ops.b2")}
+              </li>
+              <li className="flex gap-2.5">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                {t("ops.b3")}
+              </li>
+            </ul>
+            <Button asChild className="mt-8" size="lg">
+              <Link to="/portal">
+                {t("ops.cta")}
+                <ArrowRight className="ml-1 size-4" />
+              </Link>
+            </Button>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Stay Board
+            </p>
+            <div className="mt-5 space-y-3 text-sm">
+              <div className="rounded-lg border border-border bg-surface px-4 py-3">
+                <p className="text-xs text-muted-foreground">{t("stays.arriving")}</p>
+                <p className="mt-1 font-medium">Maria · Ελληνικά</p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface px-4 py-3">
+                <p className="text-xs text-muted-foreground">{t("stays.inHouse")}</p>
+                <p className="mt-1 font-medium">Jonas · Deutsch</p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface px-4 py-3">
+                <p className="text-xs text-muted-foreground">{t("stays.departing")}</p>
+                <p className="mt-1 font-medium">Elena · Русский</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section className="py-20 lg:py-28">
+        <div className="grid items-end gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="max-w-3xl">
+            <p className="eyebrow">{t("home.toolsEyebrow")}</p>
+            <h2 className="mt-4 text-3xl tracking-tight sm:text-4xl lg:text-5xl">
+              {t("home.toolsTitle")}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
+              {t("home.toolsBody")}
             </p>
           </div>
           <div className="overflow-hidden rounded-2xl">
@@ -257,7 +308,7 @@ function Home() {
                   {toolDescriptions[index] ?? tool.short}
                 </p>
                 <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                  Try it
+                  {t("home.tryIt")}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
@@ -276,32 +327,29 @@ function Home() {
             />
           </div>
           <div>
-            <p className="eyebrow">FROM PROPERTY TO PLATFORM</p>
+            <p className="eyebrow">{t("home.moreEyebrow")}</p>
             <h2 className="mt-4 max-w-xl text-3xl tracking-tight sm:text-4xl lg:text-5xl">
-              More than AI tools.
-              <br />
-              Everything you need to operate better.
+              {t("home.moreTitle")}
             </h2>
             <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">
-              Webrya connects the small operational tasks that consume your time with the
-              systems that help your property run smoothly.
+              {t("home.moreBody")}
             </p>
             <div className="mt-9 space-y-5">
               {[
                 {
                   icon: Sparkles,
-                  title: "AI-powered workflows",
-                  text: "Handle everyday guest communication and content faster.",
+                  title: t("home.wf1"),
+                  text: t("home.wf1b"),
                 },
                 {
                   icon: Workflow,
-                  title: "Operational resources",
-                  text: "Practical guides, frameworks and systems for better hosting.",
+                  title: t("home.wf2"),
+                  text: t("home.wf2b"),
                 },
                 {
                   icon: BarChart3,
-                  title: "Property management systems",
-                  text: "Build a more organized operation as your portfolio grows.",
+                  title: t("home.wf3"),
+                  text: t("home.wf3b"),
                 },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4">

@@ -5,6 +5,7 @@
 export type SectionId =
   | "overview"
   | "tools"
+  | "stays"
   | "products"
   | "properties"
   | "resources"
@@ -81,4 +82,16 @@ export type Profile = {
   allow_property_context_ai: boolean;
   allow_analytics: boolean;
   marketing_emails: boolean;
+};
+
+export type Stay = {
+  id: string;
+  user_id: string;
+  property_id: string | null;
+  guest_name: string;
+  guest_language: string;
+  check_in: string;
+  check_out: string;
+  status: "upcoming" | "in_house" | "checked_out" | "cancelled";
+  notes: string | null;
 };

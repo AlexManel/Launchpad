@@ -17,6 +17,7 @@ export type AiGenerationRequest = {
   input: string;
   extra?: string | undefined;
   propertyContext?: string | undefined;
+  outputLanguage?: string | undefined;
 };
 
 export type AiGenerationResult = {

@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/site/Logo";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -27,6 +29,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -142,25 +145,24 @@ function LoginPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col justify-center px-6 py-14 sm:px-12 lg:px-20">
-        <Logo />
+        <div className="flex items-center justify-between">
+          <Logo />
+          <LanguageSwitcher />
+        </div>
 
         <div className="mt-12 max-w-sm">
           <h1 className="text-3xl">
-            {mode === "login"
-              ? "Welcome back."
-              : "Create your Webrya account."}
+            {mode === "login" ? t("login.welcome") : t("login.create")}
           </h1>
 
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            {mode === "login"
-              ? "Sign in to reach your AI tools, purchased products and saved content."
-              : "Free to start. Your AI tool results and purchases live in one place."}
+            {mode === "login" ? t("login.subIn") : t("login.subUp")}
           </p>
 
           <form onSubmit={submit} className="mt-8 space-y-4">
             {mode === "register" && (
               <div className="space-y-2">
-                <Label htmlFor="name">Full name</Label>
+                <Label htmlFor="name">{t("login.name")}</Label>
                 <Input
                   id="name"
                   value={name}
@@ -173,7 +175,7 @@ function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("login.email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -187,7 +189,7 @@ function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("login.password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -232,15 +234,12 @@ function LoginPage() {
                   ? "Signing in..."
                   : "Creating account..."
                 : mode === "login"
-                  ? "Sign in"
-                  : "Create account"}
+                  ? t("login.submitIn")
+                  : t("login.submitUp")}
             </Button>
           </form>
 
           <p className="mt-6 text-sm text-muted-foreground">
-            {mode === "login"
-              ? "New to Webrya?"
-              : "Already have an account?"}{" "}
             <button
               type="button"
               className="font-medium text-accent"
@@ -251,7 +250,7 @@ function LoginPage() {
               }}
               disabled={loading}
             >
-              {mode === "login" ? "Create an account" : "Sign in"}
+              {mode === "login" ? t("login.switchToUp") : t("login.switchToIn")}
             </button>
           </p>
 

@@ -20,6 +20,7 @@ export async function generateAI(
     resolvedInput,
     request.extra,
     request.propertyContext,
+    request.outputLanguage,
   );
   const systemPrompt = getSystemPrompt(request.tool);
   const max_tokens = getMaxOutputTokens(request.tool);

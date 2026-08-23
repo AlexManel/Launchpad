@@ -29,6 +29,8 @@ import { tools } from "@/data/webrya";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiTool } from "@/lib/ai/types";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
+import { LOCALES, LOCALE_LABELS, useI18n } from "@/i18n/I18nProvider";
+import type { Locale } from "@/i18n/locales";
 
 const iconMap = {
   star: Star,
@@ -66,6 +68,7 @@ function ToolPage() {
   const tool = tools.find((t) => t.slug === slug)!;
   const Icon = iconMap[tool.icon];
 
+  const { t } = useI18n();
   const [input, setInput] = useState("");
   const [extra, setExtra] = useState("");
   const [output, setOutput] = useState("");
@@ -75,6 +78,7 @@ function ToolPage() {
   const [limitOpen, setLimitOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState<string | undefined>();
+  const [outputLang, setOutputLang] = useState<Locale | "auto">("auto");
 
   const FREE_LIMIT = 3;
   const STORAGE_KEY = "webrya_free_ai_uses";
@@ -171,6 +175,7 @@ function ToolPage() {
           input: input.trim(),
           ...(extra.trim() ? { extra: extra.trim() } : {}),
           ...(accessToken ? { accessToken } : {}),
+          ...(outputLang !== "auto" ? { outputLanguage: outputLang } : {}),
         },
       });
       setOutput(res.text);
@@ -245,6 +250,23 @@ function ToolPage() {
                   />
                 </div>
               )}
+              <div className="space-y-2">
+                <Label htmlFor="output-lang">{t("ai.outputLang")}</Label>
+                <select
+                  id="output-lang"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={outputLang}
+                  onChange={(e) => setOutputLang(e.target.value as Locale | "auto")}
+                >
+                  <option value="auto">{t("ai.auto")}</option>
+                  {LOCALES.map((code) => (
+                    <option key={code} value={code}>
+                      {LOCALE_LABELS[code]}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-muted-foreground">{t("ai.outputLangHint")}</p>
+              </div>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <Button onClick={generate} disabled={loading} className="w-full" size="lg">
                   {loading && <Loader2 className="size-4 animate-spin" />}

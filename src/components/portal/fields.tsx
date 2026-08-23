@@ -8,7 +8,7 @@ export function Field({
   children,
 }: {
   label: string;
-  htmlFor: string;
+  htmlFor?: string;
   className?: string;
   children: ReactNode;
 }) {

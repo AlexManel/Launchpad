@@ -1,44 +1,49 @@
 import { Link } from "@tanstack/react-router";
 
 import { Logo } from "./Logo";
-
-const columns = [
-  {
-    title: "Product",
-    links: [
-      { to: "/ai-tools", label: "AI Tools" },
-      { to: "/products", label: "Digital Products" },
-      { to: "/portal", label: "Webrya Workspace" },
-      { to: "/pricing", label: "Solutions" },
-    ],
-  },
-  {
-    title: "Learn",
-    links: [
-      { to: "/resources", label: "Resources" },
-      { to: "/resources", label: "Hosting guides" },
-      { to: "/resources", label: "Review management" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { to: "/login", label: "Login" },
-      { to: "/ai-tools", label: "Start free" },
-    ],
-  },
-] as const;
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export function Footer() {
+  const { t } = useI18n();
+  const columns = [
+    {
+      title: t("footer.product"),
+      links: [
+        { to: "/ai-tools" as const, label: t("nav.aiTools") },
+        { to: "/products" as const, label: t("footer.products") },
+        { to: "/portal" as const, label: t("nav.workspace") },
+        { to: "/pricing" as const, label: t("nav.pricing") },
+      ],
+    },
+    {
+      title: t("footer.learn"),
+      links: [
+        { to: "/resources" as const, label: t("nav.resources") },
+        { to: "/resources" as const, label: t("footer.guides") },
+        { to: "/resources" as const, label: t("footer.reviews") },
+      ],
+    },
+    {
+      title: t("footer.account"),
+      links: [
+        { to: "/login" as const, label: t("nav.login") },
+        { to: "/ai-tools" as const, label: t("footer.start") },
+      ],
+    },
+  ];
+
   return (
     <footer className="mt-24 border-t border-border bg-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)] lg:px-8">
         <div className="max-w-xs">
           <Logo />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Everything you need to run your short-term rental smarter. Built for Airbnb hosts,
-            co-hosts and property managers.
+            {t("footer.blurb")}
           </p>
+          <div className="mt-5">
+            <LanguageSwitcher />
+          </div>
         </div>
 
         {columns.map((col) => (
@@ -63,7 +68,7 @@ export function Footer() {
       <div className="hairline">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>© {new Date().getFullYear()} Webrya. All rights reserved.</p>
-          <p>webrya.com · Not affiliated with Airbnb, Inc.</p>
+          <p>webrya.com · {t("footer.legal")}</p>
         </div>
       </div>
     </footer>

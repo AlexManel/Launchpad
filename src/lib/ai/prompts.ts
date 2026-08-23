@@ -235,7 +235,8 @@ export function buildUserPrompt(
   tool: AiTool,
   input: string,
   extra?: string,
-  propertyContext?: string
+  propertyContext?: string,
+  outputLanguage?: string
 ) {
   const labels = contextLabels[tool];
   const parts = [
@@ -249,6 +250,22 @@ export function buildUserPrompt(
     parts.push(
       "Property context (from host workspace — use when relevant to the guest's question):",
       propertyContext.trim(),
+      ""
+    );
+  }
+  if (outputLanguage && outputLanguage !== "auto") {
+    const names: Record<string, string> = {
+      en: "English",
+      el: "Greek",
+      de: "German",
+      ru: "Russian",
+      tr: "Turkish",
+      fr: "French",
+      es: "Spanish",
+      it: "Italian",
+    };
+    parts.push(
+      `LANGUAGE OVERRIDE — MANDATORY: write the ENTIRE output in ${names[outputLanguage] || outputLanguage}. Do not mix languages.`,
       ""
     );
   }

@@ -11,6 +11,7 @@ import {
   ArrowLeft,
   Download,
   Loader2,
+  CalendarDays,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,8 +26,11 @@ import {
   PanelTitle,
   PropertiesPanel,
   WorkspaceAIPanel,
+  StayBoard,
 } from "@/components/portal";
 import type { Profile, Property, SectionId } from "@/lib/portal/types";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/portal")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -46,6 +50,7 @@ export const Route = createFileRoute("/portal")({
 });
 
 function PortalPage() {
+  const { t } = useI18n();
   const navigate = useNavigate();
   const search = Route.useSearch();
   const [section, setSection] = useState<SectionId>("overview");
@@ -198,12 +203,13 @@ function PortalPage() {
   }
 
   const nav: { id: SectionId; label: string; icon: typeof Home }[] = [
-    { id: "overview", label: "Overview", icon: LayoutDashboard },
-    { id: "tools", label: "AI Tools", icon: Sparkles },
-    { id: "products", label: "My Products", icon: Package },
-    { id: "properties", label: "My Properties", icon: Home },
-    { id: "resources", label: "Resources", icon: BookOpen },
-    { id: "account", label: "Account", icon: User },
+    { id: "overview", label: t("portal.overview"), icon: LayoutDashboard },
+    { id: "stays", label: t("portal.stays"), icon: CalendarDays },
+    { id: "tools", label: t("portal.tools"), icon: Sparkles },
+    { id: "products", label: t("portal.products"), icon: Package },
+    { id: "properties", label: t("portal.properties"), icon: Home },
+    { id: "resources", label: t("portal.resources"), icon: BookOpen },
+    { id: "account", label: t("portal.account"), icon: User },
   ];
 
   return (
@@ -217,15 +223,16 @@ function PortalPage() {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Button asChild variant="ghost" size="sm">
               <Link to="/">
                 <ArrowLeft className="size-4" />
-                Back to site
+                {t("portal.back")}
               </Link>
             </Button>
             <Button variant="outline" size="sm" onClick={() => void signOut()}>
               <LogOut className="size-4" />
-              Sign out
+              {t("portal.signOut")}
             </Button>
           </div>
         </div>
@@ -278,6 +285,8 @@ function PortalPage() {
               </div>
             </div>
           )}
+
+          {section === "stays" && <StayBoard properties={properties} />}
 
           {section === "tools" && <WorkspaceAIPanel properties={properties} />}
 

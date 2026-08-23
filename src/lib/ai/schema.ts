@@ -22,6 +22,11 @@ export const AiToolInput = z.object({
     .optional(),
   /** Supabase access token so the server can skip the anonymous free limit. */
   accessToken: z.string().max(4000).optional(),
+  outputLanguage: z
+    .string()
+    .trim()
+    .max(8)
+    .optional(),
 });
 
 export type AiToolInput = z.infer<typeof AiToolInput>;

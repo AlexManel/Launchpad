@@ -1,0 +1,71 @@
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+
+import {
+  LOCALES,
+  LOCALE_LABELS,
+  isLocale,
+  messages,
+  type Locale,
+  type MessageKey,
+} from "./locales";
+
+const STORAGE_KEY = "webrya_locale";
+
+type I18nValue = {
+  locale: Locale;
+  setLocale: (locale: Locale) => void;
+  t: (key: MessageKey) => string;
+};
+
+const I18nContext = createContext<I18nValue | null>(null);
+
+function detectLocale(): Locale {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (isLocale(stored)) return stored;
+  } catch {
+    /* ignore */
+  }
+  if (typeof navigator !== "undefined") {
+    const nav = navigator.language.slice(0, 2).toLowerCase();
+    if (isLocale(nav)) return nav;
+  }
+  return "en";
+}
+
+export function I18nProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocaleState] = useState<Locale>("en");
+
+  useEffect(() => {
+    setLocaleState(detectLocale());
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch {
+      /* ignore */
+    }
+  }, [locale]);
+
+  const value = useMemo<I18nValue>(
+    () => ({
+      locale,
+      setLocale: setLocaleState,
+      t: (key) => messages[locale][key] ?? messages.en[key] ?? key,
+    }),
+    [locale],
+  );
+
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+}
+
+export function useI18n() {
+  const ctx = useContext(I18nContext);
+  if (!ctx) throw new Error("useI18n must be used within I18nProvider");
+  return ctx;
+}
+
+export { LOCALES, LOCALE_LABELS };
+export type { Locale, MessageKey };

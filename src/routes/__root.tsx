@@ -13,7 +13,7 @@ import type { ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { Toaster } from "@/components/ui/sonner";
+import { I18nProvider } from "@/i18n/I18nProvider";
 
 function NotFoundComponent() {
   return (
@@ -130,6 +130,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nProvider>
       <div className="flex min-h-screen flex-col">
         {!bare && <Header />}
         <div className="flex-1">
@@ -139,6 +140,7 @@ function RootComponent() {
         {!bare && <Footer />}
       </div>
       <Toaster />
+      </I18nProvider>
     </QueryClientProvider>
   );
 }

@@ -17,6 +17,7 @@ export const generateToolOutput = createServerFn({ method: "POST" })
       input: data.input,
       extra: data.extra,
       propertyContext: quota.userId ? data.propertyContext : undefined,
+      outputLanguage: data.outputLanguage,
     });
 
     if (!quota.unlimited) {
