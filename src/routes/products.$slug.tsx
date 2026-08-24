@@ -36,6 +36,11 @@ export const Route = createFileRoute("/products/$slug")({
   component: ProductPage,
 });
 
+function tr(t: (k: string) => string, key: string, fallback: string) {
+  const v = t(key);
+  return v === key ? fallback : v;
+}
+
 function ProductPage() {
   const { t } = useI18n();
   const { slug } = Route.useParams();
@@ -51,7 +56,7 @@ function ProductPage() {
   const startCheckout = async () => {
     if (!stripeOn) {
       setCheckout(true);
-      toast.message("Payments are not connected yet — add your Stripe keys to go live.");
+      toast.message(tr(t, "prod.comingBody", "Payments are not connected yet."));
       return;
     }
     setPaying(true);
@@ -74,6 +79,8 @@ function ProductPage() {
       setPaying(false);
     }
   };
+
+  const priceKey = product.price === 99 ? "price.99" : "price.39";
 
   return (
     <>
@@ -98,13 +105,13 @@ function ProductPage() {
           <div>
             <h2 className="text-2xl">{t("page.products.included")}</h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-              {product.includes.map((i) => (
+              {product.includes.map((i, idx) => (
                 <li
                   key={i}
                   className="flex gap-3 rounded-lg border border-border bg-card px-4 py-3.5 text-sm"
                 >
                   <Check className="mt-0.5 size-4 shrink-0 text-accent" />
-                  {i}
+                  {tr(t, `prod.${product.slug}.i${idx}`, i)}
                 </li>
               ))}
             </ul>
@@ -127,21 +134,20 @@ function ProductPage() {
           </div>
 
           <aside className="h-fit rounded-xl border border-border bg-card p-7 lg:sticky lg:top-24">
-            <p className="font-display text-4xl">{product.priceLabel}</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("page.products.life")}
+            <p className="font-display text-4xl">{tr(t, priceKey, product.priceLabel)}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("page.products.life")}</p>
+            <p className="mt-5 text-sm text-muted-foreground">
+              {tr(t, `fmt.${product.slug}`, product.format)}
             </p>
-            <p className="mt-5 text-sm text-muted-foreground">{product.format}</p>
 
             {checkout && !stripeOn ? (
               <div className="mt-6 rounded-lg border border-dashed border-border bg-surface p-5 text-sm">
-                <p className="font-medium">Coming soon</p>
+                <p className="font-medium">{tr(t, "prod.coming", "Coming soon")}</p>
                 <p className="mt-2 leading-relaxed text-muted-foreground">
-                  One-time checkout is not connected yet. Create a Stripe account, add
-                  STRIPE_SECRET_KEY in Cloudflare, then products unlock here after purchase.
+                  {tr(t, "prod.comingBody", "Checkout is not connected yet.")}
                 </p>
                 <Button asChild variant="outline" className="mt-4 w-full">
-                  <Link to="/portal">Preview in Webrya Workspace</Link>
+                  <Link to="/portal">{tr(t, "prod.previewWs", "Preview in Webrya Workspace")}</Link>
                 </Button>
               </div>
             ) : (
@@ -158,10 +164,10 @@ function ProductPage() {
 
             <ul className="mt-6 space-y-2.5 text-sm text-muted-foreground">
               <li className="flex gap-2.5">
-                <Download className="mt-0.5 size-4 shrink-0" /> Instant delivery
+                <Download className="mt-0.5 size-4 shrink-0" /> {tr(t, "prod.instant", "Instant delivery")}
               </li>
               <li className="flex gap-2.5">
-                <ShieldCheck className="mt-0.5 size-4 shrink-0" /> Free updates included
+                <ShieldCheck className="mt-0.5 size-4 shrink-0" /> {tr(t, "prod.updates", "Free updates included")}
               </li>
             </ul>
           </aside>
