@@ -50,6 +50,7 @@ export function Header() {
     { to: "/products" as const, label: t("nav.products") },
     { to: "/resources" as const, label: t("nav.resources") },
     { to: "/pricing" as const, label: t("nav.pricing") },
+    { to: "/contact" as const, label: t("nav.contact") },
   ];
 
   return (
