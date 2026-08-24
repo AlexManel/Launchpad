@@ -183,7 +183,7 @@ DO INCLUDE:
 - Optional light house policy (e.g. no smoking) only if supplied — without codes
 - A warm close
 
-Tone: warm, polished, short — roughly 60–110 words. Easy to read on a phone.
+Tone: warm, polished, short — roughly 60-110 words. Easy to read on a phone.
 Output only the message text.`;
 
 const systemPrompts: Record<AiTool, string> = {
@@ -249,7 +249,7 @@ export function buildUserPrompt(
     );
   }
   if (outputLanguage && outputLanguage !== "auto") {
-    const names: Record[string, string] = {
+    const names: Record<string, string> = {
       en: "English",
       el: "Greek",
       de: "German",
