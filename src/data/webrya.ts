@@ -16,12 +16,13 @@ export const tools: Tool[] = [
     name: "Review Response Generator",
     short: "Generate professional responses to Airbnb guest reviews.",
     description:
-      "Paste any guest review and get a calm, professional public response that protects your listing's reputation and reads like a real host wrote it.",
+      "Paste the guest review, then add anything they left out — smoking, damage, extra guests — so the public reply and your host file both stay accurate.",
     icon: "star",
     inputLabel: "Paste the guest review",
     placeholder: "The apartment was lovely but check-in was confusing and the wifi dropped twice…",
-    secondaryLabel: "Guest name (optional)",
-    secondaryPlaceholder: "Marta",
+    secondaryLabel: "Host notes — guest name and anything the review omitted",
+    secondaryPlaceholder:
+      "Guest: Nikos. Smoked in the bedroom. Ashtray on the nightstand. Not mentioned in the review.",
   },
   {
     slug: "guest-reply-generator",

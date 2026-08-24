@@ -242,12 +242,22 @@ function ToolPage() {
               {tool.secondaryLabel && (
                 <div className="space-y-2">
                   <Label htmlFor="tool-extra">{tool.secondaryLabel}</Label>
-                  <Input
-                    id="tool-extra"
-                    value={extra}
-                    onChange={(e) => setExtra(e.target.value)}
-                    placeholder={tool.secondaryPlaceholder}
-                  />
+                  {tool.slug === "review-response-generator" ? (
+                    <Textarea
+                      id="tool-extra"
+                      rows={4}
+                      value={extra}
+                      onChange={(e) => setExtra(e.target.value)}
+                      placeholder={tool.secondaryPlaceholder}
+                    />
+                  ) : (
+                    <Input
+                      id="tool-extra"
+                      value={extra}
+                      onChange={(e) => setExtra(e.target.value)}
+                      placeholder={tool.secondaryPlaceholder}
+                    />
+                  )}
                 </div>
               )}
               <div className="space-y-2">

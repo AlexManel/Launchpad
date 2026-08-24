@@ -3,7 +3,7 @@ import type { Locale } from "./locales";
 type Dict = Record<string, string>;
 
 const en: Dict = {
-  "stays.copy": "Copy message",
+  "stays.draftReview": "Review + host file",
   "stays.copied": "Copied",
   "page.products.title": "Ready-to-use systems for hosts who want it handled.",
   "page.products.intro":
@@ -72,7 +72,7 @@ const en: Dict = {
 };
 
 const el: Dict = {
-  "stays.copy": "Αντιγραφή",
+  "stays.draftReview": "Κριτική + φάκελος",
   "stays.copied": "Αντιγράφηκε",
   "page.products.title": "Έτοιμα συστήματα για hosts που θέλουν να το έχουν λυμένο.",
   "page.products.intro":
@@ -141,7 +141,7 @@ const el: Dict = {
 };
 
 const de: Dict = {
-  "stays.copy": "Nachricht kopieren",
+  "stays.draftReview": "Review + Akte",
   "stays.copied": "Kopiert",
   "page.products.title": "Fertige Systeme für Hosts, die es geregelt haben wollen.",
   "page.products.intro":
@@ -210,7 +210,7 @@ const de: Dict = {
 };
 
 const ru: Dict = {
-  "stays.copy": "Копировать",
+  "stays.draftReview": "Отзыв + файл",
   "stays.copied": "Скопировано",
   "page.products.title": "Готовые системы для хостов, которым нужно «закрыто».",
   "page.products.intro": "Каждый продукт — разовая покупка с доступом навсегда. Без обязательной подписки.",
@@ -270,7 +270,7 @@ const ru: Dict = {
 };
 
 const tr: Dict = {
-  "stays.copy": "Kopyala",
+  "stays.draftReview": "Yorum + dosya",
   "stays.copied": "Kopyalandı",
   "page.products.title": "İşi kapatmak isteyen ev sahipleri için hazır sistemler.",
   "page.products.intro": "Her ürün tek ödeme, ömür boyu erişim. Zorunlu abonelik yok.",
@@ -330,7 +330,7 @@ const tr: Dict = {
 };
 
 const fr: Dict = {
-  "stays.copy": "Copier",
+  "stays.draftReview": "Avis + dossier",
   "stays.copied": "Copié",
   "page.products.title": "Des systèmes prêts pour les hôtes qui veulent que ce soit réglé.",
   "page.products.intro":

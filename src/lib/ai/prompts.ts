@@ -80,7 +80,28 @@ deserves a fuller, specific reply that actually engages with what they said.
 Aim for roughly 60-140 words, but let the review's own length guide you within that.
 Finish every sentence completely.
 Never stop mid-sentence.
-Output only the response text, with no headings, labels, or notes.`;
+
+HOST NOTES / OMITTED FACTS:
+The secondary field may contain the guest's name AND facts that did NOT appear in
+the public review (smoking indoors, extra guests, damage, parties, late checkout).
+Treat those notes as true only because the host wrote them. Never invent evidence.
+
+When host notes include a serious issue the review omitted:
+- Still write a PUBLIC reply that does not ambush or publicly accuse the guest
+  about something they did not mention. Stay calm. You may restated house rules
+  in general terms if the host included them.
+- THEN also write a second block the host can keep on file or paste to Airbnb
+  Resolution Centre.
+
+Output format when omitted facts exist:
+PUBLIC REPLY
+(the text to post under the review)
+
+HOST FILE
+(short factual note: what happened, when, evidence only if the host mentioned it)
+
+If host notes are empty or are only a guest name, output only the public reply
+with no headings.`;
 
 export const guestReplyPrompt = `You are the Webrya Guest Reply Generator.
 
@@ -205,9 +226,9 @@ export function getSystemPrompt(tool: AiTool): string {
 
 const contextLabels: Record<AiTool, { primary: string; secondary: string; task: string }> = {
   "review-response-generator": {
-    primary: "Guest review (the ONLY source of facts)",
-    secondary: "Guest name",
-    task: "Write the public host response now. Respond in exactly the same language as the guest review.",
+    primary: "Guest review (the ONLY source of public-review facts)",
+    secondary: "Host notes (guest name + facts the review omitted)",
+    task: "Write the public host response now. If host notes include omitted incidents, also write a HOST FILE block. Respond in exactly the same language as the guest review.",
   },
   "guest-reply-generator": {
     primary: "Guest message",

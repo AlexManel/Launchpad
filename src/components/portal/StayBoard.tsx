@@ -105,7 +105,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
     else setStays((prev) => prev.filter((s) => s.id !== id));
   };
 
-  const draftMessage = async (stay: Stay, kind: "welcome" | "checkin") => {
+  const draftMessage = async (stay: Stay, kind: "welcome" | "checkin" | "review") => {
     setDrafting(`${stay.id}-${kind}`);
     setDraft("");
     try {
@@ -117,18 +117,26 @@ export function StayBoard({ properties }: { properties: Property[] }) {
       const input =
         kind === "welcome"
           ? `Write a warm welcome message for guest ${stay.guest_name} staying ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}.`
-          : `Write self check-in instructions for guest ${stay.guest_name}${property ? ` at ${property.name}` : ""}. Check-in ${stay.check_in}. Include only details we know.`;
+          : kind === "checkin"
+            ? `Write self check-in instructions for guest ${stay.guest_name}${property ? ` at ${property.name}` : ""}. Check-in ${stay.check_in}. Include only details we know.`
+            : `No public review text was pasted. Guest ${stay.guest_name} stayed ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}. Write a HOST FILE note the host can keep, and a short PUBLIC REPLY only if a review-style thanks is still appropriate.`;
       const extra = [
-        stay.notes ? `Host notes: ${stay.notes}` : "",
+        stay.notes ? `Host notes / omitted facts: ${stay.notes}` : "Host notes: not provided",
         property?.check_in_instructions ? `Check-in: ${property.check_in_instructions}` : "",
         property?.wifi_network ? `Wi-Fi: ${property.wifi_network}` : "",
         property?.parking_instructions ? `Parking: ${property.parking_instructions}` : "",
+        property?.smoking ? `Smoking policy: ${property.smoking}` : "",
       ]
         .filter(Boolean)
         .join("\n");
       const res = await generateToolOutput({
         data: {
-          tool: kind === "welcome" ? "welcome-message-generator" : "guest-reply-generator",
+          tool:
+            kind === "welcome"
+              ? "welcome-message-generator"
+              : kind === "checkin"
+                ? "guest-reply-generator"
+                : "review-response-generator",
           input,
           extra: extra || undefined,
           outputLanguage: stay.guest_language,
@@ -183,6 +191,15 @@ export function StayBoard({ properties }: { properties: Property[] }) {
                   >
                     {drafting === `${stay.id}-checkin` && <Loader2 className="size-3 animate-spin" />}
                     {t("stays.draftCheckin")}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!!drafting}
+                    onClick={() => void draftMessage(stay, "review")}
+                  >
+                    {drafting === `${stay.id}-review` && <Loader2 className="size-3 animate-spin" />}
+                    {t("stays.draftReview")}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => void removeStay(stay.id)}>
                     {t("stays.delete")}
