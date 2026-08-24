@@ -9,15 +9,23 @@ import {
   resourceKeysTr,
   resourceKeysFr,
 } from "./resource-keys";
+import { catalogKeys } from "./catalog-keys";
 
 type Dict = Record<string, string>;
 
-/** Portal + resource chrome + base extra. Every locale has full resource list strings. */
 export const extra: Record<Locale, Dict> = {
-  en: { ...portalKeysEn, ...resourceKeysEn, ...base.en },
-  el: { ...portalKeysEn, ...resourceKeysEn, ...portalKeysEl, ...resourceKeysEl, ...base.el },
-  de: { ...portalKeysEn, ...resourceKeysEn, ...resourceKeysDe, ...base.de },
-  ru: { ...portalKeysEn, ...resourceKeysEn, ...resourceKeysRu, ...base.ru },
-  tr: { ...portalKeysEn, ...resourceKeysEn, ...resourceKeysTr, ...base.tr },
-  fr: { ...portalKeysEn, ...resourceKeysEn, ...resourceKeysFr, ...base.fr },
+  en: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...base.en },
+  el: {
+    ...portalKeysEn,
+    ...resourceKeysEn,
+    ...catalogKeys.en,
+    ...portalKeysEl,
+    ...resourceKeysEl,
+    ...catalogKeys.el,
+    ...base.el,
+  },
+  de: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...resourceKeysDe, ...catalogKeys.de, ...base.de },
+  ru: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...resourceKeysRu, ...catalogKeys.ru, ...base.ru },
+  tr: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...resourceKeysTr, ...catalogKeys.tr, ...base.tr },
+  fr: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...resourceKeysFr, ...catalogKeys.fr, ...base.fr },
 };
