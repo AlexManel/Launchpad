@@ -49,6 +49,11 @@ export const Route = createFileRoute("/portal")({
   component: PortalPage,
 });
 
+function tr(t: (k: string) => string, key: string, fallback: string) {
+  const v = t(key);
+  return v === key ? fallback : v;
+}
+
 function PortalPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -139,11 +144,11 @@ function PortalPage() {
               prev.includes(result.slug) ? prev : [...prev, result.slug],
             );
             setSection("products");
-            toast.success("Purchase unlocked in your Workspace.");
+            toast.success(tr(t, "ws.purchaseUnlocked", "Purchase unlocked in your Workspace."));
             void navigate({ to: "/portal", search: {}, replace: true });
           }
         } catch (err) {
-          toast.error(err instanceof Error ? err.message : "Could not unlock purchase.");
+          toast.error(err instanceof Error ? err.message : tr(t, "ws.purchaseError", "Could not unlock purchase."));
         }
       }
     };
@@ -160,7 +165,7 @@ function PortalPage() {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [navigate, search.session_id]);
+  }, [navigate, search.session_id, t]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -173,7 +178,7 @@ function PortalPage() {
       const { data } = await supabase.auth.getSession();
       const token = data.session?.access_token;
       if (!token) {
-        toast.error("Sign in again to download.");
+        toast.error(tr(t, "ws.signInAgain", "Sign in again to download."));
         return;
       }
       const kit = await downloadProductKit({ data: { slug, accessToken: token } });
@@ -186,9 +191,9 @@ function PortalPage() {
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-      toast.success("Kit downloaded.");
+      toast.success(tr(t, "ws.kitDownloaded", "Kit downloaded."));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not download kit.");
+      toast.error(err instanceof Error ? err.message : tr(t, "ws.kitError", "Could not download kit."));
     } finally {
       setDownloading(null);
     }
@@ -197,7 +202,7 @@ function PortalPage() {
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
-        Loading workspace...
+        {tr(t, "ws.loading", "Loading workspace...")}
       </div>
     );
   }
@@ -265,21 +270,30 @@ function PortalPage() {
         <div>
           {section === "overview" && (
             <div>
-              <h1 className="text-3xl">Welcome back.</h1>
+              <h1 className="text-3xl">{tr(t, "ws.overview.welcome", "Welcome back.")}</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                Signed in as {name}. Your tools and properties live here.
+                {tr(t, "ws.overview.signedIn", "Signed in as {name}. Your tools and properties live here.").replace(
+                  "{name}",
+                  name,
+                )}
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-xl border border-border bg-card p-5">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">AI Tools</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {tr(t, "ws.overview.tools", "AI Tools")}
+                  </p>
                   <p className="mt-2 text-3xl">{tools.length}</p>
                 </div>
                 <div className="rounded-xl border border-border bg-card p-5">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Properties</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {tr(t, "ws.overview.properties", "Properties")}
+                  </p>
                   <p className="mt-2 text-3xl">{properties.length}</p>
                 </div>
                 <div className="rounded-xl border border-border bg-card p-5">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Account</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {tr(t, "ws.overview.account", "Account")}
+                  </p>
                   <p className="mt-2 text-lg">{name}</p>
                 </div>
               </div>
@@ -293,15 +307,15 @@ function PortalPage() {
           {section === "products" && (
             <div>
               <PanelTitle
-                title="My Products"
-                sub="One-time purchases unlocked for your account."
+                title={tr(t, "ws.products.title", "My Products")}
+                sub={tr(t, "ws.products.sub", "One-time purchases unlocked for your account.")}
               />
               {ownedSlugs.length === 0 ? (
                 <div className="mt-6 rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-                  No purchased products yet.
+                  {tr(t, "ws.products.empty", "No purchased products yet.")}
                   <div className="mt-4">
                     <Button asChild variant="outline" size="sm">
-                      <Link to="/products">Browse products</Link>
+                      <Link to="/products">{tr(t, "ws.products.browse", "Browse products")}</Link>
                     </Button>
                   </div>
                 </div>
@@ -315,10 +329,12 @@ function PortalPage() {
                         className="rounded-xl border border-border bg-card p-6"
                       >
                         <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-                          Owned
+                          {tr(t, "ws.products.owned", "Owned")}
                         </p>
                         <h3 className="mt-2 text-lg font-semibold">{p.name}</h3>
-                        <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                          {tr(t, `p.${p.slug}.tagline`, p.tagline)}
+                        </p>
                         <p className="mt-4 text-sm">{p.format}</p>
                         <Button
                           className="mt-5 w-full"
@@ -331,7 +347,9 @@ function PortalPage() {
                           ) : (
                             <Download className="size-4" />
                           )}
-                          {downloading === p.slug ? "Preparing…" : "Download kit (.md)"}
+                          {downloading === p.slug
+                            ? tr(t, "ws.products.preparing", "Preparing…")
+                            : tr(t, "ws.products.download", "Download kit (.md)")}
                         </Button>
                       </div>
                     ))}
@@ -351,10 +369,13 @@ function PortalPage() {
 
           {section === "resources" && (
             <div>
-              <PanelTitle title="Resources" sub="Guides and playbooks for hosts." />
+              <PanelTitle
+                title={tr(t, "ws.resources.title", "Resources")}
+                sub={tr(t, "ws.resources.sub", "Guides and playbooks for hosts.")}
+              />
               <div className="mt-6">
                 <Button asChild variant="outline">
-                  <Link to="/resources">Browse all resources</Link>
+                  <Link to="/resources">{tr(t, "ws.resources.browse", "Browse all resources")}</Link>
                 </Button>
               </div>
             </div>
