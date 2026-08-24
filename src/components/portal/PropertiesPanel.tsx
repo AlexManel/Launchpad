@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PanelTitle } from "@/components/portal/fields";
 import type { Property } from "@/lib/portal/types";
 import { PropertyForm } from "@/components/portal/PropertyForm";
+import { RoomsPanel } from "@/components/portal/RoomsPanel";
 import { supabase } from "@/lib/supabase";
 
 export function PropertiesPanel({
@@ -306,6 +307,8 @@ export function PropertiesPanel({
           ))}
         </div>
       )}
+
+      <RoomsPanel properties={properties} />
     </div>
   );
 }
