@@ -27,6 +27,11 @@ export const Route = createFileRoute("/products/")({
   component: ProductsIndex,
 });
 
+function tr(t: (k: string) => string, key: string, fallback: string) {
+  const v = t(key);
+  return v === key ? fallback : v;
+}
+
 function ProductsIndex() {
   const { t } = useI18n();
   const standard = products.filter((p) => !p.featured);
@@ -50,10 +55,10 @@ function ProductsIndex() {
                 {t(`p.${p.slug}.desc`)}
               </p>
               <ul className="mt-6 space-y-2.5">
-                {p.includes.map((i) => (
+                {p.includes.map((i, idx) => (
                   <li key={i} className="flex gap-2.5 text-sm">
                     <Check className="mt-0.5 size-4 shrink-0 text-accent" />
-                    {i}
+                    {tr(t, `prod.${p.slug}.i${idx}`, i)}
                   </li>
                 ))}
               </ul>
@@ -87,10 +92,10 @@ function ProductsIndex() {
               </Button>
             </div>
             <ul className="grid content-start gap-3 rounded-xl bg-ink-foreground/5 p-7">
-              {bundle.includes.map((i) => (
+              {bundle.includes.map((i, idx) => (
                 <li key={i} className="flex gap-2.5 text-sm">
                   <Check className="mt-0.5 size-4 shrink-0 text-accent" />
-                  {i}
+                  {tr(t, `prod.${bundle.slug}.i${idx}`, i)}
                 </li>
               ))}
             </ul>
