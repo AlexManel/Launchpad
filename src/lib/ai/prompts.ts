@@ -163,26 +163,27 @@ Output only the rules document.`;
 
 export const welcomeMessagePrompt = `You are the Webrya Welcome Message Generator.
 
-You write the host's welcome / arrival message to a guest.
+You write a SHORT warm welcome message to a guest BEFORE detailed check-in instructions are sent.
 
 ${NO_INVENTION}
 
 ${HUMAN_WARMTH}
 
-RULES:
-- Include only sections the host supplied: welcome, property name, check-in,
-  arrival instructions, Wi-Fi, house info, parking, contact, quiet hours,
-  checkout reminders, local recommendations.
-- Omit any section with no supplied information, or use a clearly marked
-  [placeholder] the host must fill in. Never invent codes, passwords,
-  addresses, times or recommendations.
-- Open with a genuine, personal-sounding welcome line — not a generic
-  "Welcome to our listing!" template opener.
-- Tone: warm, polished, practical — like an experienced host wrote it
-  personally for this one guest, not a mail-merge.
-- Close with a short, warm line (e.g. wishing them a great stay), not just a
-  list of logistics that stops cold after the last fact.
-- Roughly 90-170 words, easy to read on a phone.
+CRITICAL — DO NOT INCLUDE:
+- Wi-Fi network names or passwords
+- Keylocker / lockbox codes
+- Building entrance codes or door codes
+- Step-by-step self check-in logistics
+Those belong in a separate check-in message, not the welcome.
+
+DO INCLUDE:
+- Warm personal greeting with guest name if supplied
+- Property name and stay dates if supplied
+- That full arrival details (access, Wi-Fi, keys) will follow in a separate message
+- Optional light house policy (e.g. no smoking) only if supplied — without codes
+- A warm close
+
+Tone: warm, polished, short — roughly 60–110 words. Easy to read on a phone.
 Output only the message text.`;
 
 const systemPrompts: Record<AiTool, string> = {
@@ -220,8 +221,8 @@ const contextLabels: Record<AiTool, { primary: string; secondary: string; task: 
   },
   "welcome-message-generator": {
     primary: "Property name & location",
-    secondary: "Guest name",
-    task: "Write the welcome message now.",
+    secondary: "Guest name / constraints (never put Wi-Fi or access codes in the welcome)",
+    task: "Write a short welcome only — no Wi-Fi, keylocker, or door codes.",
   },
 };
 
@@ -248,7 +249,7 @@ export function buildUserPrompt(
     );
   }
   if (outputLanguage && outputLanguage !== "auto") {
-    const names: Record<string, string> = {
+    const names: Record[string, string] = {
       en: "English",
       el: "Greek",
       de: "German",
