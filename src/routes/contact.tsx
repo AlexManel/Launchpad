@@ -128,11 +128,14 @@ function ContactPage() {
                 {tr(
                   t,
                   "contact.directBody",
-                  "Prefer email? Write to us and mention whether you manage one listing or a portfolio.",
+                  "Prefer email or a call? Mention whether you manage one listing or a portfolio.",
                 )}
               </p>
-              <a className="mt-4 inline-block text-sm font-medium text-foreground" href="mailto:hello@webrya.com">
-                hello@webrya.com
+              <a className="mt-4 block text-sm font-medium text-foreground" href="mailto:info@webrya.com">
+                info@webrya.com
+              </a>
+              <a className="mt-2 block text-sm font-medium text-foreground" href="tel:+306946949933">
+                +30 694 694 9933
               </a>
             </div>
             <div className="rounded-xl border border-border bg-surface p-6">
