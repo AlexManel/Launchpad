@@ -49,6 +49,21 @@ export type Property = {
   host_notes: string | null;
 };
 
+/** Per-unit codes — keylocker / wifi / building — not shared across the whole property. */
+export type Room = {
+  id: string;
+  user_id: string;
+  property_id: string;
+  name: string;
+  building_code: string | null;
+  keylocker_code: string | null;
+  door_code: string | null;
+  wifi_network: string | null;
+  wifi_password: string | null;
+  notes: string | null;
+  sort_order: number;
+};
+
 export type Profile = {
   id: string;
   full_name: string | null;
@@ -88,6 +103,7 @@ export type Stay = {
   id: string;
   user_id: string;
   property_id: string | null;
+  room_id: string | null;
   guest_name: string;
   guest_language: string;
   check_in: string;
