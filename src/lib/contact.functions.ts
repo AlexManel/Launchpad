@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+const DEFAULT_MAKE_HOOK =
+  "https://hook.eu1.make.com/rqpbf8brtve6jz2fu2gcasimllvu01zx";
+
 export const submitContact = createServerFn({ method: "POST" })
   .validator((input: unknown) =>
     z
@@ -63,8 +66,11 @@ export const submitContact = createServerFn({ method: "POST" })
       throw new Error("Could not send the message. Try again in a moment.");
     }
 
-    const hook = process.env.MAKE_CONTACT_WEBHOOK?.trim();
-    if (hook && hook.startsWith("https://")) {
+    const hook = (process.env.MAKE_CONTACT_WEBHOOK?.trim() || DEFAULT_MAKE_HOOK).replace(
+      /\/$/,
+      "",
+    );
+    if (hook.startsWith("https://hook.")) {
       try {
         await fetch(hook, {
           method: "POST",
@@ -72,7 +78,7 @@ export const submitContact = createServerFn({ method: "POST" })
           body: JSON.stringify(payload),
         });
       } catch {
-        /* keep the form success if Make is down */
+        /* keep form success if Make is down */
       }
     }
 
