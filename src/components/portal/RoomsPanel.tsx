@@ -7,6 +7,7 @@ import { Field, PanelTitle } from "@/components/portal/fields";
 import { inputClass, textareaClass } from "@/lib/portal/form-utils";
 import { supabase } from "@/lib/supabase";
 import type { Property, Room } from "@/lib/portal/types";
+import { useI18n } from "@/i18n/I18nProvider";
 
 const emptyForm = {
   name: "",
@@ -18,7 +19,13 @@ const emptyForm = {
   notes: "",
 };
 
+function tr(t: (k: string) => string, key: string, fallback: string) {
+  const v = t(key);
+  return v === key ? fallback : v;
+}
+
 export function RoomsPanel({ properties }: { properties: Property[] }) {
+  const { t } = useI18n();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [propertyId, setPropertyId] = useState(properties[0]?.id ?? "");
@@ -72,7 +79,7 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
 
   const save = async () => {
     if (!form.name.trim() || !propertyId) {
-      toast.error("Room name and property are required.");
+      toast.error(tr(t, "ws.rooms.needName", "Room name and property are required."));
       return;
     }
     setSaving(true);
@@ -96,23 +103,23 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
       if (editingId) {
         const { error } = await supabase.from("rooms").update(payload).eq("id", editingId);
         if (error) throw error;
-        toast.success("Room updated.");
+        toast.success(tr(t, "ws.rooms.updated", "Room updated."));
       } else {
         const { error } = await supabase.from("rooms").insert(payload);
         if (error) throw error;
-        toast.success("Room added.");
+        toast.success(tr(t, "ws.rooms.added", "Room added."));
       }
       resetForm();
       await load();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not save room.");
+      toast.error(err instanceof Error ? err.message : tr(t, "ws.rooms.saveError", "Could not save room."));
     } finally {
       setSaving(false);
     }
   };
 
   const remove = async (id: string) => {
-    if (!window.confirm("Delete this room? Stays linked to it will keep the stay but lose the room link.")) return;
+    if (!window.confirm(tr(t, "ws.rooms.deleteConfirm", "Delete this room? Stays linked to it will keep the stay but lose the room link."))) return;
     const { error } = await supabase.from("rooms").delete().eq("id", id);
     if (error) toast.error(error.message);
     else {
@@ -124,7 +131,7 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
   if (properties.length === 0) {
     return (
       <div className="mt-10 rounded-xl border border-dashed border-border p-8 text-sm text-muted-foreground">
-        Add a property first, then create rooms / units with their own access codes.
+        {tr(t, "ws.rooms.needProperty", "Add a property first, then create rooms / units with their own access codes.")}
       </div>
     );
   }
@@ -132,12 +139,16 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
   return (
     <div className="mt-10">
       <PanelTitle
-        title="Rooms & access codes"
-        sub="Codes are per unit (keylocker, building, Wi‑Fi) — not shared across the whole property. Change anytime; check-in drafts use the selected room."
+        title={tr(t, "ws.rooms.title", "Rooms & access codes")}
+        sub={tr(
+          t,
+          "ws.rooms.sub",
+          "Codes are per unit (keylocker, building, Wi‑Fi) — not shared across the whole property. Change anytime; check-in drafts use the selected room.",
+        )}
       />
 
       <div className="mt-6 grid gap-4 rounded-xl border border-border bg-card p-5 sm:grid-cols-2">
-        <Field label="Property">
+        <Field label={tr(t, "stays.property", "Property")}>
           <select
             className={inputClass}
             value={propertyId}
@@ -153,7 +164,7 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
             ))}
           </select>
         </Field>
-        <Field label="Room / unit name">
+        <Field label={tr(t, "ws.rooms.name", "Room / unit name")}>
           <input
             className={inputClass}
             placeholder="e.g. Room 15, Suite A"
@@ -161,42 +172,42 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           />
         </Field>
-        <Field label="Building entrance code">
+        <Field label={tr(t, "ws.rooms.building", "Building entrance code")}>
           <input
             className={inputClass}
             value={form.building_code}
             onChange={(e) => setForm((f) => ({ ...f, building_code: e.target.value }))}
           />
         </Field>
-        <Field label="Keylocker / lockbox code">
+        <Field label={tr(t, "ws.rooms.keylocker", "Keylocker / lockbox code")}>
           <input
             className={inputClass}
             value={form.keylocker_code}
             onChange={(e) => setForm((f) => ({ ...f, keylocker_code: e.target.value }))}
           />
         </Field>
-        <Field label="Door / apartment code">
+        <Field label={tr(t, "ws.rooms.door", "Door / apartment code")}>
           <input
             className={inputClass}
             value={form.door_code}
             onChange={(e) => setForm((f) => ({ ...f, door_code: e.target.value }))}
           />
         </Field>
-        <Field label="Wi‑Fi network">
+        <Field label={tr(t, "ws.rooms.wifi", "Wi‑Fi network")}>
           <input
             className={inputClass}
             value={form.wifi_network}
             onChange={(e) => setForm((f) => ({ ...f, wifi_network: e.target.value }))}
           />
         </Field>
-        <Field label="Wi‑Fi password">
+        <Field label={tr(t, "ws.rooms.wifiPass", "Wi‑Fi password")}>
           <input
             className={inputClass}
             value={form.wifi_password}
             onChange={(e) => setForm((f) => ({ ...f, wifi_password: e.target.value }))}
           />
         </Field>
-        <Field label="Notes (optional)">
+        <Field label={tr(t, "ws.rooms.notes", "Notes (optional)")}>
           <textarea
             className={textareaClass}
             rows={2}
@@ -207,25 +218,25 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
         <div className="flex flex-wrap gap-2 sm:col-span-2">
           <Button onClick={() => void save()} disabled={saving}>
             {saving && <Loader2 className="size-4 animate-spin" />}
-            {editingId ? "Update room" : (
+            {editingId ? tr(t, "ws.rooms.update", "Update room") : (
               <>
-                <Plus className="size-4" /> Add room
+                <Plus className="size-4" /> {tr(t, "ws.rooms.add", "Add room")}
               </>
             )}
           </Button>
           {editingId && (
             <Button variant="outline" onClick={resetForm}>
-              Cancel
+              {tr(t, "ws.rooms.cancel", "Cancel")}
             </Button>
           )}
         </div>
       </div>
 
       {loading ? (
-        <p className="mt-6 text-sm text-muted-foreground">Loading rooms…</p>
+        <p className="mt-6 text-sm text-muted-foreground">{tr(t, "ws.rooms.loading", "Loading rooms…")}</p>
       ) : filtered.length === 0 ? (
         <p className="mt-6 rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
-          No rooms for this property yet. Add one so Stay Board can attach a unit to each guest.
+          {tr(t, "ws.rooms.empty", "No rooms for this property yet. Add one so Stay Board can attach a unit to each guest.")}
         </p>
       ) : (
         <ul className="mt-6 space-y-3">
@@ -239,12 +250,12 @@ export function RoomsPanel({ properties }: { properties: Property[] }) {
                 <p className="mt-1 text-muted-foreground">
                   {[room.building_code && `Building: ${room.building_code}`, room.keylocker_code && `Keylocker: ${room.keylocker_code}`, room.door_code && `Door: ${room.door_code}`, room.wifi_network && `Wi‑Fi: ${room.wifi_network}`]
                     .filter(Boolean)
-                    .join(" · ") || "No codes saved yet"}
+                    .join(" · ") || tr(t, "ws.rooms.noCodes", "No codes saved yet")}
                 </p>
               </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => startEdit(room)}>
-                  Edit
+                  {tr(t, "ws.prop.edit", "Edit")}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => void remove(room.id)}>
                   <Trash2 className="size-3.5" />
