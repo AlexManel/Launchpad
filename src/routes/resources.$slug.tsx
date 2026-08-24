@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/Section";
 import { resources } from "@/data/webrya";
 import { resourceArticles } from "@/data/resource-content";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/resources/$slug")({
   loader: ({ params }) => {
@@ -65,12 +66,22 @@ export const Route = createFileRoute("/resources/$slug")({
   component: ResourceArticlePage,
 });
 
+function tr(t: (k: string) => string, key: string, fallback: string) {
+  const v = t(key);
+  return v === key ? fallback : v;
+}
+
 function ResourceArticlePage() {
+  const { t } = useI18n();
   const { resource, article } = Route.useLoaderData();
 
   const relatedResources = article.relatedSlugs
     .map((slug) => resources.find((item) => item.slug === slug))
     .filter(Boolean);
+
+  const title = tr(t, `r.${resource.slug}.title`, resource.title);
+  const excerpt = tr(t, `r.${resource.slug}.excerpt`, resource.excerpt);
+  const category = tr(t, `cat.${resource.category}`, resource.category);
 
   return (
     <>
@@ -81,27 +92,25 @@ function ResourceArticlePage() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
-            All resources
+            {tr(t, "r.allResources", "All resources")}
           </Link>
 
           <div className="mt-8">
-            <p className="eyebrow">{resource.category}</p>
+            <p className="eyebrow">{category}</p>
 
-            <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">
-              {resource.title}
-            </h1>
+            <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">{title}</h1>
 
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-              {resource.excerpt}
+              {excerpt}
             </p>
 
             <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="size-4" />
-                {resource.readTime} read
+                {resource.readTime} {tr(t, "r.read", "read")}
               </span>
 
-              <span>Webrya Editorial</span>
+              <span>{tr(t, "r.editorial", "Webrya Editorial")}</span>
             </div>
           </div>
         </div>
@@ -121,9 +130,7 @@ function ResourceArticlePage() {
 
             {article.sections.map((section) => (
               <section key={section.heading} className="mt-12">
-                <h2 className="text-2xl leading-tight">
-                  {section.heading}
-                </h2>
+                <h2 className="text-2xl leading-tight">{section.heading}</h2>
 
                 {section.paragraphs?.map((paragraph) => (
                   <p
@@ -176,11 +183,9 @@ function ResourceArticlePage() {
                   </div>
 
                   <div>
-                    <p className="eyebrow">Webrya tool</p>
+                    <p className="eyebrow">{tr(t, "r.webryaTool", "Webrya tool")}</p>
 
-                    <h2 className="mt-2 text-xl">
-                      {article.tool.title}
-                    </h2>
+                    <h2 className="mt-2 text-xl">{article.tool.title}</h2>
 
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                       {article.tool.description}
@@ -203,10 +208,10 @@ function ResourceArticlePage() {
 
           {relatedResources.length > 0 && (
             <div className="mt-16 border-t border-border pt-10">
-              <p className="eyebrow">Keep reading</p>
+              <p className="eyebrow">{tr(t, "r.keepReading", "Keep reading")}</p>
 
               <h2 className="mt-3 text-2xl">
-                More resources for hosts
+                {tr(t, "r.moreHosts", "More resources for hosts")}
               </h2>
 
               <div className="mt-6 grid gap-4">
@@ -218,12 +223,13 @@ function ResourceArticlePage() {
                     className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:shadow-[var(--shadow-card)]"
                   >
                     <p className="text-xs text-muted-foreground">
-                      {related!.category} · {related!.readTime} read
+                      {tr(t, `cat.${related!.category}`, related!.category)} ·{" "}
+                      {related!.readTime} {tr(t, "r.read", "read")}
                     </p>
 
                     <div className="mt-2 flex items-center justify-between gap-4">
                       <h3 className="font-medium group-hover:underline">
-                        {related!.title}
+                        {tr(t, `r.${related!.slug}.title`, related!.title)}
                       </h3>
 
                       <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
@@ -240,7 +246,7 @@ function ResourceArticlePage() {
               className="inline-flex items-center gap-2 text-sm font-medium text-accent"
             >
               <ArrowLeft className="size-4" />
-              Back to all resources
+              {tr(t, "r.backAll", "Back to all resources")}
             </Link>
           </div>
         </div>
