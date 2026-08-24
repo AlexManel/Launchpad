@@ -7,7 +7,7 @@ import { PanelTitle, Field } from "@/components/portal/fields";
 import { inputClass, textareaClass } from "@/lib/portal/form-utils";
 import { supabase } from "@/lib/supabase";
 import { generateToolOutput } from "@/lib/ai-tools.functions";
-import type { Property, Stay } from "@/lib/portal/types";
+import type { Property, Room, Stay } from "@/lib/portal/types";
 import { LOCALES, LOCALE_LABELS, useI18n } from "@/i18n/I18nProvider";
 import { LOCALE_OUTPUT, type Locale } from "@/i18n/locales";
 
@@ -27,9 +27,11 @@ function bucket(stay: Stay) {
 export function StayBoard({ properties }: { properties: Property[] }) {
   const { t } = useI18n();
   const [stays, setStays] = useState<Stay[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [guest, setGuest] = useState("");
   const [propertyId, setPropertyId] = useState("");
+  const [roomId, setRoomId] = useState("");
   const [lang, setLang] = useState<Locale>("en");
   const [checkIn, setCheckIn] = useState(todayISO());
   const [checkOut, setCheckOut] = useState(todayISO());
@@ -40,25 +42,39 @@ export function StayBoard({ properties }: { properties: Property[] }) {
   const [copied, setCopied] = useState(false);
   const draftRef = useRef<HTMLDivElement>(null);
 
+  const roomsForProperty = useMemo(
+    () => rooms.filter((r) => r.property_id === propertyId).sort((a, b) => a.sort_order - b.sort_order || a.name.localeCompare(b.name)),
+    [rooms, propertyId],
+  );
+
   const load = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return;
-    const { data, error } = await supabase
-      .from("stays")
-      .select("*")
-      .eq("user_id", user.id)
-      .neq("status", "cancelled")
-      .order("check_in", { ascending: true });
-    if (error) toast.error(error.message);
-    else setStays((data as Stay[]) ?? []);
+    const [staysRes, roomsRes] = await Promise.all([
+      supabase
+        .from("stays")
+        .select("*")
+        .eq("user_id", user.id)
+        .neq("status", "cancelled")
+        .order("check_in", { ascending: true }),
+      supabase.from("rooms").select("*").eq("user_id", user.id).order("sort_order", { ascending: true }),
+    ]);
+    if (staysRes.error) toast.error(staysRes.error.message);
+    else setStays((staysRes.data as Stay[]) ?? []);
+    if (roomsRes.error) toast.error(roomsRes.error.message);
+    else setRooms((roomsRes.data as Room[]) ?? []);
     setLoading(false);
   };
 
   useEffect(() => {
     void load();
   }, []);
+
+  useEffect(() => {
+    if (roomId && !roomsForProperty.some((r) => r.id === roomId)) setRoomId("");
+  }, [propertyId, roomId, roomsForProperty]);
 
   const grouped = useMemo(() => {
     const g = { arriving: [] as Stay[], inHouse: [] as Stay[], departing: [] as Stay[], upcoming: [] as Stay[] };
@@ -80,6 +96,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
       const { error } = await supabase.from("stays").insert({
         user_id: user.id,
         property_id: propertyId || null,
+        room_id: roomId || null,
         guest_name: guest.trim(),
         guest_language: lang,
         check_in: checkIn,
@@ -113,37 +130,72 @@ export function StayBoard({ properties }: { properties: Property[] }) {
         data: { session },
       } = await supabase.auth.getSession();
       const property = properties.find((p) => p.id === stay.property_id);
+      const room = rooms.find((r) => r.id === stay.room_id);
       const langName = LOCALE_OUTPUT[(stay.guest_language as Locale) || "en"] || stay.guest_language;
-      const input =
-        kind === "welcome"
-          ? `Write a warm welcome message for guest ${stay.guest_name} staying ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}.`
-          : kind === "checkin"
-            ? `Write self check-in instructions for guest ${stay.guest_name}${property ? ` at ${property.name}` : ""}. Check-in ${stay.check_in}. Include only details we know.`
-            : `No public review text was pasted. Guest ${stay.guest_name} stayed ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}. Write a HOST FILE note the host can keep, and a short PUBLIC REPLY only if a review-style thanks is still appropriate.`;
-      const extra = [
-        stay.notes ? `Host notes / omitted facts: ${stay.notes}` : "Host notes: not provided",
-        property?.check_in_instructions ? `Check-in: ${property.check_in_instructions}` : "",
-        property?.wifi_network ? `Wi-Fi: ${property.wifi_network}` : "",
-        property?.parking_instructions ? `Parking: ${property.parking_instructions}` : "",
-        property?.smoking ? `Smoking policy: ${property.smoking}` : "",
-      ]
-        .filter(Boolean)
-        .join("\n");
-      const res = await generateToolOutput({
-        data: {
-          tool:
-            kind === "welcome"
-              ? "welcome-message-generator"
-              : kind === "checkin"
-                ? "guest-reply-generator"
-                : "review-response-generator",
-          input,
-          extra: extra || undefined,
-          outputLanguage: stay.guest_language,
-          accessToken: session?.access_token,
-        },
-      });
-      setDraft(`— ${stay.guest_name} · ${langName} —\n\n${res.text}`);
+
+      if (kind === "welcome") {
+        const input = `Write a SHORT warm welcome message for guest ${stay.guest_name} staying ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}${room ? `, room ${room.name}` : ""}.`
+        const extra = [
+          "CRITICAL: This is only a short welcome. Do NOT include Wi-Fi codes, passwords, keylocker codes, door codes, building access codes, or detailed self check-in steps.",
+          "Say that full arrival details (access, Wi-Fi, keylocker) will be sent in a separate check-in message.",
+          property?.smoking === "not_allowed" ? "Smoking is not allowed (mention policy only, no codes)." : "",
+          stay.notes ? `Host notes (do not treat as access codes): ${stay.notes}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n");
+        const res = await generateToolOutput({
+          data: {
+            tool: "welcome-message-generator",
+            input,
+            extra,
+            outputLanguage: stay.guest_language,
+            accessToken: session?.access_token,
+          },
+        });
+        setDraft(`— ${stay.guest_name} · ${langName} —\n\n${res.text}`);
+      } else if (kind === "checkin") {
+        const input = `Write a DETAILED self check-in / arrival message for guest ${stay.guest_name}${property ? ` at ${property.name}` : ""}${room ? `, unit ${room.name}` : ""}. Check-in date ${stay.check_in}. Include every access code and Wi-Fi detail provided below. Do not invent missing codes.`
+        const extra = [
+          room ? `Unit / room name: ${room.name}` : "Unit: not selected — use property-level details only if present",
+          room?.building_code ? `Building entrance code: ${room.building_code}` : "",
+          room?.keylocker_code ? `Keylocker / lockbox code: ${room.keylocker_code}` : "",
+          room?.door_code ? `Door / apartment code: ${room.door_code}` : "",
+          room?.wifi_network ? `Wi-Fi network: ${room.wifi_network}` : "",
+          room?.wifi_password ? `Wi-Fi password: ${room.wifi_password}` : "",
+          room?.notes ? `Room notes: ${room.notes}` : "",
+          property?.check_in_instructions ? `General check-in instructions: ${property.check_in_instructions}` : "",
+          property?.parking_instructions ? `Parking: ${property.parking_instructions}` : "",
+          property?.check_in_time ? `Check-in time: ${property.check_in_time}` : "",
+          property?.smoking === "not_allowed" ? "Smoking: not allowed" : property?.smoking ? `Smoking: ${property.smoking}` : "",
+          stay.notes ? `Stay notes: ${stay.notes}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n");
+        const res = await generateToolOutput({
+          data: {
+            tool: "guest-reply-generator",
+            input,
+            extra: extra || undefined,
+            outputLanguage: stay.guest_language,
+            accessToken: session?.access_token,
+          },
+        });
+        setDraft(`— ${stay.guest_name} · ${langName}${room ? ` · ${room.name}` : ""} —\n\n${res.text}`);
+      } else {
+        const input = `No public review text was pasted. Guest ${stay.guest_name} stayed ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}. Write a HOST FILE note the host can keep, and a short PUBLIC REPLY only if a review-style thanks is still appropriate.`;
+        const extra = stay.notes ? `Host notes / omitted facts: ${stay.notes}` : "Host notes: not provided";
+        const res = await generateToolOutput({
+          data: {
+            tool: "review-response-generator",
+            input,
+            extra,
+            outputLanguage: stay.guest_language,
+            accessToken: session?.access_token,
+          },
+        });
+        setDraft(`— ${stay.guest_name} · ${langName} —\n\n${res.text}`);
+      }
+
       requestAnimationFrame(() => {
         draftRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -161,6 +213,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
         <ul className="mt-3 space-y-3">
           {grouped[key].map((stay) => {
             const property = properties.find((p) => p.id === stay.property_id);
+            const room = rooms.find((r) => r.id === stay.room_id);
             return (
               <li
                 key={stay.id}
@@ -169,7 +222,8 @@ export function StayBoard({ properties }: { properties: Property[] }) {
                 <div>
                   <p className="font-medium">{stay.guest_name}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {property?.name ?? t("stays.noneProperty")} · {stay.check_in} → {stay.check_out} ·{" "}
+                    {property?.name ?? t("stays.noneProperty")}
+                    {room ? ` · ${room.name}` : ""} · {stay.check_in} → {stay.check_out} ·{" "}
                     {LOCALE_LABELS[(stay.guest_language as Locale) || "en"] ?? stay.guest_language}
                   </p>
                 </div>
@@ -212,6 +266,9 @@ export function StayBoard({ properties }: { properties: Property[] }) {
       </div>
     );
 
+  const copyLabel = t("stays.copy");
+  const copiedLabel = t("stays.copied");
+
   return (
     <div>
       <PanelTitle title={t("stays.title")} sub={t("stays.sub")} />
@@ -221,11 +278,33 @@ export function StayBoard({ properties }: { properties: Property[] }) {
           <input className={inputClass} value={guest} onChange={(e) => setGuest(e.target.value)} />
         </Field>
         <Field label={t("stays.property")}>
-          <select className={inputClass} value={propertyId} onChange={(e) => setPropertyId(e.target.value)}>
+          <select
+            className={inputClass}
+            value={propertyId}
+            onChange={(e) => {
+              setPropertyId(e.target.value);
+              setRoomId("");
+            }}
+          >
             <option value="">{t("stays.noneProperty")}</option>
             {properties.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={t("stays.room") !== "stays.room" ? t("stays.room") : "Room / unit"}>
+          <select
+            className={inputClass}
+            value={roomId}
+            onChange={(e) => setRoomId(e.target.value)}
+            disabled={!propertyId}
+          >
+            <option value="">{!propertyId ? "Select property first" : "No room selected"}</option>
+            {roomsForProperty.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
               </option>
             ))}
           </select>
@@ -283,12 +362,18 @@ export function StayBoard({ properties }: { properties: Property[] }) {
               onClick={() => {
                 void navigator.clipboard.writeText(draft);
                 setCopied(true);
-                toast.success(t("stays.copied"));
+                toast.success(copiedLabel !== "stays.copied" ? copiedLabel : "Copied");
                 setTimeout(() => setCopied(false), 1500);
               }}
             >
               <Copy className="size-3.5" />
-              {copied ? t("stays.copied") : t("stays.copy")}
+              {copied
+                ? copiedLabel !== "stays.copied"
+                  ? copiedLabel
+                  : "Copied"
+                : copyLabel !== "stays.copy"
+                  ? copyLabel
+                  : "Copy"}
             </Button>
           </div>
           <pre className="max-h-none whitespace-pre-wrap break-words text-sm leading-relaxed">
