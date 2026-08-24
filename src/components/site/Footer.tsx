@@ -21,14 +21,15 @@ export function Footer() {
       links: [
         { to: "/resources" as const, label: t("nav.resources") },
         { to: "/resources" as const, label: t("footer.guides") },
-        { to: "/resources" as const, label: t("footer.reviews") },
+        { to: "/contact" as const, label: t("nav.contact") },
       ],
     },
     {
       title: t("footer.account"),
       links: [
         { to: "/login" as const, label: t("nav.login") },
-        { to: "/ai-tools" as const, label: t("footer.start") },
+        { to: "/contact" as const, label: t("footer.start") },
+        { to: "/ai-tools" as const, label: t("nav.aiTools") },
       ],
     },
   ];
