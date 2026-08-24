@@ -9,6 +9,42 @@ const PRICE_ENV: Record<string, string> = {
   "ultimate-host-bundle": "STRIPE_PRICE_BUNDLE",
 };
 
+function supabaseRest() {
+  const url = (
+    process.env.VITE_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+    ""
+  ).replace(/\/$/, "");
+  const anon =
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+    "";
+  return { url, anon };
+}
+
+async function alreadyOwns(opts: {
+  url: string;
+  anon: string;
+  accessToken: string;
+  userId: string;
+  slug: string;
+}) {
+  const res = await fetch(
+    `${opts.url}/rest/v1/purchases?user_id=eq.${opts.userId}&product_slug=eq.${opts.slug}&status=eq.paid&select=id`,
+    {
+      headers: {
+        Authorization: `Bearer ${opts.accessToken}`,
+        apikey: opts.anon,
+      },
+    },
+  );
+  if (!res.ok) return false;
+  const rows = (await res.json()) as { id: string }[];
+  return Array.isArray(rows) && rows.length > 0;
+}
+
 export const getPaymentsStatus = createServerFn({ method: "POST" }).handler(async () => {
   const secret = process.env.STRIPE_SECRET_KEY?.trim();
   return { enabled: Boolean(secret) };
@@ -26,6 +62,24 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
 
     const product = products.find((p) => p.slug === data.slug);
     if (!product) throw new Error("Unknown product.");
+
+    if (data.accessToken) {
+      const { resolveAuthedUser } = await import("@/lib/ai/quota.server");
+      const user = await resolveAuthedUser(data.accessToken);
+      const { url, anon } = supabaseRest();
+      if (user && url && anon) {
+        const owned = await alreadyOwns({
+          url,
+          anon,
+          accessToken: data.accessToken,
+          userId: user.id,
+          slug: product.slug,
+        });
+        if (owned) {
+          throw new Error("You already own this product. Open Workspace to download it.");
+        }
+      }
+    }
 
     const priceId = process.env[PRICE_ENV[data.slug] ?? ""]?.trim();
     const origin = process.env.WEBRYA_URL?.replace(/\/$/, "") || "https://webrya.com";
@@ -106,18 +160,19 @@ export const fulfillPurchase = createServerFn({ method: "POST" })
     const user = await resolveAuthedUser(data.accessToken);
     if (!user) throw new Error("Sign in to unlock this purchase in your Workspace.");
 
-    const url = (
-      process.env.VITE_SUPABASE_URL ||
-      process.env.SUPABASE_URL ||
-      (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
-      ""
-    ).replace(/\/$/, "");
-    const anon =
-      process.env.VITE_SUPABASE_ANON_KEY ||
-      process.env.SUPABASE_ANON_KEY ||
-      (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
-      "";
+    const { url, anon } = supabaseRest();
     if (!url || !anon) throw new Error("Database is not connected.");
+
+    const owned = await alreadyOwns({
+      url,
+      anon,
+      accessToken: data.accessToken,
+      userId: user.id,
+      slug,
+    });
+    if (owned) {
+      return { slug, unlocked: true, alreadyOwned: true };
+    }
 
     const insert = await fetch(`${url}/rest/v1/purchases?on_conflict=user_id,product_slug`, {
       method: "POST",
@@ -139,9 +194,17 @@ export const fulfillPurchase = createServerFn({ method: "POST" })
 
     if (!insert.ok) {
       const errText = await insert.text();
-      if (!errText.includes("duplicate") && insert.status !== 409) {
-        throw new Error("Payment succeeded, but unlocking the product failed. Contact support.");
+      const stillOwned = await alreadyOwns({
+        url,
+        anon,
+        accessToken: data.accessToken,
+        userId: user.id,
+        slug,
+      });
+      if (stillOwned || errText.toLowerCase().includes("duplicate") || insert.status === 409) {
+        return { slug, unlocked: true, alreadyOwned: true };
       }
+      throw new Error("Payment succeeded, but unlocking the product failed. Contact support.");
     }
 
     return { slug, unlocked: true };
