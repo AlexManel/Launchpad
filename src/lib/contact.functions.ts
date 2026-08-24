@@ -18,6 +18,16 @@ export const submitContact = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     if (data.website) return { ok: true };
 
+    const payload = {
+      name: data.name,
+      email: data.email,
+      company: data.company || "",
+      topic: data.topic || "",
+      message: data.message,
+      locale: data.locale || "",
+      source: "webrya.com/contact",
+    };
+
     const url = (
       process.env.VITE_SUPABASE_URL ||
       process.env.SUPABASE_URL ||
@@ -40,17 +50,31 @@ export const submitContact = createServerFn({ method: "POST" })
         Prefer: "return=minimal",
       },
       body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-        company: data.company || null,
-        topic: data.topic || null,
-        message: data.message,
-        locale: data.locale || null,
+        name: payload.name,
+        email: payload.email,
+        company: payload.company || null,
+        topic: payload.topic || null,
+        message: payload.message,
+        locale: payload.locale || null,
       }),
     });
 
     if (!res.ok) {
       throw new Error("Could not send the message. Try again in a moment.");
     }
+
+    const hook = process.env.MAKE_CONTACT_WEBHOOK?.trim();
+    if (hook && hook.startsWith("https://")) {
+      try {
+        await fetch(hook, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } catch {
+        /* keep the form success if Make is down */
+      }
+    }
+
     return { ok: true };
   });
