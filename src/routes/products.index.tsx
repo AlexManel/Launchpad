@@ -32,6 +32,10 @@ function tr(t: (k: string) => string, key: string, fallback: string) {
   return v === key ? fallback : v;
 }
 
+function priceLabel(t: (k: string) => string, price: number, fallback: string) {
+  return tr(t, price === 99 ? "price.99" : "price.39", fallback);
+}
+
 function ProductsIndex() {
   const { t } = useI18n();
   const standard = products.filter((p) => !p.featured);
@@ -63,7 +67,7 @@ function ProductsIndex() {
                 ))}
               </ul>
               <div className="mt-auto pt-7">
-                <p className="font-display text-3xl">{p.priceLabel}</p>
+                <p className="font-display text-3xl">{priceLabel(t, p.price, p.priceLabel)}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{t("page.products.once")}</p>
                 <Button asChild className="mt-4 w-full">
                   <Link to="/products/$slug" params={{ slug: p.slug }}>
@@ -82,7 +86,7 @@ function ProductsIndex() {
               <h2 className="mt-4 text-4xl leading-tight">{bundle.name}</h2>
               <p className="mt-4 max-w-xl leading-relaxed opacity-80">{t(`p.${bundle.slug}.desc`)}</p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
-                <span className="font-display text-4xl">{bundle.priceLabel}</span>
+                <span className="font-display text-4xl">{priceLabel(t, bundle.price, bundle.priceLabel)}</span>
                 <span className="text-sm opacity-70">{t("page.products.save")}</span>
               </div>
               <Button asChild size="lg" variant="secondary" className="mt-7">
