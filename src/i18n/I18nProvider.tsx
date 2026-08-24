@@ -8,7 +8,7 @@ import {
   type Locale,
   type MessageKey,
 } from "./locales";
-import { extra } from "./extra";
+import { extra } from "./extra-merge";
 
 const STORAGE_KEY = "webrya_locale";
 
@@ -65,10 +65,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       locale,
       setLocale: setLocaleState,
       t: (key) =>
-        extra[locale][key] ??
-        messages[locale][key as MessageKey] ??
-        extra.en[key] ??
-        messages.en[key as MessageKey] ??
+        extra[locale]?.[key] ??
+        messages[locale]?.[key as MessageKey] ??
+        extra.en?.[key] ??
+        messages.en?.[key as MessageKey] ??
         key,
     }),
     [locale],
