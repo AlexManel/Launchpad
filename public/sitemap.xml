@@ -16,6 +16,8 @@
   <url><loc>https://webrya.com/pricing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://webrya.com/contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://webrya.com/resources</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://webrya.com/resources/review-facts-the-guest-left-out</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://webrya.com/resources/apantisi-kakis-kritikis</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://webrya.com/resources/airbnb-hosting-checklist</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://webrya.com/resources/pricing-strategy-basics</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://webrya.com/resources/ai-prompts-for-hosts</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
