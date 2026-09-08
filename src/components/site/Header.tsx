@@ -48,6 +48,7 @@ export function Header() {
   const nav = [
     { to: "/ai-tools" as const, label: t("nav.aiTools") },
     { to: "/products" as const, label: t("nav.products") },
+    { to: "/compare" as const, label: t("nav.compare") },
     { to: "/resources" as const, label: t("nav.resources") },
     { to: "/pricing" as const, label: t("nav.pricing") },
     { to: "/contact" as const, label: t("nav.contact") },
