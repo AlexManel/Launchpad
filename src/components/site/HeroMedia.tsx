@@ -1,29 +1,17 @@
 import { useEffect, useState } from "react";
 
 const HERO_IMAGE = "/hero-interior.jpg";
-const HERO_DESKTOP = "/hero.mp4";
-const HERO_MOBILE = "/hero-mobile.mp4";
+const HERO_VIDEO = "/hero.mp4";
 
 export function HeroMedia() {
-  const [src, setSrc] = useState<string | null>(null);
+  const [playVideo, setPlayVideo] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const desktop = window.matchMedia("(min-width: 768px)");
-    const apply = () => {
-      if (reduce.matches) {
-        setSrc(null);
-        return;
-      }
-      setSrc(desktop.matches ? HERO_DESKTOP : HERO_MOBILE);
-    };
+    const apply = () => setPlayVideo(!reduce.matches);
     apply();
     reduce.addEventListener("change", apply);
-    desktop.addEventListener("change", apply);
-    return () => {
-      reduce.removeEventListener("change", apply);
-      desktop.removeEventListener("change", apply);
-    };
+    return () => reduce.removeEventListener("change", apply);
   }, []);
 
   return (
@@ -35,9 +23,8 @@ export function HeroMedia() {
         fetchPriority="high"
         decoding="async"
       />
-      {src ? (
+      {playVideo ? (
         <video
-          key={src}
           className="webrya-hero-video absolute inset-0 z-0 h-full w-full object-cover"
           autoPlay
           muted
@@ -47,7 +34,7 @@ export function HeroMedia() {
           poster={HERO_IMAGE}
           aria-hidden="true"
         >
-          <source src={src} type="video/mp4" />
+          <source src={HERO_VIDEO} type="video/mp4" />
         </video>
       ) : null}
     </>
