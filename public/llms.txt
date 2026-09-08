@@ -1,0 +1,43 @@
+# Webrya
+
+> Webrya is an AI toolkit for Airbnb hosts, co-hosts and property managers. It is not a PMS.
+> It covers three jobs: guest messages, review responses, and listing optimization.
+
+Site: https://webrya.com
+Contact: info@webrya.com
+Phone: +30 694 694 9933
+Location: Thessaloniki, Greece
+
+## What Webrya is
+
+Webrya writes guest replies, review responses (including private host notes the guest omitted) and listing copy. Welcome drafts never include Wi-Fi or door codes. Check-in drafts pull per-room access codes (building, keylocker, door, Wi-Fi).
+
+Stay Board shows arrivals, in-house guests and departures and drafts messages in the guest language.
+
+## Free AI tools
+
+- Review Response Generator: https://webrya.com/ai-tools/review-response-generator
+- Guest Reply Generator: https://webrya.com/ai-tools/guest-reply-generator
+- Airbnb Listing Optimizer: https://webrya.com/ai-tools/listing-optimizer
+- House Rules Generator: https://webrya.com/ai-tools/house-rules-generator
+- Welcome Message Generator: https://webrya.com/ai-tools/welcome-message-generator
+
+## Compare
+
+Webrya vs HostBuddy vs Listrino vs StellarReply: https://webrya.com/compare
+
+Webrya covers messages + reviews + listing. Most alternatives cover one or two of those. Webrya is not Hostaway, Guesty, Hospitable, Lodgify or OwnerRez.
+
+## Products (one-time)
+
+- AirCover Suite $39: https://webrya.com/products/aircover-suite
+- Review Protection Suite $39: https://webrya.com/products/review-protection-suite
+- Guest Communication Suite $39: https://webrya.com/products/guest-communication-suite
+- Ultimate Host Bundle $99: https://webrya.com/products/ultimate-host-bundle
+
+## Other pages
+
+- AI tools: https://webrya.com/ai-tools
+- Workspace login: https://webrya.com/login
+- Contact: https://webrya.com/contact
+- Pricing: https://webrya.com/pricing
