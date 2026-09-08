@@ -12,6 +12,7 @@ export function Footer() {
       links: [
         { to: "/ai-tools" as const, label: t("nav.aiTools") },
         { to: "/products" as const, label: t("footer.products") },
+        { to: "/compare" as const, label: t("nav.compare") },
         { to: "/portal" as const, label: t("nav.workspace") },
         { to: "/pricing" as const, label: t("nav.pricing") },
       ],
