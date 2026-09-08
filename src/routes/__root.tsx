@@ -16,6 +16,30 @@ import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/i18n/I18nProvider";
 
+const orgJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Webrya",
+  url: "https://webrya.com",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "AI toolkit for Airbnb hosts: guest messages, review responses with host notes, and listing optimization. Not a property management system.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  publisher: {
+    "@type": "Organization",
+    name: "Webrya",
+    url: "https://webrya.com",
+    email: "info@webrya.com",
+    telephone: "+30-694-694-9933",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Thessaloniki",
+      addressCountry: "GR",
+    },
+  },
+});
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -78,15 +102,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Webrya — Run your short-term rental smarter" },
+      { title: "Webrya — AI toolkit for Airbnb hosts (not a PMS)" },
       {
         name: "description",
         content:
-          "AI-powered tools, ready-made resources and digital solutions built for Airbnb hosts and short-term rental professionals.",
+          "Webrya is an AI toolkit for Airbnb hosts: guest replies, review responses with host notes, and listing optimization. Not a PMS.",
       },
       { name: "author", content: "Webrya" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Webrya" },
+      {
+        property: "og:title",
+        content: "Webrya — AI toolkit for Airbnb hosts",
+      },
+      {
+        property: "og:description",
+        content:
+          "Guest messages, review responses and listing optimization in one workspace. Not Guesty. Not Hostaway.",
+      },
       { property: "og:image", content: "https://webrya.com/villa.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://webrya.com/villa.jpg" },
@@ -118,6 +151,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: orgJsonLd }} />
       </head>
       <body>
         {children}
@@ -138,7 +172,6 @@ function RootComponent() {
       <div className="flex min-h-screen flex-col">
         {!bare && <Header />}
         <div className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </div>
         {!bare && <Footer />}
