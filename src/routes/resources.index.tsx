@@ -16,14 +16,10 @@ export const Route = createFileRoute("/resources/")({
         content:
           "Guides on Airbnb hosting, AI for hosts, guest communication, review management and property management — written for short-term rental professionals.",
       },
-      {
-        property: "og:title",
-        content: "Airbnb Hosting Resources & Guides — Webrya",
-      },
+      { property: "og:title", content: "Airbnb Hosting Resources & Guides — Webrya" },
       {
         property: "og:description",
-        content:
-          "Practical guides for Airbnb hosts, co-hosts and property managers.",
+        content: "Practical guides for Airbnb hosts, co-hosts and property managers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -38,27 +34,27 @@ function tr(t: (k: string) => string, key: string, fallback: string) {
 }
 
 function Resources() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [active, setActive] = useState("All");
 
   const categories = ["All", ...resourceCategories];
 
+  const visible = resources.filter((resource) => {
+    if (locale === "el" && resource.slug === "review-facts-the-guest-left-out") return false;
+    if (locale !== "el" && resource.slug === "apantisi-kakis-kritikis") return false;
+    return true;
+  });
+
   const list =
-    active === "All"
-      ? resources
-      : resources.filter((resource) => resource.category === active);
+    active === "All" ? visible : visible.filter((resource) => resource.category === active);
 
   const [featured, ...rest] = list;
 
   const catLabel = (category: string) =>
-    category === "All"
-      ? t("page.resources.all")
-      : tr(t, `cat.${category}`, category);
+    category === "All" ? t("page.resources.all") : tr(t, `cat.${category}`, category);
 
-  const resTitle = (slug: string, fallback: string) =>
-    tr(t, `r.${slug}.title`, fallback);
-  const resExcerpt = (slug: string, fallback: string) =>
-    tr(t, `r.${slug}.excerpt`, fallback);
+  const resTitle = (slug: string, fallback: string) => tr(t, `r.${slug}.title`, fallback);
+  const resExcerpt = (slug: string, fallback: string) => tr(t, `r.${slug}.excerpt`, fallback);
 
   return (
     <>
@@ -94,15 +90,12 @@ function Resources() {
             className="group mt-10 block rounded-2xl border border-border bg-card p-8 transition-shadow hover:shadow-[var(--shadow-card)] lg:p-10"
           >
             <p className="eyebrow">{catLabel(featured.category)}</p>
-
             <h2 className="mt-4 max-w-3xl text-3xl leading-tight group-hover:underline">
               {resTitle(featured.slug, featured.title)}
             </h2>
-
             <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
               {resExcerpt(featured.slug, featured.excerpt)}
             </p>
-
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
               {tr(t, "r.readGuide", "Read guide")} · {featured.readTime}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -120,20 +113,16 @@ function Resources() {
                 className="group flex flex-col rounded-xl border border-border bg-card p-6 transition-shadow hover:shadow-[var(--shadow-card)]"
               >
                 <p className="eyebrow">{catLabel(resource.category)}</p>
-
                 <h3 className="mt-3 text-lg leading-snug group-hover:underline">
                   {resTitle(resource.slug, resource.title)}
                 </h3>
-
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                   {resExcerpt(resource.slug, resource.excerpt)}
                 </p>
-
                 <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
                   <span>
                     {resource.readTime} {tr(t, "r.read", "read")}
                   </span>
-
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </Link>
@@ -145,15 +134,12 @@ function Resources() {
           <div>
             <div className="flex items-center gap-2">
               <BookOpen className="size-5 text-accent" />
-
               <h2 className="text-2xl">{tr(t, "r.ctaTitle", "Get the tools behind the guides.")}</h2>
             </div>
-
             <p className="mt-2 text-sm text-muted-foreground">
               {tr(t, "r.ctaBody", "Free AI tools for hosts — nothing to install.")}
             </p>
           </div>
-
           <Button asChild size="lg">
             <Link to="/ai-tools">
               {tr(t, "r.ctaButton", "Explore AI Tools")}
