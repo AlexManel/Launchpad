@@ -9,6 +9,7 @@ import {
   resourceKeysTr,
   resourceKeysFr,
 } from "./resource-keys";
+import { resourceKeysNew } from "./resource-keys-new";
 import { catalogKeys } from "./catalog-keys";
 import {
   leftoverEn,
@@ -22,7 +23,14 @@ import {
 type Dict = Record<string, string>;
 
 export const extra: Record<Locale, Dict> = {
-  en: { ...portalKeysEn, ...resourceKeysEn, ...catalogKeys.en, ...leftoverEn, ...base.en },
+  en: {
+    ...portalKeysEn,
+    ...resourceKeysEn,
+    ...resourceKeysNew.en,
+    ...catalogKeys.en,
+    ...leftoverEn,
+    ...base.en,
+  },
   el: {
     ...portalKeysEn,
     ...resourceKeysEn,
@@ -30,6 +38,7 @@ export const extra: Record<Locale, Dict> = {
     ...leftoverEn,
     ...portalKeysEl,
     ...resourceKeysEl,
+    ...resourceKeysNew.el,
     ...catalogKeys.el,
     ...leftoverEl,
     ...base.el,
@@ -40,6 +49,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.en,
     ...leftoverEn,
     ...resourceKeysDe,
+    ...resourceKeysNew.de,
     ...catalogKeys.de,
     ...leftoverDe,
     ...base.de,
@@ -50,6 +60,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.en,
     ...leftoverEn,
     ...resourceKeysRu,
+    ...resourceKeysNew.ru,
     ...catalogKeys.ru,
     ...leftoverRu,
     ...base.ru,
@@ -60,6 +71,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.en,
     ...leftoverEn,
     ...resourceKeysTr,
+    ...resourceKeysNew.tr,
     ...catalogKeys.tr,
     ...leftoverTr,
     ...base.tr,
@@ -70,6 +82,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.en,
     ...leftoverEn,
     ...resourceKeysFr,
+    ...resourceKeysNew.fr,
     ...catalogKeys.fr,
     ...leftoverFr,
     ...base.fr,
