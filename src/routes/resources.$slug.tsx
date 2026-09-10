@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/Section";
 import { resources } from "@/data/webrya";
 import { resourceArticles } from "@/data/resource-content";
+import { resourceArticlesEl } from "@/data/resource-content-el";
 import { omittedFactsEn, omittedFactsEl } from "@/data/articles/review-omitted-facts";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -16,13 +17,14 @@ const extraArticles = {
 export const Route = createFileRoute("/resources/$slug")({
   loader: ({ params }) => {
     const resource = resources.find((item) => item.slug === params.slug);
-    const article = resourceArticles[params.slug] ?? extraArticles[params.slug as keyof typeof extraArticles];
+    const article =
+      resourceArticles[params.slug] ?? extraArticles[params.slug as keyof typeof extraArticles];
 
     if (!resource || !article) {
       throw notFound();
     }
 
-    return { resource, article };
+    return { resource, article, slug: params.slug };
   },
 
   head: ({ loaderData }) => {
@@ -59,11 +61,18 @@ function tr(t: (k: string) => string, key: string, fallback: string) {
 }
 
 function ResourceArticlePage() {
-  const { t } = useI18n();
-  const { resource, article } = Route.useLoaderData();
+  const { t, locale } = useI18n();
+  const { resource, article: articleEn, slug } = Route.useLoaderData();
+
+  const article =
+    locale === "el"
+      ? resourceArticlesEl[slug] ?? (slug === "apantisi-kakis-kritikis" ? omittedFactsEl : articleEn)
+      : slug === "review-facts-the-guest-left-out"
+        ? omittedFactsEn
+        : articleEn;
 
   const relatedResources = article.relatedSlugs
-    .map((slug) => resources.find((item) => item.slug === slug))
+    .map((relatedSlug) => resources.find((item) => item.slug === relatedSlug))
     .filter(Boolean);
 
   const title = tr(t, `r.${resource.slug}.title`, resource.title);
