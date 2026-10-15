@@ -13,7 +13,7 @@ export const Route = createFileRoute("/pricing")({
       {
         name: "description",
         content:
-          "One-time professional Webrya solutions for short-term rental hosts and property managers. Host Starter $99, Host Pro $299, Business from $699.",
+          "One-time professional Webrya solutions for short-term rental hosts and property managers. Host Starter $99, Host Pro $299, Business from $699. Custom websites available upon request.",
       },
       { property: "og:title", content: "Webrya Solutions — One-time Setups for Hosts" },
       {
@@ -92,6 +92,51 @@ function Pricing() {
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* Websites section */}
+        <div className="mt-20">
+          <p className="eyebrow">Websites</p>
+          <h2 className="mt-3 text-3xl tracking-tight">Επαγγελματικές ιστοσελίδες</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Ιστοσελίδες για properties και επιχειρήσεις. One-time setup. Δικές σου. Χωρίς συνδρομή.
+          </p>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="flex flex-col rounded-xl border border-border bg-card p-8">
+              <h3 className="text-2xl">Property Website</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Ιστοσελίδα για ένα ακίνητο: gallery, περιγραφή, φόρμα επικοινωνίας, link για direct booking.
+              </p>
+              <p className="mt-6 font-display text-3xl">Τιμή με συνεννόηση</p>
+              <ul className="mt-6 flex-1 space-y-3 text-sm">
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Custom design</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Mobile responsive</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />SEO basics</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Φόρμα επικοινωνίας</li>
+              </ul>
+              <Button asChild size="lg" variant="outline" className="mt-8 w-full">
+                <Link to="/contact">Ζήτησε προσφορά</Link>
+              </Button>
+            </div>
+
+            <div className="flex flex-col rounded-xl border border-border bg-card p-8">
+              <h3 className="text-2xl">Business Website</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Για property managers ή τοπικές επιχειρήσεις (υπηρεσίες, έργα, επικοινωνία).
+              </p>
+              <p className="mt-6 font-display text-3xl">Τιμή με συνεννόηση</p>
+              <ul className="mt-6 flex-1 space-y-3 text-sm">
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Custom design & structure</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Pages για υπηρεσίες / έργα</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Contact & lead forms</li>
+                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />SEO basics</li>
+              </ul>
+              <Button asChild size="lg" variant="outline" className="mt-8 w-full">
+                <Link to="/contact">Ζήτησε προσφορά</Link>
+              </Button>
+            </div>
+          </div>
         </div>
 
         <div className="mt-16 rounded-xl border border-border bg-surface p-8 lg:p-12">
