@@ -113,15 +113,16 @@ function Home() {
   }, [t]);
 
   const offers: Array<{
-    id: "websites" | "cohosting" | "landings" | "tools";
+    id: "websites" | "prep" | "photos" | "listing" | "checkin" | "apps";
     title: string;
     body: string;
-    wide?: boolean;
   }> = [
     { id: "websites", title: t("offer.web.t"), body: t("offer.web.b") },
-    { id: "cohosting", title: t("offer.cohost.t"), body: t("offer.cohost.b") },
-    { id: "landings", title: t("offer.land.t"), body: t("offer.land.b") },
-    { id: "tools", title: t("offer.tools.t"), body: t("offer.tools.b"), wide: true },
+    { id: "prep", title: t("offer.prep.t"), body: t("offer.prep.b") },
+    { id: "photos", title: t("offer.photos.t"), body: t("offer.photos.b") },
+    { id: "listing", title: t("offer.listing.t"), body: t("offer.listing.b") },
+    { id: "checkin", title: t("offer.checkin.t"), body: t("offer.checkin.b") },
+    { id: "apps", title: t("offer.apps.t"), body: t("offer.apps.b") },
   ];
 
   return (
@@ -200,12 +201,9 @@ function Home() {
             <article
               key={offer.id}
               id={offer.id}
-              className={[
-                "scroll-mt-28 flex h-full flex-col rounded-2xl border border-white/10 bg-[#100a28] p-6",
-                offer.wide ? "lg:col-span-3 lg:flex-row lg:items-end lg:justify-between lg:gap-10" : "",
-              ].join(" ")}
+              className="scroll-mt-28 flex h-full flex-col rounded-2xl border border-white/10 bg-[#100a28] p-6"
             >
-              <div className={offer.wide ? "max-w-2xl" : ""}>
+              <div>
                 <span className="text-xs font-semibold tracking-[0.16em] text-[#8eb6ff]">
                   0{index + 1}
                 </span>
@@ -214,7 +212,7 @@ function Home() {
               </div>
               <a
                 href="#contact"
-                className="mt-6 inline-flex text-sm font-medium text-[#9ec4ff] hover:text-white"
+                className="mt-auto inline-flex pt-6 text-sm font-medium text-[#9ec4ff] hover:text-white"
               >
                 {t("offer.cta")}
               </a>

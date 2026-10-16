@@ -71,9 +71,11 @@ export function ContactForm() {
             className="mt-1.5 h-10 w-full rounded-md border border-input bg-[#100a28] px-3 text-sm text-[#f4f6ff] [color-scheme:dark]"
           >
             <option value="website">{tr(t, "contact.topic.website", "A website")}</option>
-            <option value="cohosting">{tr(t, "contact.topic.cohost", "Co-hosting")}</option>
-            <option value="landing">{tr(t, "contact.topic.landing", "A landing page")}</option>
-            <option value="tools">{tr(t, "contact.topic.tools", "Tools and setup")}</option>
+            <option value="prep">{tr(t, "contact.topic.prep", "Property setup")}</option>
+            <option value="photos">{tr(t, "contact.topic.photos", "Photography")}</option>
+            <option value="listing">{tr(t, "contact.topic.listing", "A listing")}</option>
+            <option value="checkin">{tr(t, "contact.topic.checkin", "Digital check-in")}</option>
+            <option value="apps">{tr(t, "contact.topic.apps", "An app or automation")}</option>
             <option value="other">{tr(t, "contact.topic.other", "Something else")}</option>
           </select>
         </label>

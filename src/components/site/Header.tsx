@@ -9,8 +9,8 @@ import { useI18n } from "@/i18n/I18nProvider";
 
 type ServiceItem = {
   label: string;
-  to: "/" | "/ai-tools";
-  hash?: "websites" | "cohosting" | "landings" | "tools";
+  to: "/";
+  hash: "websites" | "prep" | "photos" | "listing" | "checkin" | "apps";
 };
 
 export function Header() {
@@ -27,9 +27,11 @@ export function Header() {
 
   const services: ServiceItem[] = [
     { to: "/", hash: "websites", label: t("nav.websites") },
-    { to: "/", hash: "cohosting", label: t("nav.cohost") },
-    { to: "/", hash: "landings", label: t("nav.landings") },
-    { to: "/ai-tools", label: t("nav.aiTools") },
+    { to: "/", hash: "prep", label: t("nav.prep") },
+    { to: "/", hash: "photos", label: t("nav.photos") },
+    { to: "/", hash: "listing", label: t("nav.listing") },
+    { to: "/", hash: "checkin", label: t("nav.checkin") },
+    { to: "/", hash: "apps", label: t("nav.apps") },
   ];
 
   useEffect(() => {
