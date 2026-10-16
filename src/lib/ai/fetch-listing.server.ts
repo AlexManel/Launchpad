@@ -143,14 +143,16 @@ export async function resolveListingInput(input: string): Promise<{
       };
     }
 
+    const limited =
+      body.length < 80
+        ? "Full page body was limited; used title/description/structured data from the link. For best results, also paste the full listing text."
+        : "";
+
     return {
       text: combined,
       fromUrl: true,
       sourceUrl: trimmed,
-      warning:
-        body.length < 80
-          ? "Full page body was limited; used title/description/structured data from the link. For best results, also paste the full listing text."
-          : undefined,
+      ...(limited ? { warning: limited } : {}),
     };
   } catch {
     return {

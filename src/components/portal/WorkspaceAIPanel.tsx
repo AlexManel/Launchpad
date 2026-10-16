@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Copy, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { tools } from "@/data/webrya";
-import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiTool } from "@/lib/ai/types";
 import type { Property } from "@/lib/portal/types";
 import { buildPropertyContext } from "@/lib/portal/property-context";
@@ -47,6 +46,7 @@ export function WorkspaceAIPanel({ properties }: { properties: Property[] }) {
         data: { session },
       } = await supabase.auth.getSession();
 
+      const { generateToolOutput } = await import("@/lib/ai-tools.functions");
       const res = await generateToolOutput({
         data: {
           tool: tool.slug as AiTool,

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { PanelTitle, Field } from "@/components/portal/fields";
 import { inputClass, textareaClass } from "@/lib/portal/form-utils";
 import { supabase } from "@/lib/supabase";
-import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { Property, Room, Stay } from "@/lib/portal/types";
 import { LOCALES, LOCALE_LABELS, useI18n } from "@/i18n/I18nProvider";
 import { LOCALE_OUTPUT, type Locale } from "@/i18n/locales";
@@ -143,6 +142,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
         ]
           .filter(Boolean)
           .join("\n");
+        const { generateToolOutput } = await import("@/lib/ai-tools.functions");
         const res = await generateToolOutput({
           data: {
             tool: "welcome-message-generator",
@@ -171,6 +171,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
         ]
           .filter(Boolean)
           .join("\n");
+        const { generateToolOutput } = await import("@/lib/ai-tools.functions");
         const res = await generateToolOutput({
           data: {
             tool: "guest-reply-generator",
@@ -184,6 +185,7 @@ export function StayBoard({ properties }: { properties: Property[] }) {
       } else {
         const input = `No public review text was pasted. Guest ${stay.guest_name} stayed ${stay.check_in} to ${stay.check_out}${property ? ` at ${property.name}` : ""}. Write a HOST FILE note the host can keep, and a short PUBLIC REPLY only if a review-style thanks is still appropriate.`;
         const extra = stay.notes ? `Host notes / omitted facts: ${stay.notes}` : "Host notes: not provided";
+        const { generateToolOutput } = await import("@/lib/ai-tools.functions");
         const res = await generateToolOutput({
           data: {
             tool: "review-response-generator",

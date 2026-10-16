@@ -11,6 +11,7 @@ import {
 } from "./resource-keys";
 import { resourceKeysNew } from "./resource-keys-new";
 import { catalogKeys } from "./catalog-keys";
+import { offerKeys } from "./offer-keys";
 import {
   leftoverEn,
   leftoverEl,
@@ -30,6 +31,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.en,
     ...leftoverEn,
     ...base.en,
+    ...offerKeys.en,
   },
   el: {
     ...portalKeysEn,
@@ -42,6 +44,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.el,
     ...leftoverEl,
     ...base.el,
+    ...offerKeys.el,
   },
   de: {
     ...portalKeysEn,
@@ -53,6 +56,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.de,
     ...leftoverDe,
     ...base.de,
+    ...offerKeys.de,
   },
   ru: {
     ...portalKeysEn,
@@ -64,6 +68,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.ru,
     ...leftoverRu,
     ...base.ru,
+    ...offerKeys.ru,
   },
   tr: {
     ...portalKeysEn,
@@ -75,6 +80,7 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.tr,
     ...leftoverTr,
     ...base.tr,
+    ...offerKeys.tr,
   },
   fr: {
     ...portalKeysEn,
@@ -86,5 +92,6 @@ export const extra: Record<Locale, Dict> = {
     ...catalogKeys.fr,
     ...leftoverFr,
     ...base.fr,
+    ...offerKeys.fr,
   },
 };

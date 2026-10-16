@@ -19,8 +19,6 @@ import { Logo } from "@/components/site/Logo";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import { toast } from "sonner";
 import { products, tools } from "@/data/webrya";
-import { fulfillPurchase } from "@/lib/stripe.functions";
-import { downloadProductKit } from "@/lib/kits.functions";
 import {
   AccountPanel,
   PanelTitle,
@@ -33,10 +31,14 @@ import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 import { useI18n } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/portal")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    purchase: typeof search.purchase === "string" ? search.purchase : undefined,
-    session_id: typeof search.session_id === "string" ? search.session_id : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const purchase = search["purchase"];
+    const sessionId = search["session_id"];
+    return {
+      ...(typeof purchase === "string" ? { purchase } : {}),
+      ...(typeof sessionId === "string" ? { session_id: sessionId } : {}),
+    };
+  },
   head: () => ({
     meta: [
       { title: "Webrya Workspace" },
@@ -90,10 +92,9 @@ function PortalPage() {
       }
 
       const user = session.user;
-      const metadataName =
-        typeof user.user_metadata?.full_name === "string"
-          ? user.user_metadata.full_name.trim()
-          : "";
+      const metadata = user.user_metadata;
+      const rawName = metadata?.["full_name"];
+      const metadataName = typeof rawName === "string" ? rawName.trim() : "";
 
       if (mounted) {
         setName(metadataName || user.email?.split("@")[0] || "Host");
@@ -136,6 +137,7 @@ function PortalPage() {
 
       if (search.session_id && session.access_token) {
         try {
+          const { fulfillPurchase } = await import("@/lib/stripe.functions");
           const result = await fulfillPurchase({
             data: { sessionId: search.session_id, accessToken: session.access_token },
           });
@@ -181,6 +183,7 @@ function PortalPage() {
         toast.error(tr(t, "ws.signInAgain", "Sign in again to download."));
         return;
       }
+      const { downloadProductKit } = await import("@/lib/kits.functions");
       const kit = await downloadProductKit({ data: { slug, accessToken: token } });
       const blob = new Blob([kit.markdown], { type: "text/markdown;charset=utf-8" });
       const url = URL.createObjectURL(blob);

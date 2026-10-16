@@ -23,7 +23,7 @@ export function LanguageSwitcher({
         aria-label="Language"
       >
         {LOCALES.map((code) => (
-          <option key={code} value={code} className="text-foreground">
+          <option key={code} value={code} className="bg-[#140e30] text-[#f4f6ff]">
             {LOCALE_LABELS[code]}
           </option>
         ))}

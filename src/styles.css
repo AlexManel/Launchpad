@@ -110,75 +110,55 @@
 :root {
   --radius: 0.625rem;
 
-  /* Warm premium background */
-  --background: oklch(0.982 0.005 90);
+  /* Night sky — matched to the WR lockup */
+  --background: #07041c;
+  --foreground: #f4f6ff;
 
-  /* Deep charcoal */
-  --foreground: oklch(0.20 0.012 180);
+  --surface: #100a28;
+  --surface-foreground: #f4f6ff;
 
-  /* Surfaces */
-  --surface: oklch(0.970 0.005 90);
-  --surface-foreground: oklch(0.20 0.012 180);
+  --card: #140e30;
+  --card-foreground: #f4f6ff;
 
-  --card: oklch(0.998 0.001 90);
-  --card-foreground: oklch(0.20 0.012 180);
+  --popover: #140e30;
+  --popover-foreground: #f4f6ff;
 
-  --popover: oklch(0.998 0.001 90);
-  --popover-foreground: oklch(0.20 0.012 180);
+  --primary: #3d7bff;
+  --primary-foreground: #ffffff;
 
-  /*
-   * Webrya professional — deep forest teal
-   * Calm, host-grade, less "startup mint"
-   */
-  --primary: oklch(0.36 0.055 175);
-  --primary-foreground: oklch(0.99 0.002 95);
+  --ink: #050014;
+  --ink-foreground: #f4f6ff;
 
-  --ink: oklch(0.155 0.012 180);
-  --ink-foreground: oklch(0.97 0.003 90);
+  --secondary: #1b1440;
+  --secondary-foreground: #e7e9ff;
 
-  --secondary: oklch(0.950 0.005 90);
-  --secondary-foreground: oklch(0.30 0.012 180);
+  --muted: #1b1440;
+  --muted-foreground: #b7b3d6;
 
-  --muted: oklch(0.950 0.005 90);
-  --muted-foreground: oklch(0.485 0.012 180);
+  --accent: #8b5cf6;
+  --accent-foreground: #ffffff;
 
-  --accent: oklch(0.42 0.065 175);
-  --accent-foreground: oklch(0.99 0.002 95);
+  --destructive: oklch(0.62 0.2 18);
+  --destructive-foreground: #ffffff;
 
-  --destructive: oklch(0.55 0.19 27);
-  --destructive-foreground: oklch(0.98 0.005 90);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: #6aa2ff;
 
-  /*
-   * Hairline borders
-   */
-  --border: oklch(0.885 0.007 90);
-  --input: oklch(0.885 0.007 90);
+  --chart-1: #3d7bff;
+  --chart-2: #8b5cf6;
+  --chart-3: #c084fc;
+  --chart-4: #67e8f9;
+  --chart-5: #a78bfa;
 
-  --ring: oklch(0.42 0.065 175);
-
-  /*
-   * Charts
-   */
-  --chart-1: oklch(0.36 0.055 175);
-  --chart-2: oklch(0.42 0.065 175);
-  --chart-3: oklch(0.55 0.04 180);
-  --chart-4: oklch(0.70 0.025 90);
-  --chart-5: oklch(0.45 0.02 200);
-
-  /*
-   * Sidebar
-   */
-  --sidebar: oklch(0.155 0.012 180);
-  --sidebar-foreground: oklch(0.94 0.004 90);
-
-  --sidebar-primary: oklch(0.72 0.055 185);
-  --sidebar-primary-foreground: oklch(0.18 0.012 180);
-
-  --sidebar-accent: oklch(0.27 0.015 180);
-  --sidebar-accent-foreground: oklch(0.97 0.003 90);
-
-  --sidebar-border: oklch(0.32 0.012 180);
-  --sidebar-ring: oklch(0.72 0.055 185);
+  --sidebar: #07041c;
+  --sidebar-foreground: #f4f6ff;
+  --sidebar-primary: #3d7bff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1b1440;
+  --sidebar-accent-foreground: #f4f6ff;
+  --sidebar-border: oklch(1 0 0 / 14%);
+  --sidebar-ring: #6aa2ff;
 }
 
 /* =========================================================
@@ -243,12 +223,7 @@
   body {
     margin: 0;
 
-    background:
-      linear-gradient(
-        180deg,
-        oklch(0.985 0.004 90),
-        oklch(0.982 0.005 90)
-      );
+    background: #07041c;
 
     color: var(--color-foreground);
 
@@ -339,7 +314,7 @@
 
   text-transform: uppercase;
 
-  color: var(--color-muted-foreground);
+  color: #8eb6ff;
 }
 
 /*
@@ -369,8 +344,8 @@
   background:
     linear-gradient(
       180deg,
-      oklch(1 0 0 / 0.72),
-      oklch(0.998 0.001 90)
+      #1a1240,
+      #140e30
     );
 
   border-radius: var(--radius-lg);
@@ -519,16 +494,6 @@ section:first-of-type {
   position: relative;
 }
 
-/*
- * Images inside hero become more premium without affecting
- * other page imagery.
- */
-
-section:first-of-type figure,
-section:first-of-type > div {
-  position: relative;
-}
-
 /* =========================================================
    SECTION RHYTHM
    ========================================================= */
@@ -598,8 +563,8 @@ img[class*="object-cover"] {
   }
 
   .border-border:hover {
-    border-color: oklch(0.78 0.012 90);
-    background-color: oklch(0.99 0.002 90);
+    border-color: oklch(0.62 0.16 275 / 55%);
+    background-color: #1a1240;
   }
 }
 
@@ -651,7 +616,7 @@ header a[href="/"] {
 [class*="premium-card"] {
 
   background-color:
-    oklch(0.998 0.001 90);
+    #140e30;
 
   backdrop-filter: blur(8px);
 }
@@ -740,7 +705,7 @@ header a[href="/"] {
   isolation: isolate;
 
   background:
-    #171918;
+    #07041c;
 }
 
 .webrya-hero-video,
@@ -810,7 +775,7 @@ header a[href="/"] {
     linear-gradient(
       to bottom,
       transparent,
-      oklch(0.982 0.005 90)
+      #07041c
     );
 
   pointer-events: none;
@@ -912,7 +877,7 @@ header a[href="/"] {
   border-radius: 1rem;
 
   background:
-    oklch(0.998 0.001 90);
+    #100a28;
 
   box-shadow:
     var(--shadow-premium);
@@ -952,8 +917,8 @@ header a[href="/"] {
   background:
     linear-gradient(
       135deg,
-      oklch(0.975 0.006 90),
-      oklch(0.955 0.008 90)
+      #1a1240,
+      #100a28
     );
 }
 
@@ -987,7 +952,7 @@ footer {
     1px solid var(--color-border);
 
   background:
-    oklch(0.982 0.005 90);
+    #07041c;
 }
 
 /* =========================================================
@@ -1120,7 +1085,7 @@ footer {
    ========================================================= */
 
 .webrya-hero {
-  background: #111817;
+  background: #07041c;
 }
 
 .webrya-hero video {
@@ -1161,4 +1126,71 @@ footer {
   .webrya-tool-card:hover {
     transform: none;
   }
+}
+
+/* =========================================================
+   STUDIO — public marketing
+   ========================================================= */
+
+.studio-hero-title {
+  max-width: 16ch;
+  font-size: clamp(2.15rem, 5.2vw, 4.35rem);
+  line-height: 0.98;
+  letter-spacing: -0.046em;
+  text-wrap: balance;
+}
+
+.services-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 80;
+  min-width: 15.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #140e30;
+  color: #f4f6ff;
+  box-shadow: var(--shadow-lift);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 200ms ease,
+    visibility 200ms ease;
+}
+
+.services-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  right: 0;
+  left: 0;
+  height: 14px;
+}
+
+.services-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@keyframes studio-ken {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .studio-still {
+    animation: studio-ken 12s ease-out forwards;
+  }
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
 }

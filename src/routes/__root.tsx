@@ -24,7 +24,7 @@ const orgJsonLd = JSON.stringify({
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description:
-    "AI toolkit for Airbnb hosts: guest messages, review responses with host notes, and listing optimization. Not a property management system.",
+    "Premium sites and operational tools for properties and businesses. Built once. Owned by you.",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   publisher: {
     "@type": "Organization",
@@ -62,7 +62,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
 
@@ -102,23 +102,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Webrya — AI toolkit for Airbnb hosts (not a PMS)" },
+      { title: "Webrya — Websites, tools and systems" },
       {
         name: "description",
         content:
-          "Webrya is an AI toolkit for Airbnb hosts: guest replies, review responses with host notes, and listing optimization. Not a PMS.",
+          "Premium sites and operational tools for properties and businesses. Built once. Owned by you.",
       },
       { name: "author", content: "Webrya" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Webrya" },
       {
         property: "og:title",
-        content: "Webrya — AI toolkit for Airbnb hosts",
+        content: "Webrya — Websites, tools and systems",
       },
       {
         property: "og:description",
         content:
-          "Guest messages, review responses and listing optimization in one workspace. Not Guesty. Not Hostaway.",
+          "Premium sites and operational tools for properties and businesses. Built once. Owned by you.",
       },
       { property: "og:image", content: "https://webrya.com/villa.jpg" },
       { name: "twitter:card", content: "summary_large_image" },

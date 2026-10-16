@@ -26,8 +26,8 @@ export async function generateAI(
   const max_tokens = getMaxOutputTokens(request.tool);
   const temperature = getTemperature(request.tool);
 
-  const xai = process.env.XAI_API_KEY;
-  const gemini = process.env.GEMINI_API_KEY;
+  const xai = process.env["XAI_API_KEY"];
+  const gemini = process.env["GEMINI_API_KEY"];
 
   let text = "";
 

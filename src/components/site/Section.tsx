@@ -3,11 +3,17 @@ import type { ReactNode } from "react";
 export function Section({
   children,
   className = "",
+  id,
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
-  return <section className={`mx-auto max-w-6xl px-5 lg:px-8 ${className}`}>{children}</section>;
+  return (
+    <section id={id} className={`mx-auto max-w-6xl px-5 lg:px-8 ${className}`}>
+      {children}
+    </section>
+  );
 }
 
 export function PageHeader({

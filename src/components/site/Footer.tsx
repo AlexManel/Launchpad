@@ -13,7 +13,6 @@ export function Footer() {
         { to: "/ai-tools" as const, label: t("nav.aiTools") },
         { to: "/products" as const, label: t("footer.products") },
         { to: "/compare" as const, label: t("nav.compare") },
-        { to: "/portal" as const, label: t("nav.workspace") },
         { to: "/pricing" as const, label: t("nav.pricing") },
       ],
     },
@@ -28,7 +27,6 @@ export function Footer() {
     {
       title: t("footer.account"),
       links: [
-        { to: "/login" as const, label: t("nav.login") },
         { to: "/contact" as const, label: t("footer.start") },
         { to: "/ai-tools" as const, label: t("nav.aiTools") },
       ],
@@ -39,7 +37,7 @@ export function Footer() {
     <footer className="mt-24 border-t border-border bg-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)] lg:px-8">
         <div className="max-w-xs">
-          <Logo />
+          <Logo wordmark={false} named />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
             {t("footer.blurb")}
           </p>

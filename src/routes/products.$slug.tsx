@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/Section";
 import { products } from "@/data/webrya";
-import { createCheckoutSession, getPaymentsStatus } from "@/lib/stripe.functions";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -50,7 +49,10 @@ function ProductPage() {
   const [paying, setPaying] = useState(false);
 
   useEffect(() => {
-    void getPaymentsStatus().then((s) => setStripeOn(s.enabled)).catch(() => setStripeOn(false));
+    void import("@/lib/stripe.functions")
+      .then(({ getPaymentsStatus }) => getPaymentsStatus())
+      .then((s) => setStripeOn(s.enabled))
+      .catch(() => setStripeOn(false));
   }, []);
 
   const startCheckout = async () => {
@@ -70,6 +72,7 @@ function ProductPage() {
         window.location.href = `/login?next=/products/${product.slug}`;
         return;
       }
+      const { createCheckoutSession } = await import("@/lib/stripe.functions");
       const session = await createCheckoutSession({
         data: { slug: product.slug, accessToken },
       });

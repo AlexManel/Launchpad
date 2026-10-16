@@ -27,7 +27,7 @@ export async function getAnonymousUses(): Promise<number> {
     const header =
       (typeof api.getRequestHeader === "function"
         ? api.getRequestHeader("cookie")
-        : api.getWebRequest?.().headers.get("cookie")) ?? "";
+        : api.getRequest().headers.get("cookie")) ?? "";
     return parseCount(readNamedCookie(String(header), COOKIE));
   } catch {
     return 0;
@@ -61,18 +61,18 @@ export async function resolveAuthedUser(accessToken?: string) {
   const token = accessToken?.trim();
   if (!token) return null;
   const url = (
-    process.env.VITE_SUPABASE_URL ||
-    process.env.SUPABASE_URL ||
+    process.env["VITE_SUPABASE_URL"] ||
+    process.env["SUPABASE_URL"] ||
     (typeof import.meta !== "undefined"
-      ? (import.meta.env.VITE_SUPABASE_URL as string | undefined)
+      ? (import.meta.env["VITE_SUPABASE_URL"] as string | undefined)
       : "") ||
     ""
   ).replace(/\/$/, "");
   const anon =
-    process.env.VITE_SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
+    process.env["VITE_SUPABASE_ANON_KEY"] ||
+    process.env["SUPABASE_ANON_KEY"] ||
     (typeof import.meta !== "undefined"
-      ? (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)
+      ? (import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined)
       : "") ||
     "";
   if (!url || !anon) return null;

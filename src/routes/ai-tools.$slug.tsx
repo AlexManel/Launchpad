@@ -26,7 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Section } from "@/components/site/Section";
 import { tools } from "@/data/webrya";
-import { generateToolOutput } from "@/lib/ai-tools.functions";
 import type { AiTool } from "@/lib/ai/types";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import { LOCALES, LOCALE_LABELS, useI18n } from "@/i18n/I18nProvider";
@@ -169,6 +168,7 @@ function ToolPage() {
     setFeedback(null);
 
     try {
+      const { generateToolOutput } = await import("@/lib/ai-tools.functions");
       const res = await generateToolOutput({
         data: {
           tool: slug as AiTool,
@@ -374,13 +374,12 @@ function ToolPage() {
             <DialogTitle>Free limit reached</DialogTitle>
             <DialogDescription className="text-left leading-relaxed">
               You have used your {FREE_LIMIT} free AI generations in this browser.
-              Create a free Webrya account to keep generating guest replies, review
-              responses and more — and unlock property-aware tools in your Workspace.
+              The digital products include the full library if you want to keep going.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex-col gap-2 sm:flex-col">
             <Button asChild className="w-full">
-              <Link to="/login">Create free account / Sign in</Link>
+              <Link to="/products">View digital products</Link>
             </Button>
             <Button
               type="button"

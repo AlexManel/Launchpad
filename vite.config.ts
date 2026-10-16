@@ -5,11 +5,21 @@
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+// @ts-expect-error platform plugin is plain JavaScript
+import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
+
+const nitroConfig = {
+  preset: "vercel",
+  serverDir: "./server",
+};
 
 export default defineConfig({
+  plugins: [grokPwaPlugin()],
+  // Publish runs on Vercel. Inside the Lovable sandbox the preset is forced
+  // back to Cloudflare; serverDir stays so server/middleware is scanned.
+  nitro: nitroConfig,
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
     server: { entry: "server" },
   },
 });

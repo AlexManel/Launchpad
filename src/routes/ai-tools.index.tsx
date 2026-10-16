@@ -9,16 +9,15 @@ import { useI18n } from "@/i18n/I18nProvider";
 export const Route = createFileRoute("/ai-tools/")({
   head: () => ({
     meta: [
-      { title: "Free AI Tools for Airbnb Hosts — Webrya" },
+      { title: "AI tools — Webrya" },
       {
         name: "description",
-        content:
-          "Free AI tools for Airbnb hosts: review responses, guest replies, listing optimization, house rules and welcome messages.",
+        content: "Tools for replies, page copy and first messages. Free to try.",
       },
-      { property: "og:title", content: "Free AI Tools for Airbnb Hosts — Webrya" },
+      { property: "og:title", content: "AI tools — Webrya" },
       {
         property: "og:description",
-        content: "Practical AI tools for everyday short-term rental hosting tasks. Free to try.",
+        content: "Open a tool and try it. No account required.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

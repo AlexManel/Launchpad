@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 
 import { PageHeader, Section } from "@/components/site/Section";
@@ -9,13 +10,13 @@ import { useI18n } from "@/i18n/I18nProvider";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Webrya Solutions — One-time Setups for Hosts" },
+      { title: "Webrya — Websites, tools and setups" },
       {
         name: "description",
         content:
-          "One-time professional Webrya solutions for short-term rental hosts and property managers. Host Starter $99, Host Pro $299, Business from $699. Custom websites available upon request.",
+          "Websites, AI tools and one-time setups. Built once. You own the work.",
       },
-      { property: "og:title", content: "Webrya Solutions — One-time Setups for Hosts" },
+      { property: "og:title", content: "Webrya — Websites, tools and setups" },
       {
         property: "og:description",
         content: "One-time professional Webrya solutions. No mandatory subscription.",
@@ -34,6 +35,25 @@ function tr(t: (k: string) => string, key: string, fallback: string) {
 
 function Pricing() {
   const { t } = useI18n();
+  const hash = useRouterState({ select: (s) => s.location.hash });
+
+  useEffect(() => {
+    const id = (hash || window.location.hash).replace("#", "");
+    if (id !== "websites") return;
+    const align = () => {
+      const el = document.getElementById("websites");
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    };
+    align();
+    const frame = window.requestAnimationFrame(align);
+    const timer = window.setTimeout(align, 120);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [hash]);
   return (
     <>
       <PageHeader
@@ -59,7 +79,7 @@ function Pricing() {
                   {tr(t, `pkg.${p.slug}.badge`, p.badge)}
                 </p>
               )}
-              <h2 className="mt-1 text-2xl">{p.name}</h2>
+              <h2 className="mt-1 text-2xl">{tr(t, `pkg.${p.slug}.name`, p.name)}</h2>
               <p
                 className={
                   "mt-2 text-sm leading-relaxed " +
@@ -69,7 +89,7 @@ function Pricing() {
                 {tr(t, `pkg.${p.slug}.audience`, p.audience)}
               </p>
               <p className="mt-7 font-display text-4xl">
-                {p.slug === "business" ? tr(t, "pkg.business.price", p.price) : p.price}
+                {tr(t, `pkg.${p.slug}.price`, p.price)}
               </p>
               <p className={"mt-1 text-xs " + (p.recommended ? "opacity-70" : "text-muted-foreground")}>
                 {tr(t, `pkg.${p.slug}.note`, p.note)}
@@ -88,52 +108,33 @@ function Pricing() {
                 variant={p.recommended ? "secondary" : "outline"}
                 className="mt-8 w-full"
               >
-                <Link to="/login">{tr(t, `pkg.${p.slug}.cta`, p.cta)}</Link>
+                <Link to={p.slug === "host-pro" ? "/ai-tools" : "/contact"}>{tr(t, `pkg.${p.slug}.cta`, p.cta)}</Link>
               </Button>
             </div>
           ))}
         </div>
 
-        {/* Websites section */}
-        <div className="mt-20">
-          <p className="eyebrow">Websites</p>
-          <h2 className="mt-3 text-3xl tracking-tight">Επαγγελματικές ιστοσελίδες</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Ιστοσελίδες για properties και επιχειρήσεις. One-time setup. Δικές σου. Χωρίς συνδρομή.
-          </p>
+        <div id="websites" className="mt-20 scroll-mt-28">
+          <p className="eyebrow">{t("pricing.web.eyebrow")}</p>
+          <h2 className="mt-3 text-3xl tracking-tight">{t("pricing.web.title")}</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{t("pricing.web.intro")}</p>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">
-            <div className="flex flex-col rounded-xl border border-border bg-card p-8">
-              <h3 className="text-2xl">Property Website</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Ιστοσελίδα για ένα ακίνητο: gallery, περιγραφή, φόρμα επικοινωνίας, link για direct booking.
-              </p>
-              <p className="mt-6 font-display text-3xl">Τιμή με συνεννόηση</p>
-              <ul className="mt-6 flex-1 space-y-3 text-sm">
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Custom design</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Mobile responsive</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />SEO basics</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Φόρμα επικοινωνίας</li>
-              </ul>
+            <div className="flex flex-col rounded-lg border border-border bg-card p-8">
+              <h3 className="text-2xl">{t("pricing.web.property.t")}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("pricing.web.property.b")}</p>
+              <p className="mt-8 font-display text-2xl tracking-tight">{t("pricing.web.price")}</p>
               <Button asChild size="lg" variant="outline" className="mt-8 w-full">
-                <Link to="/contact">Ζήτησε προσφορά</Link>
+                <Link to="/contact">{t("pricing.web.cta")}</Link>
               </Button>
             </div>
 
-            <div className="flex flex-col rounded-xl border border-border bg-card p-8">
-              <h3 className="text-2xl">Business Website</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Για property managers ή τοπικές επιχειρήσεις (υπηρεσίες, έργα, επικοινωνία).
-              </p>
-              <p className="mt-6 font-display text-3xl">Τιμή με συνεννόηση</p>
-              <ul className="mt-6 flex-1 space-y-3 text-sm">
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Custom design & structure</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Pages για υπηρεσίες / έργα</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />Contact & lead forms</li>
-                <li className="flex gap-2.5"><Check className="mt-0.5 size-4 shrink-0 text-accent" />SEO basics</li>
-              </ul>
+            <div className="flex flex-col rounded-lg border border-border bg-card p-8">
+              <h3 className="text-2xl">{t("pricing.web.business.t")}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("pricing.web.business.b")}</p>
+              <p className="mt-8 font-display text-2xl tracking-tight">{t("pricing.web.price")}</p>
               <Button asChild size="lg" variant="outline" className="mt-8 w-full">
-                <Link to="/contact">Ζήτησε προσφορά</Link>
+                <Link to="/contact">{t("pricing.web.cta")}</Link>
               </Button>
             </div>
           </div>

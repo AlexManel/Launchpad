@@ -11,15 +11,15 @@ const PRICE_ENV: Record<string, string> = {
 
 function supabaseRest() {
   const url = (
-    process.env.VITE_SUPABASE_URL ||
-    process.env.SUPABASE_URL ||
-    (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+    process.env["VITE_SUPABASE_URL"] ||
+    process.env["SUPABASE_URL"] ||
+    (import.meta.env["VITE_SUPABASE_URL"] as string | undefined) ||
     ""
   ).replace(/\/$/, "");
   const anon =
-    process.env.VITE_SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
-    (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+    process.env["VITE_SUPABASE_ANON_KEY"] ||
+    process.env["SUPABASE_ANON_KEY"] ||
+    (import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined) ||
     "";
   return { url, anon };
 }
@@ -46,7 +46,7 @@ async function alreadyOwns(opts: {
 }
 
 export const getPaymentsStatus = createServerFn({ method: "POST" }).handler(async () => {
-  const secret = process.env.STRIPE_SECRET_KEY?.trim();
+  const secret = process.env["STRIPE_SECRET_KEY"]?.trim();
   return { enabled: Boolean(secret) };
 });
 
@@ -55,7 +55,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     z.object({ slug: z.string(), accessToken: z.string().optional() }).parse(input),
   )
   .handler(async ({ data }) => {
-    const secret = process.env.STRIPE_SECRET_KEY?.trim();
+    const secret = process.env["STRIPE_SECRET_KEY"]?.trim();
     if (!secret) {
       throw new Error("Stripe is not connected yet.");
     }
@@ -82,7 +82,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     }
 
     const priceId = process.env[PRICE_ENV[data.slug] ?? ""]?.trim();
-    const origin = process.env.WEBRYA_URL?.replace(/\/$/, "") || "https://webrya.com";
+    const origin = process.env["WEBRYA_URL"]?.replace(/\/$/, "") || "https://webrya.com";
 
     const body = new URLSearchParams();
     body.set("mode", "payment");
@@ -130,7 +130,7 @@ export const fulfillPurchase = createServerFn({ method: "POST" })
     z.object({ sessionId: z.string().min(1), accessToken: z.string().min(1) }).parse(input),
   )
   .handler(async ({ data }) => {
-    const secret = process.env.STRIPE_SECRET_KEY?.trim();
+    const secret = process.env["STRIPE_SECRET_KEY"]?.trim();
     if (!secret) throw new Error("Stripe is not connected yet.");
 
     const sessionRes = await fetch(

@@ -5,15 +5,15 @@ import { resolveAuthedUser } from "@/lib/ai/quota.server";
 
 function supabaseEnv() {
   const url = (
-    process.env.VITE_SUPABASE_URL ||
-    process.env.SUPABASE_URL ||
-    (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+    process.env["VITE_SUPABASE_URL"] ||
+    process.env["SUPABASE_URL"] ||
+    (import.meta.env["VITE_SUPABASE_URL"] as string | undefined) ||
     ""
   ).replace(/\/$/, "");
   const anon =
-    process.env.VITE_SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
-    (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+    process.env["VITE_SUPABASE_ANON_KEY"] ||
+    process.env["SUPABASE_ANON_KEY"] ||
+    (import.meta.env["VITE_SUPABASE_ANON_KEY"] as string | undefined) ||
     "";
   return { url, anon };
 }

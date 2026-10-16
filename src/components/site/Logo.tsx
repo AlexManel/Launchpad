@@ -16,8 +16,12 @@ function Mark({ className }: { className?: string }) {
 
 export function Logo({
   tone = "default",
+  wordmark = true,
+  named = false,
 }: {
   tone?: "default" | "inverse" | "hero";
+  wordmark?: boolean;
+  named?: boolean;
 }) {
   const onDark = tone === "hero" || tone === "inverse";
   const color = onDark ? "text-white" : "text-primary";
@@ -28,10 +32,23 @@ export function Logo({
       className={`group inline-flex items-center gap-2.5 ${color}`}
       aria-label="Webrya home"
     >
-      <Mark className="h-8 w-11 shrink-0" />
-      <span className="font-display text-[1.45rem] font-semibold leading-none tracking-[-0.04em]">
-        Webrya
-      </span>
+      {wordmark ? (
+        <>
+          <Mark className="h-8 w-11 shrink-0" />
+          <span className="font-display text-[1.45rem] font-semibold leading-none tracking-[-0.04em]">
+            Webrya
+          </span>
+        </>
+      ) : (
+        <>
+          <img src="/webrya-wr.png" alt="" className="h-10 w-auto" />
+          {named ? (
+            <span className="font-display text-[1.45rem] font-semibold leading-none tracking-[-0.04em] text-white">
+              Webrya
+            </span>
+          ) : null}
+        </>
+      )}
     </Link>
   );
 }
