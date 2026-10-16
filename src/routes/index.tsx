@@ -209,6 +209,7 @@ function Home() {
                 </span>
                 <h3 className="mt-4 text-lg tracking-tight">{offer.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">{offer.body}</p>
+                <p className="mt-4 text-sm text-white">{t(`price.${offer.id}`)}</p>
               </div>
               <a
                 href="#contact"
