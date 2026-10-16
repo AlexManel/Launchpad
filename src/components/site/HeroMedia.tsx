@@ -3,7 +3,7 @@ export function HeroMedia() {
     <img
       src="/webrya-lockup.jpg"
       alt="Webrya"
-      className="mx-auto h-auto w-full max-w-[980px] object-contain"
+      className="mx-auto w-full max-w-[440px] rounded-2xl object-contain ring-1 ring-white/10 lg:max-w-none"
     />
   );
 }

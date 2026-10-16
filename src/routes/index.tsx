@@ -127,19 +127,18 @@ function Home() {
   return (
     <>
       <section className="relative overflow-hidden bg-[#07041c] text-white">
-        <div className="pointer-events-none absolute -left-24 top-10 h-[28rem] w-[28rem] rounded-full bg-[#3d7bff]/20 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 top-24 h-[26rem] w-[26rem] rounded-full bg-[#8b5cf6]/25 blur-3xl" />
-        <div className="relative mx-auto flex w-full max-w-[1240px] flex-col px-5 pb-16 pt-24 lg:px-8 lg:pt-28">
-          <HeroMedia />
-          <div className="mx-auto mt-6 w-full max-w-3xl text-center">
+        <div className="pointer-events-none absolute -left-24 top-10 h-[22rem] w-[22rem] rounded-full bg-[#3d7bff]/16 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 top-16 h-[20rem] w-[20rem] rounded-full bg-[#8b5cf6]/18 blur-3xl" />
+        <div className="relative mx-auto grid w-full max-w-[1180px] items-center gap-8 px-5 pb-10 pt-24 lg:grid-cols-[1.05fr_0.9fr] lg:gap-12 lg:px-8 lg:pb-12 lg:pt-28">
+          <div className="max-w-xl">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#9ec4ff]">
               {t("studio.hero.eyebrow")}
             </p>
-            <h1 className="studio-hero-title mx-auto mt-5 text-white">{t("studio.hero.title")}</h1>
-            <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-white/75 sm:text-lg">
+            <h1 className="studio-hero-title mt-4 text-white">{t("studio.hero.title")}</h1>
+            <p className="mt-5 max-w-md text-base leading-7 text-white/75 sm:text-lg">
               {t("studio.hero.sub")}
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href="#services"
                 className="inline-flex h-11 items-center rounded-md bg-[#3d7bff] px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#5b91ff]"
@@ -154,10 +153,35 @@ function Home() {
               </a>
             </div>
           </div>
+          <HeroMedia />
+        </div>
+        <div className="relative border-t border-white/10">
+          <div className="mx-auto flex max-w-[1180px] flex-wrap items-center gap-x-7 gap-y-2 px-5 py-4 lg:px-8">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/40">
+              {t("studio.work.eyebrow")}
+            </p>
+            {work.map((project) =>
+              project.href ? (
+                <a
+                  key={project.slug}
+                  href={project.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-white/70 transition-colors hover:text-white"
+                >
+                  {project.name}
+                </a>
+              ) : (
+                <span key={project.slug} className="text-sm text-white/70">
+                  {project.name}
+                </span>
+              ),
+            )}
+          </div>
         </div>
       </section>
 
-      <Section id="work" className="scroll-mt-24 py-20 lg:py-28">
+      <Section id="work" className="scroll-mt-24 py-14 lg:py-20">
         <p className="eyebrow">{t("studio.work.eyebrow")}</p>
         <h2 className="mt-4 max-w-3xl text-3xl tracking-tight sm:text-4xl">{t("studio.work.title")}</h2>
         <p className="mt-4 max-w-2xl text-base text-muted-foreground">{t("studio.work.intro")}</p>
@@ -168,7 +192,7 @@ function Home() {
         </div>
       </Section>
 
-      <Section id="services" className="scroll-mt-24 border-t border-white/10 py-20 lg:py-28">
+      <Section id="services" className="scroll-mt-24 border-t border-white/10 py-14 lg:py-20">
         <p className="eyebrow">{t("offer.lead")}</p>
         <h2 className="mt-4 max-w-3xl text-3xl tracking-tight sm:text-4xl">{t("offer.title")}</h2>
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
