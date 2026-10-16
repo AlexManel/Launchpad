@@ -9,8 +9,8 @@ import { useI18n } from "@/i18n/I18nProvider";
 
 type ServiceItem = {
   label: string;
-  to: "/";
-  hash: "websites" | "prep" | "photos" | "listing" | "checkin" | "apps";
+  to: "/" | "/websites";
+  hash?: "prep" | "photos" | "listing" | "checkin" | "apps";
 };
 
 export function Header() {
@@ -26,7 +26,7 @@ export function Header() {
   const pinnedRef = useRef(false);
 
   const services: ServiceItem[] = [
-    { to: "/", hash: "websites", label: t("nav.websites") },
+    { to: "/websites", label: t("nav.websites") },
     { to: "/", hash: "prep", label: t("nav.prep") },
     { to: "/", hash: "photos", label: t("nav.photos") },
     { to: "/", hash: "listing", label: t("nav.listing") },

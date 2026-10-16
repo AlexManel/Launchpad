@@ -47,16 +47,30 @@ function Pricing() {
               className="flex scroll-mt-28 flex-col rounded-2xl border border-white/10 bg-[#100a28] p-6"
             >
               <h2 className="text-xl tracking-tight">{t(`offer.${id === "websites" ? "web" : id}.t`)}</h2>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">{t(`price.${id}.b`)}</p>
-              <p className="mt-8 font-display text-3xl tracking-tight">{t(`price.${id}`)}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{t("price.note")}</p>
-              <ul className="mt-6 flex-1 space-y-2 text-sm text-muted-foreground">
-                <li>{t(`price.${id}.i0`)}</li>
-                <li>{t(`price.${id}.i1`)}</li>
-                <li>{t(`price.${id}.i2`)}</li>
-              </ul>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                {id === "websites" ? t("web.intro") : t(`price.${id}.b`)}
+              </p>
+              <p className="mt-8 font-display text-3xl tracking-tight">
+                {id === "websites" ? t("web.kinds") : t(`price.${id}`)}
+              </p>
+              {id === "websites" ? null : (
+                <p className="mt-1 text-xs text-muted-foreground">{t("price.note")}</p>
+              )}
+              {id === "websites" ? (
+                <p className="mt-6 flex-1 text-sm text-muted-foreground">{t("web.scope")}</p>
+              ) : (
+                <ul className="mt-6 flex-1 space-y-2 text-sm text-muted-foreground">
+                  <li>{t(`price.${id}.i0`)}</li>
+                  <li>{t(`price.${id}.i1`)}</li>
+                  <li>{t(`price.${id}.i2`)}</li>
+                </ul>
+              )}
               <Button asChild size="lg" variant="outline" className="mt-8 w-full">
-                <Link to="/contact">{t("offer.cta")}</Link>
+                {id === "websites" ? (
+                  <Link to="/websites">{t("web.open")}</Link>
+                ) : (
+                  <Link to="/contact">{t("offer.cta")}</Link>
+                )}
               </Button>
             </article>
           ))}

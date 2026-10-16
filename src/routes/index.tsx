@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { Section } from "@/components/site/Section";
 import { HeroMedia } from "@/components/site/HeroMedia";
@@ -209,14 +209,25 @@ function Home() {
                 </span>
                 <h3 className="mt-4 text-lg tracking-tight">{offer.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">{offer.body}</p>
-                <p className="mt-4 text-sm text-white">{t(`price.${offer.id}`)}</p>
+                <p className="mt-4 text-sm text-white">
+                  {offer.id === "websites" ? t("web.kinds") : t(`price.${offer.id}`)}
+                </p>
               </div>
-              <a
-                href="#contact"
-                className="mt-auto inline-flex pt-6 text-sm font-medium text-[#9ec4ff] hover:text-white"
-              >
-                {t("offer.cta")}
-              </a>
+              {offer.id === "websites" ? (
+                <Link
+                  to="/websites"
+                  className="mt-auto inline-flex pt-6 text-sm font-medium text-[#9ec4ff] hover:text-white"
+                >
+                  {t("web.open")}
+                </Link>
+              ) : (
+                <a
+                  href="#contact"
+                  className="mt-auto inline-flex pt-6 text-sm font-medium text-[#9ec4ff] hover:text-white"
+                >
+                  {t("offer.cta")}
+                </a>
+              )}
             </article>
           ))}
         </div>
