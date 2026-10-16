@@ -153,7 +153,7 @@ function Home() {
               </a>
             </div>
           </div>
-          <HeroMedia />
+          <HeroMedia reduce={reduce} />
         </div>
         <div className="relative border-t border-white/10">
           <div className="mx-auto flex max-w-[1180px] flex-wrap items-center gap-x-7 gap-y-2 px-5 py-4 lg:px-8">
