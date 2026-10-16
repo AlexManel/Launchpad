@@ -12,6 +12,8 @@ dist
 dist-ssr
 .output
 .vinxi
+.vercel
+.wrangler
 .tanstack/**
 .nitro
 *.local

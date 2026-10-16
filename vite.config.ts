@@ -9,14 +9,17 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
 
 const nitroConfig = {
-  preset: "vercel",
+  preset: "cloudflare-module",
   serverDir: "./server",
+  cloudflare: {
+    nodeCompat: true,
+    deployConfig: true,
+  },
 };
 
 export default defineConfig({
   plugins: [grokPwaPlugin()],
-  // Publish runs on Vercel. Inside the Lovable sandbox the preset is forced
-  // back to Cloudflare; serverDir stays so server/middleware is scanned.
+  // Cloudflare Workers. serverDir stays so server/middleware is scanned.
   nitro: nitroConfig,
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).

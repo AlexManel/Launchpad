@@ -1,0 +1,16 @@
+{
+  "name": "webrya",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2026-10-16",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".output/public",
+    "binding": "ASSETS"
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    { "pattern": "webrya.com", "custom_domain": true },
+    { "pattern": "www.webrya.com", "custom_domain": true }
+  ]
+}
