@@ -19,6 +19,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
+  const [mobileServices, setMobileServices] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
   const servicesRef = useRef<HTMLDivElement>(null);
@@ -26,10 +27,7 @@ export function Header() {
   const pinnedRef = useRef(false);
 
   const services: ServiceItem[] = [
-    { to: "/websites", hash: "landing", label: t("web.landing.t") },
-    { to: "/websites", hash: "site", label: t("web.site.t") },
-    { to: "/websites", hash: "booking", label: t("web.booking.t") },
-    { to: "/websites", hash: "eshop", label: t("web.eshop.t") },
+    { to: "/websites", label: t("nav.websites") },
     { to: "/", hash: "prep", label: t("nav.prep") },
     { to: "/", hash: "photos", label: t("nav.photos") },
     { to: "/", hash: "listing", label: t("nav.listing") },
@@ -46,6 +44,7 @@ export function Header() {
 
   useEffect(() => {
     setOpen(false);
+    setMobileServices(false);
     pinnedRef.current = false;
     setServicesOpen(false);
     setPinned(false);
@@ -215,7 +214,10 @@ export function Header() {
           ].join(" ")}
           aria-label={t("nav.menu")}
           aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
+          onClick={() => {
+            setOpen((value) => !value);
+            setMobileServices(false);
+          }}
           type="button"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
@@ -225,31 +227,42 @@ export function Header() {
       {open && (
         <div className="fixed inset-x-0 bottom-0 top-[72px] z-50 overflow-y-auto border-t border-border bg-[#07041c] lg:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col px-5 py-4">
-            <p className="pt-2 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#b7b3d6]">
+            <button
+              type="button"
+              className="flex items-center justify-between border-b border-border/60 py-3 text-sm text-foreground"
+              aria-expanded={mobileServices}
+              onClick={() => setMobileServices((value) => !value)}
+            >
               {t("nav.services")}
-            </p>
-            {services.map((item) =>
-              item.hash ? (
-                <Link
-                  key={`m-${item.hash}`}
-                  to={item.to}
-                  hash={item.hash}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-border/60 py-3 pl-3 text-sm text-foreground"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <Link
-                  key={`m-${item.to}`}
-                  to={item.to}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-border/60 py-3 pl-3 text-sm text-foreground"
-                >
-                  {item.label}
-                </Link>
-              ),
-            )}
+              <ChevronDown
+                className={["size-4 transition-transform duration-200", mobileServices ? "rotate-180" : ""].join(" ")}
+                aria-hidden="true"
+              />
+            </button>
+            {mobileServices
+              ? services.map((item) =>
+                  item.hash ? (
+                    <Link
+                      key={`m-${item.hash}`}
+                      to={item.to}
+                      hash={item.hash}
+                      onClick={() => setOpen(false)}
+                      className="border-b border-border/60 py-3 pl-4 text-sm text-foreground"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      key={`m-${item.to}`}
+                      to={item.to}
+                      onClick={() => setOpen(false)}
+                      className="border-b border-border/60 py-3 pl-4 text-sm text-foreground"
+                    >
+                      {item.label}
+                    </Link>
+                  ),
+                )
+              : null}
             <Link
               to="/"
               hash="company"
