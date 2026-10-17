@@ -182,6 +182,21 @@ function Home() {
         </div>
       </section>
 
+      <section id="studio" className="border-t border-white/10 bg-[#07041c] text-white">
+        <div className="mx-auto grid max-w-[1180px] gap-8 px-5 py-16 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:px-8 lg:py-20">
+          <div>
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#9ec4ff]">
+              {t("studio.place.eyebrow")}
+            </p>
+            <h2 className="mt-4 max-w-sm text-3xl tracking-tight sm:text-4xl">{t("studio.place.title")}</h2>
+          </div>
+          <div className="max-w-2xl space-y-4 text-base leading-7 text-white/75">
+            <p>{t("studio.place.p1")}</p>
+            <p>{t("studio.place.p2")}</p>
+          </div>
+        </div>
+      </section>
+
       <Section id="work" className="scroll-mt-24 py-14 lg:py-20">
         <p className="eyebrow">{t("studio.work.eyebrow")}</p>
         <h2 className="mt-4 max-w-3xl text-3xl tracking-tight sm:text-4xl">{t("studio.work.title")}</h2>

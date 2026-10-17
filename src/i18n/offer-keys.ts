@@ -814,11 +814,80 @@ const webKinds: Record<Locale, Dict> = {
   },
 };
 
+const place: Record<Locale, Dict> = {
+  en: {
+    "studio.place.eyebrow": "Thessaloniki",
+    "studio.place.title": "A studio, not a side project.",
+    "studio.place.p1":
+      "Webrya is a website studio in Thessaloniki, Greece. It builds landing pages, business websites, e-shops and sites with a booking engine. The work is delivered once. The site stays yours.",
+    "studio.place.p2":
+      "For a short-term rental it also prepares the property, photographs it, publishes the listing on Airbnb and Booking, and builds a digital check-in. Each job has its own price. There is no monthly software.",
+    "meta.home.title": "Webrya — Website studio in Thessaloniki",
+    "meta.home.description":
+      "Website studio in Thessaloniki. Landing pages, e-shops, booking engines, property photos and listings. Delivered once.",
+  },
+  el: {
+    "studio.place.eyebrow": "Θεσσαλονίκη",
+    "studio.place.title": "Στούντιο, όχι χόμπι.",
+    "studio.place.p1":
+      "Η Webrya είναι στούντιο κατασκευής ιστοσελίδων στη Θεσσαλονίκη. Φτιάχνει landing pages, εταιρικές ιστοσελίδες, e-shops και σελίδες με booking engine. Η δουλειά παραδίδεται μία φορά. Η σελίδα μένει δική σας.",
+    "studio.place.p2":
+      "Για κατάλυμα βραχυχρόνιας μίσθωσης αναλαμβάνει και την προετοιμασία του ακινήτου, την επαγγελματική φωτογράφιση, την αγγελία σε Airbnb και Booking, και ένα ψηφιακό check-in. Κάθε υπηρεσία έχει δική της τιμή. Δεν είναι μηνιαίο λογισμικό.",
+    "meta.home.title": "Webrya — Στούντιο ιστοσελίδων στη Θεσσαλονίκη",
+    "meta.home.description":
+      "Στούντιο ιστοσελίδων στη Θεσσαλονίκη. Landing page, e-shop, booking engine, φωτογράφιση και αγγελία καταλύματος. Μία φορά.",
+  },
+  de: {
+    "studio.place.eyebrow": "Thessaloniki",
+    "studio.place.title": "Ein Studio, kein Nebenprojekt.",
+    "studio.place.p1":
+      "Webrya ist ein Website-Studio in Thessaloniki, Griechenland. Es baut Landingpages, Unternehmenswebsites, Shops und Seiten mit Buchungssystem. Die Arbeit wird einmal geliefert. Die Seite bleibt Ihre.",
+    "studio.place.p2":
+      "Für eine Ferienunterkunft bereitet es auch das Objekt vor, fotografiert es, veröffentlicht das Inserat auf Airbnb und Booking und baut einen digitalen Check-in. Jeder Auftrag hat seinen Preis. Keine monatliche Software.",
+    "meta.home.title": "Webrya — Website-Studio in Thessaloniki",
+    "meta.home.description":
+      "Website-Studio in Thessaloniki. Landingpages, Shops, Buchungssysteme, Fotos und Inserate. Einmal geliefert.",
+  },
+  ru: {
+    "studio.place.eyebrow": "Салоники",
+    "studio.place.title": "Студия, не хобби.",
+    "studio.place.p1":
+      "Webrya — студия сайтов в Салониках, Греция. Делает лендинги, сайты компаний, магазины и страницы с бронированием. Работа сдаётся один раз. Сайт остаётся вашим.",
+    "studio.place.p2":
+      "Для краткосрочной аренды студия также готовит объект, фотографирует его, публикует объявление на Airbnb и Booking и делает цифровой заезд. У каждой работы своя цена. Без ежемесячной программы.",
+    "meta.home.title": "Webrya — Студия сайтов в Салониках",
+    "meta.home.description":
+      "Студия сайтов в Салониках. Лендинги, магазины, бронирование, фото и объявления. Один раз.",
+  },
+  tr: {
+    "studio.place.eyebrow": "Selanik",
+    "studio.place.title": "Bir stüdyo, hobi değil.",
+    "studio.place.p1":
+      "Webrya, Selanik, Yunanistan’da bir web sitesi stüdyosudur. Landing sayfalar, işletme siteleri, e-shop ve rezervasyon motorlu sayfalar kurar. İş bir kez teslim edilir. Site sizin kalır.",
+    "studio.place.p2":
+      "Kısa dönem kiralama için mülkü hazırlar, fotoğraflar, ilanı Airbnb ve Booking’e koyar ve dijital check-in kurar. Her işin kendi fiyatı vardır. Aylık yazılım yoktur.",
+    "meta.home.title": "Webrya — Selanik’te web sitesi stüdyosu",
+    "meta.home.description":
+      "Selanik’te web sitesi stüdyosu. Landing, e-shop, rezervasyon, fotoğraf ve ilan. Bir kez teslim.",
+  },
+  fr: {
+    "studio.place.eyebrow": "Thessalonique",
+    "studio.place.title": "Un studio, pas un passe-temps.",
+    "studio.place.p1":
+      "Webrya est un studio de sites web à Thessalonique, en Grèce. Il réalise des landings, des sites d’entreprise, des boutiques et des pages avec réservation. Le travail est livré une fois. Le site reste le vôtre.",
+    "studio.place.p2":
+      "Pour une location courte durée, il prépare aussi le bien, le photographie, publie l’annonce sur Airbnb et Booking, et construit un check-in numérique. Chaque travail a son prix. Pas de logiciel mensuel.",
+    "meta.home.title": "Webrya — Studio web à Thessalonique",
+    "meta.home.description":
+      "Studio web à Thessalonique. Landings, boutiques, réservation, photos et annonces. Livré une fois.",
+  },
+};
+
 export const offerKeys: Record<Locale, Dict> = {
-  en: { ...en, ...prices.en, ...webKinds.en },
-  el: { ...el, ...prices.el, ...webKinds.el },
-  de: { ...de, ...prices.de, ...webKinds.de },
-  ru: { ...ru, ...prices.ru, ...webKinds.ru },
-  tr: { ...tr, ...prices.tr, ...webKinds.tr },
-  fr: { ...fr, ...prices.fr, ...webKinds.fr },
+  en: { ...en, ...prices.en, ...webKinds.en, ...place.en },
+  el: { ...el, ...prices.el, ...webKinds.el, ...place.el },
+  de: { ...de, ...prices.de, ...webKinds.de, ...place.de },
+  ru: { ...ru, ...prices.ru, ...webKinds.ru, ...place.ru },
+  tr: { ...tr, ...prices.tr, ...webKinds.tr, ...place.tr },
+  fr: { ...fr, ...prices.fr, ...webKinds.fr, ...place.fr },
 };

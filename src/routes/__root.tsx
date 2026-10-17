@@ -18,26 +18,33 @@ import { I18nProvider } from "@/i18n/I18nProvider";
 
 const orgJsonLd = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "ProfessionalService",
   name: "Webrya",
   url: "https://webrya.com",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
+  email: "info@webrya.com",
+  telephone: "+30-694-694-9933",
+  image: "https://webrya.com/webrya-wr.png",
   description:
-    "Premium sites and operational tools for properties and businesses. Built once. Owned by you.",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  publisher: {
-    "@type": "Organization",
-    name: "Webrya",
-    url: "https://webrya.com",
-    email: "info@webrya.com",
-    telephone: "+30-694-694-9933",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Thessaloniki",
-      addressCountry: "GR",
-    },
+    "Website studio in Thessaloniki. Landing pages, business websites, e-shops, booking engines, property photography and short-term rental listings. Delivered once.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Thessaloniki",
+    addressRegion: "Central Macedonia",
+    addressCountry: "GR",
   },
+  areaServed: [
+    { "@type": "City", name: "Thessaloniki" },
+    { "@type": "Country", name: "Greece" },
+  ],
+  knowsAbout: [
+    "Landing pages",
+    "Business websites",
+    "E-commerce",
+    "Booking engines",
+    "Property photography",
+    "Short-term rental listings",
+  ],
+  priceRange: "€€",
 });
 
 function NotFoundComponent() {
