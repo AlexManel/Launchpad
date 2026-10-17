@@ -8,7 +8,7 @@ export const leftoverEn: Record<string, string> = {
   "hero.chip2": "Review responses",
   "hero.chip3": "Listing optimization",
   "footer.blurb":
-    "Websites, tools and systems for properties and businesses. Built once. Owned by you.",
+    "Websites, shops and rentals. Thessaloniki.",
   "page.tools.intro":
     "Three jobs, one toolkit: reply to guests, respond to reviews (with host notes), and improve your listing. Not a property management system.",
   "compare.eyebrow": "Compare",
@@ -60,9 +60,9 @@ export const leftoverEn: Record<string, string> = {
   "contact.direct": "Direct",
   "contact.directBody": "Email or a call is fine. Say what you want built.",
   "contact.beta": "How we work",
-  "contact.betaBody": "We look at the job and send a clear offer. No subscription.",
+  "contact.betaBody": "We look at the job and send a clear offer.",
   "contact.how": "How we work",
-  "contact.howBody": "We look at the job and send a clear offer. No subscription.",
+  "contact.howBody": "We look at the job and send a clear offer.",
 };
 
 export const leftoverEl: Record<string, string> = {
@@ -75,7 +75,7 @@ export const leftoverEl: Record<string, string> = {
   "hero.chip2": "Απαντήσεις κριτικών",
   "hero.chip3": "Βελτίωση listing",
   "footer.blurb":
-    "Ιστοσελίδες, εργαλεία και συστήματα για καταλύματα και επιχειρήσεις. Χτίζονται μία φορά. Δικά σας.",
+    "Ιστοσελίδες, καταστήματα και καταλύματα. Θεσσαλονίκη.",
   "page.tools.intro":
     "Τρεις δουλειές, ένα toolkit: απάντηση σε επισκέπτες, απάντηση σε κριτικές (με host notes) και βελτίωση listing. Όχι PMS.",
   "compare.eyebrow": "Σύγκριση",
@@ -127,9 +127,9 @@ export const leftoverEl: Record<string, string> = {
   "contact.direct": "Άμεσα",
   "contact.directBody": "Στείλε email ή πάρε τηλέφωνο. Πες τι δουλειά θέλεις.",
   "contact.beta": "Πώς δουλεύουμε",
-  "contact.betaBody": "Βλέπουμε τη δουλειά και στέλνουμε σαφή προσφορά. Χωρίς συνδρομή.",
+  "contact.betaBody": "Βλέπουμε τη δουλειά και στέλνουμε σαφή προσφορά.",
   "contact.how": "Πώς δουλεύουμε",
-  "contact.howBody": "Βλέπουμε τη δουλειά και στέλνουμε σαφή προσφορά. Χωρίς συνδρομή.",
+  "contact.howBody": "Βλέπουμε τη δουλειά και στέλνουμε σαφή προσφορά.",
 };
 
 export const leftoverDe: Record<string, string> = {
@@ -141,7 +141,7 @@ export const leftoverDe: Record<string, string> = {
   "hero.chip1": "Gästenachrichten",
   "hero.chip2": "Bewertungsantworten",
   "hero.chip3": "Listing-Optimierung",
-  "footer.blurb": "Websites, Werkzeuge und Systeme für Objekte und Unternehmen. Einmal gebaut. Gehört Ihnen.",
+  "footer.blurb": "Websites, Shops und Unterkünfte. Thessaloniki.",
   "page.tools.intro":
     "Drei Aufgaben, ein Toolkit: Gäste beantworten, Bewertungen (mit Host-Notizen) und Listings verbessern. Kein PMS.",
   "compare.eyebrow": "Vergleich",
@@ -193,9 +193,9 @@ export const leftoverDe: Record<string, string> = {
   "contact.direct": "Direkt",
   "contact.directBody": "E-Mail oder Anruf. Sagen Sie, was gebaut werden soll.",
   "contact.beta": "So arbeiten wir",
-  "contact.betaBody": "Wir sehen uns die Arbeit an und schicken ein klares Angebot. Kein Abo.",
+  "contact.betaBody": "Wir sehen uns die Arbeit an und schicken ein klares Angebot.",
   "contact.how": "So arbeiten wir",
-  "contact.howBody": "Wir sehen uns die Arbeit an und schicken ein klares Angebot. Kein Abo.",
+  "contact.howBody": "Wir sehen uns die Arbeit an und schicken ein klares Angebot.",
 };
 
 export const leftoverRu: Record<string, string> = {
@@ -207,7 +207,7 @@ export const leftoverRu: Record<string, string> = {
   "hero.chip1": "Сообщения гостям",
   "hero.chip2": "Ответы на отзывы",
   "hero.chip3": "Оптимизация listing",
-  "footer.blurb": "Сайты, инструменты и системы для объектов и бизнеса. Сделано один раз. Принадлежит вам.",
+  "footer.blurb": "Сайты, магазины и жильё. Салоники.",
   "page.tools.intro":
     "Три задачи, один набор: ответы гостям, ответы на отзывы (с заметками хоста) и улучшение listing. Не PMS.",
   "compare.eyebrow": "Сравнение",
@@ -259,9 +259,9 @@ export const leftoverRu: Record<string, string> = {
   "contact.direct": "Напрямую",
   "contact.directBody": "Почта или звонок. Напишите, что нужно сделать.",
   "contact.beta": "Как мы работаем",
-  "contact.betaBody": "Смотрим задачу и присылаем понятное предложение. Без подписки.",
+  "contact.betaBody": "Смотрим задачу и присылаем понятное предложение.",
   "contact.how": "Как мы работаем",
-  "contact.howBody": "Смотрим задачу и присылаем понятное предложение. Без подписки.",
+  "contact.howBody": "Смотрим задачу и присылаем понятное предложение.",
 };
 
 export const leftoverTr: Record<string, string> = {
@@ -273,7 +273,7 @@ export const leftoverTr: Record<string, string> = {
   "hero.chip1": "Misafir mesajları",
   "hero.chip2": "Yorum yanıtları",
   "hero.chip3": "Listing optimizasyonu",
-  "footer.blurb": "Mülkler ve işletmeler için siteler, araçlar ve sistemler. Bir kez kurulur. Size aittir.",
+  "footer.blurb": "Siteler, mağazalar ve konaklama. Selanik.",
   "page.tools.intro":
     "Üç iş, bir toolkit: misafirlere yanıt, yorum yanıtı (host notlarıyla) ve listing iyileştirmesi. PMS değil.",
   "compare.eyebrow": "Karşılaştırma",
@@ -325,9 +325,9 @@ export const leftoverTr: Record<string, string> = {
   "contact.direct": "Doğrudan",
   "contact.directBody": "E-posta ya da telefon. Ne yaptırmak istediğini söyle.",
   "contact.beta": "Nasıl çalışırız",
-  "contact.betaBody": "İşi görürüz, net teklif göndeririz. Abonelik yok.",
+  "contact.betaBody": "İşi görürüz, net teklif göndeririz.",
   "contact.how": "Nasıl çalışırız",
-  "contact.howBody": "İşi görürüz, net teklif göndeririz. Abonelik yok.",
+  "contact.howBody": "İşi görürüz, net teklif göndeririz.",
 };
 
 export const leftoverFr: Record<string, string> = {
@@ -339,7 +339,7 @@ export const leftoverFr: Record<string, string> = {
   "hero.chip1": "Messages voyageurs",
   "hero.chip2": "Réponses aux avis",
   "hero.chip3": "Optimisation d’annonce",
-  "footer.blurb": "Sites, outils et systèmes pour des biens et des entreprises. Construits une fois. À vous.",
+  "footer.blurb": "Sites, boutiques et logements. Thessalonique.",
   "page.tools.intro":
     "Trois missions, une boîte à outils : répondre aux voyageurs, aux avis (avec notes hôte) et améliorer l’annonce. Pas un PMS.",
   "compare.eyebrow": "Comparer",
@@ -391,7 +391,7 @@ export const leftoverFr: Record<string, string> = {
   "contact.direct": "Direct",
   "contact.directBody": "E-mail ou appel. Dites ce que vous voulez faire réaliser.",
   "contact.beta": "Comment on travaille",
-  "contact.betaBody": "On regarde le travail et on envoie une offre claire. Sans abonnement.",
+  "contact.betaBody": "On regarde le travail et on envoie une offre claire.",
   "contact.how": "Comment on travaille",
-  "contact.howBody": "On regarde le travail et on envoie une offre claire. Sans abonnement.",
+  "contact.howBody": "On regarde le travail et on envoie une offre claire.",
 };

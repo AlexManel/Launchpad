@@ -12,7 +12,7 @@ const en: Dict = {
   "studio.hero.eyebrow": "Thessaloniki",
   "studio.hero.title": "Websites and properties.",
   "studio.hero.sub":
-    "A landing page, a shop, a booking engine, photos and a listing. Done once. No monthly software.",
+    "A landing page, a shop, a booking engine, photos and a listing.",
   "studio.hero.view": "See the work",
   "studio.hero.talk": "Contact",
   "studio.close": "Tell us the property.",
@@ -36,7 +36,7 @@ const en: Dict = {
     "One page, one QR. Wi-Fi, how to get in, house rules, what is nearby. It stops the same five messages.",
   "offer.apps.t": "Small apps and automations",
   "offer.apps.b":
-    "One small tool for the work you repeat: guest replies, review answers, a form, a reminder. Built once. No monthly seat.",
+    "One small tool for the work you repeat: guest replies, review answers, a form, a reminder.",
   "offer.cta": "Ask about this",
   "contact.intro": "A website, a listing, photos, or a small tool. Say which property.",
   "contact.topic.website": "A website",
@@ -48,7 +48,7 @@ const en: Dict = {
   "contact.topic.other": "Something else",
   "meta.home.title": "Webrya — Websites and properties",
   "meta.home.description":
-    "Landing pages, shops, booking engines, property setup, photos and listings. Done once. No monthly software.",
+    "Landing pages, shops, booking engines, property setup, photos and listings.",
 };
 
 const el: Dict = {
@@ -61,7 +61,7 @@ const el: Dict = {
   "studio.hero.eyebrow": "Θεσσαλονίκη",
   "studio.hero.title": "Ιστοσελίδες και καταλύματα.",
   "studio.hero.sub":
-    "Landing page, e-shop, booking engine, φωτογραφίες και αγγελία. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
+    "Landing page, e-shop, booking engine, φωτογραφίες και αγγελία.",
   "studio.hero.view": "Δείτε τις δουλειές",
   "studio.hero.talk": "Επικοινωνία",
   "studio.close": "Πείτε μας το ακίνητο.",
@@ -85,7 +85,7 @@ const el: Dict = {
     "Μία σελίδα, ένα QR. Wi-Fi, πώς μπαίνει ο επισκέπτης, κανόνες, τι υπάρχει τριγύρω. Σταματά τα ίδια πέντε μηνύματα.",
   "offer.apps.t": "Μικρές εφαρμογές και αυτοματισμοί",
   "offer.apps.b":
-    "Ένα μικρό εργαλείο για τη δουλειά που επαναλαμβάνεται: απαντήσεις σε επισκέπτες και κριτικές, φόρμα, υπενθύμιση. Μία φορά. Χωρίς μηνιαία θέση.",
+    "Ένα μικρό εργαλείο για τη δουλειά που επαναλαμβάνεται: απαντήσεις σε επισκέπτες και κριτικές, φόρμα, υπενθύμιση.",
   "offer.cta": "Ρωτήστε για αυτό",
   "contact.intro": "Ιστοσελίδα, αγγελία, φωτογραφίες ή ένα μικρό εργαλείο. Πείτε μας ποιο ακίνητο.",
   "contact.topic.website": "Ιστοσελίδα",
@@ -97,7 +97,7 @@ const el: Dict = {
   "contact.topic.other": "Κάτι άλλο",
   "meta.home.title": "Webrya — Ιστοσελίδες και καταλύματα",
   "meta.home.description":
-    "Landing page, e-shop, booking engine, προετοιμασία ακινήτου, φωτογραφίες και αγγελία. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
+    "Landing page, e-shop, booking engine, προετοιμασία ακινήτου, φωτογραφίες και αγγελία.",
 };
 
 const de: Dict = {
@@ -110,7 +110,7 @@ const de: Dict = {
   "studio.hero.eyebrow": "Thessaloniki",
   "studio.hero.title": "Websites und Unterkünfte.",
   "studio.hero.sub":
-    "Landingpage, Shop, Buchungssystem, Fotos und Inserat. Einmal. Keine monatliche Software.",
+    "Landingpage, Shop, Buchungssystem, Fotos und Inserat.",
   "studio.hero.view": "Leistungen ansehen",
   "studio.hero.talk": "Kontakt",
   "studio.close": "Nennen Sie uns das Objekt.",
@@ -133,7 +133,7 @@ const de: Dict = {
     "Eine Seite, ein QR. WLAN, Zugang, Hausregeln, die Umgebung. Die gleichen fünf Nachrichten hören auf.",
   "offer.apps.t": "Kleine Apps und Automationen",
   "offer.apps.b":
-    "Ein kleines Werkzeug für die Arbeit, die sich wiederholt: Antworten, Bewertungen, ein Formular, eine Erinnerung. Einmal gebaut. Kein monatlicher Platz.",
+    "Ein kleines Werkzeug für die Arbeit, die sich wiederholt: Antworten, Bewertungen, ein Formular, eine Erinnerung.",
   "offer.cta": "Dazu anfragen",
   "contact.intro": "Website, Inserat, Fotos oder ein kleines Werkzeug. Welches Objekt?",
   "contact.topic.website": "Eine Website",
@@ -145,7 +145,7 @@ const de: Dict = {
   "contact.topic.other": "Etwas anderes",
   "meta.home.title": "Webrya — Websites und Unterkünfte",
   "meta.home.description":
-    "Landingpages, Shops, Buchungssysteme, Objektvorbereitung, Fotos und Inserate. Einmal. Keine monatliche Software.",
+    "Landingpages, Shops, Buchungssysteme, Objektvorbereitung, Fotos und Inserate.",
 };
 
 const ru: Dict = {
@@ -158,7 +158,7 @@ const ru: Dict = {
   "studio.hero.eyebrow": "Салоники",
   "studio.hero.title": "Сайты и жильё.",
   "studio.hero.sub":
-    "Лендинг, магазин, бронирование, фото и объявление. Один раз. Без ежемесячной программы.",
+    "Лендинг, магазин, бронирование, фото и объявление.",
   "studio.hero.view": "Смотреть работы",
   "studio.hero.talk": "Контакт",
   "studio.close": "Напишите, какой объект.",
@@ -181,7 +181,7 @@ const ru: Dict = {
     "Одна страница, один QR. Wi-Fi, как войти, правила, что рядом. Одни и те же пять сообщений заканчиваются.",
   "offer.apps.t": "Небольшие приложения и автоматизации",
   "offer.apps.b":
-    "Один небольшой инструмент для повторяющейся работы: ответы гостям и на отзывы, форма, напоминание. Один раз. Без месячного места.",
+    "Один небольшой инструмент для повторяющейся работы: ответы гостям и на отзывы, форма, напоминание.",
   "offer.cta": "Спросить об этом",
   "contact.intro": "Сайт, объявление, фото или небольшой инструмент. Какой объект?",
   "contact.topic.website": "Сайт",
@@ -193,7 +193,7 @@ const ru: Dict = {
   "contact.topic.other": "Другое",
   "meta.home.title": "Webrya — Сайты и жильё",
   "meta.home.description":
-    "Лендинги, магазины, бронирование, подготовка объекта, фото и объявления. Один раз. Без ежемесячной программы.",
+    "Лендинги, магазины, бронирование, подготовка объекта, фото и объявления.",
 };
 
 const tr: Dict = {
@@ -206,7 +206,7 @@ const tr: Dict = {
   "studio.hero.eyebrow": "Selanik",
   "studio.hero.title": "Siteler ve konaklamalar.",
   "studio.hero.sub":
-    "Landing, mağaza, rezervasyon motoru, fotoğraf ve ilan. Bir kez. Aylık yazılım yok.",
+    "Landing, mağaza, rezervasyon motoru, fotoğraf ve ilan.",
   "studio.hero.view": "İşleri görün",
   "studio.hero.talk": "İletişim",
   "studio.close": "Mülkü söyleyin.",
@@ -229,7 +229,7 @@ const tr: Dict = {
     "Bir sayfa, bir QR. Wi-Fi, nasıl girilir, kurallar, çevre. Aynı beş mesaj biter.",
   "offer.apps.t": "Küçük uygulamalar ve otomasyonlar",
   "offer.apps.b":
-    "Tekrarlanan iş için küçük bir araç: misafir ve yorum yanıtları, form, hatırlatma. Bir kez. Aylık koltuk yok.",
+    "Tekrarlanan iş için küçük bir araç: misafir ve yorum yanıtları, form, hatırlatma.",
   "offer.cta": "Bunu sorun",
   "contact.intro": "Site, ilan, fotoğraf veya küçük bir araç. Hangi mülk?",
   "contact.topic.website": "Web sitesi",
@@ -241,7 +241,7 @@ const tr: Dict = {
   "contact.topic.other": "Başka bir şey",
   "meta.home.title": "Webrya — Siteler ve konaklamalar",
   "meta.home.description":
-    "Landing, mağaza, rezervasyon, mülk hazırlığı, fotoğraf ve ilan. Bir kez. Aylık yazılım yok.",
+    "Landing, mağaza, rezervasyon, mülk hazırlığı, fotoğraf ve ilan.",
 };
 
 const fr: Dict = {
@@ -254,7 +254,7 @@ const fr: Dict = {
   "studio.hero.eyebrow": "Thessalonique",
   "studio.hero.title": "Sites et logements.",
   "studio.hero.sub":
-    "Landing, boutique, réservation, photos et annonce. Une fois. Pas de logiciel mensuel.",
+    "Landing, boutique, réservation, photos et annonce.",
   "studio.hero.view": "Voir les prestations",
   "studio.hero.talk": "Contact",
   "studio.close": "Dites-nous le bien.",
@@ -277,7 +277,7 @@ const fr: Dict = {
     "Une page, un QR. Wi-Fi, comment entrer, règles, le quartier. Les cinq mêmes messages s’arrêtent.",
   "offer.apps.t": "Petites applications et automatisations",
   "offer.apps.b":
-    "Un petit outil pour le travail qui se répète : réponses, avis, un formulaire, un rappel. Une fois. Pas de place mensuelle.",
+    "Un petit outil pour le travail qui se répète : réponses, avis, un formulaire, un rappel.",
   "offer.cta": "En parler",
   "contact.intro": "Un site, une annonce, des photos ou un petit outil. Quel bien ?",
   "contact.topic.website": "Un site web",
@@ -289,14 +289,14 @@ const fr: Dict = {
   "contact.topic.other": "Autre chose",
   "meta.home.title": "Webrya — Sites et logements",
   "meta.home.description":
-    "Landings, boutiques, réservation, préparation du bien, photos et annonces. Une fois. Pas de logiciel mensuel.",
+    "Landings, boutiques, réservation, préparation du bien, photos et annonces.",
 };
 
 const prices: Record<Locale, Dict> = {
   en: {
     "page.pricing.eyebrow": "Prices",
     "page.pricing.title": "A price for each job.",
-    "page.pricing.intro": "No packages. Each price is for one property, paid once.",
+    "page.pricing.intro": "No packages. Each price is for one property. Work starts with a deposit.",
     "price.note": "Starting price",
     "price.scope":
       "These prices are for one property in the Thessaloniki area. A larger job is priced before any work starts.",
@@ -329,10 +329,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "One small tool for work you repeat.",
     "price.apps.i0": "Replies, a form or a reminder",
     "price.apps.i1": "Scoped before we start",
-    "price.apps.i2": "No monthly seat",
+    "price.apps.i2": "It stays with you",
     "pricing.faqTitle": "Before you write",
-    "pricing.faq0q": "Is this a subscription?",
-    "pricing.faq0a": "No. Each job is paid once.",
+    "pricing.faq0q": "How does a job start?",
+    "pricing.faq0a": "You say what you need. The offer comes before any work.",
     "pricing.faq1q": "Is the price for one property?",
     "pricing.faq1a": "Yes. More rooms or a second property is a new price, said before the work.",
     "pricing.faq2q": "Do photos outside Thessaloniki cost more?",
@@ -342,12 +342,12 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "When is the price fixed?",
     "pricing.faq4a": "Before any work starts. You see the offer first.",
     "pricing.faq5q": "Who owns the result?",
-    "pricing.faq5a": "You do. There is no monthly seat.",
+    "pricing.faq5a": "You do.",
   },
   el: {
     "page.pricing.eyebrow": "Τιμές",
     "page.pricing.title": "Τιμή για κάθε δουλειά.",
-    "page.pricing.intro": "Όχι πακέτα. Κάθε τιμή είναι για ένα κατάλυμα και πληρώνεται μία φορά.",
+    "page.pricing.intro": "Όχι πακέτα. Κάθε τιμή είναι για ένα κατάλυμα. Η δουλειά ξεκινάει με προκαταβολή.",
     "price.note": "Αρχική τιμή",
     "price.scope":
       "Οι τιμές είναι για ένα κατάλυμα στην περιοχή της Θεσσαλονίκης. Μεγαλύτερο αντικείμενο, άλλη τιμή, πριν ξεκινήσει η δουλειά.",
@@ -380,10 +380,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "Ένα μικρό εργαλείο για δουλειά που επαναλαμβάνεται.",
     "price.apps.i0": "Απαντήσεις, φόρμα ή υπενθύμιση",
     "price.apps.i1": "Το αντικείμενο κλείνει πριν ξεκινήσουμε",
-    "price.apps.i2": "Χωρίς μηνιαία θέση",
+    "price.apps.i2": "Μένει σε εσάς",
     "pricing.faqTitle": "Πριν γράψετε",
-    "pricing.faq0q": "Είναι συνδρομή;",
-    "pricing.faq0a": "Όχι. Κάθε δουλειά πληρώνεται μία φορά.",
+    "pricing.faq0q": "Πώς ξεκινά μια δουλειά;",
+    "pricing.faq0a": "Λέτε τι χρειάζεστε. Η προσφορά έρχεται πριν ξεκινήσει η δουλειά.",
     "pricing.faq1q": "Η τιμή είναι για ένα κατάλυμα;",
     "pricing.faq1a": "Ναι. Περισσότερα δωμάτια ή δεύτερο κατάλυμα είναι άλλη τιμή, πριν από τη δουλειά.",
     "pricing.faq2q": "Η φωτογράφιση εκτός Θεσσαλονίκης κοστίζει παραπάνω;",
@@ -393,12 +393,12 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "Πότε κλειδώνει η τιμή;",
     "pricing.faq4a": "Πριν ξεκινήσει οτιδήποτε. Βλέπετε πρώτα την προσφορά.",
     "pricing.faq5q": "Σε ποιον ανήκει το αποτέλεσμα;",
-    "pricing.faq5a": "Σε εσάς. Δεν υπάρχει μηνιαία θέση.",
+    "pricing.faq5a": "Σε εσάς.",
   },
   de: {
     "page.pricing.eyebrow": "Preise",
     "page.pricing.title": "Ein Preis für jeden Auftrag.",
-    "page.pricing.intro": "Keine Pakete. Jeder Preis gilt für ein Objekt und wird einmal bezahlt.",
+    "page.pricing.intro": "Keine Pakete. Jeder Preis gilt für ein Objekt. Die Arbeit beginnt mit einer Anzahlung.",
     "price.note": "Startpreis",
     "price.scope":
       "Die Preise gelten für ein Objekt im Raum Thessaloniki. Ein größerer Auftrag wird bepreist, bevor die Arbeit beginnt.",
@@ -431,10 +431,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "Ein kleines Werkzeug für wiederkehrende Arbeit.",
     "price.apps.i0": "Antworten, ein Formular oder eine Erinnerung",
     "price.apps.i1": "Umfang vor dem Start",
-    "price.apps.i2": "Kein monatlicher Platz",
+    "price.apps.i2": "Es bleibt bei Ihnen",
     "pricing.faqTitle": "Bevor Sie schreiben",
-    "pricing.faq0q": "Ist das ein Abo?",
-    "pricing.faq0a": "Nein. Jeder Auftrag wird einmal bezahlt.",
+    "pricing.faq0q": "Wie fängt ein Auftrag an?",
+    "pricing.faq0a": "Sie sagen, was Sie brauchen. Das Angebot kommt vor der Arbeit.",
     "pricing.faq1q": "Gilt der Preis für ein Objekt?",
     "pricing.faq1a": "Ja. Mehr Zimmer oder ein zweites Objekt ist ein neuer Preis, vor der Arbeit.",
     "pricing.faq2q": "Kosten Fotos außerhalb von Thessaloniki mehr?",
@@ -444,12 +444,12 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "Wann steht der Preis fest?",
     "pricing.faq4a": "Bevor irgendetwas beginnt. Sie sehen zuerst das Angebot.",
     "pricing.faq5q": "Wem gehört das Ergebnis?",
-    "pricing.faq5a": "Ihnen. Es gibt keinen monatlichen Platz.",
+    "pricing.faq5a": "Ihnen.",
   },
   ru: {
     "page.pricing.eyebrow": "Цены",
     "page.pricing.title": "Цена за каждую работу.",
-    "page.pricing.intro": "Без пакетов. Каждая цена — за один объект и оплачивается один раз.",
+    "page.pricing.intro": "Без пакетов. Каждая цена — за один объект. Работа начинается с предоплаты.",
     "price.note": "Стартовая цена",
     "price.scope":
       "Цены за один объект в районе Салоник. Больший объём оценивается до начала работы.",
@@ -482,10 +482,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "Один небольшой инструмент для повторяющейся работы.",
     "price.apps.i0": "Ответы, форма или напоминание",
     "price.apps.i1": "Объём до старта",
-    "price.apps.i2": "Без месячного места",
+    "price.apps.i2": "Остаётся у вас",
     "pricing.faqTitle": "Прежде чем писать",
-    "pricing.faq0q": "Это подписка?",
-    "pricing.faq0a": "Нет. Каждая работа оплачивается один раз.",
+    "pricing.faq0q": "Как начинается работа?",
+    "pricing.faq0a": "Вы пишете, что нужно. Предложение приходит до начала работы.",
     "pricing.faq1q": "Цена за один объект?",
     "pricing.faq1a": "Да. Больше комнат или второй объект — другая цена, до начала работы.",
     "pricing.faq2q": "Фото вне Салоник стоят дороже?",
@@ -495,12 +495,12 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "Когда цена фиксируется?",
     "pricing.faq4a": "До начала работы. Сначала вы видите предложение.",
     "pricing.faq5q": "Кому принадлежит результат?",
-    "pricing.faq5a": "Вам. Месячного места нет.",
+    "pricing.faq5a": "Вам.",
   },
   tr: {
     "page.pricing.eyebrow": "Fiyatlar",
     "page.pricing.title": "Her işin bir fiyatı.",
-    "page.pricing.intro": "Paket yok. Her fiyat bir mülk içindir ve bir kez ödenir.",
+    "page.pricing.intro": "Paket yok. Her fiyat bir mülk içindir. İş kapora ile başlar.",
     "price.note": "Başlangıç fiyatı",
     "price.scope":
       "Fiyatlar Selanik bölgesinde bir mülk içindir. Daha büyük iş, başlamadan önce fiyatlanır.",
@@ -533,10 +533,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "Tekrarlanan iş için küçük bir araç.",
     "price.apps.i0": "Yanıtlar, form veya hatırlatma",
     "price.apps.i1": "Kapsam başlamadan önce",
-    "price.apps.i2": "Aylık koltuk yok",
+    "price.apps.i2": "Sizde kalır",
     "pricing.faqTitle": "Yazmadan önce",
-    "pricing.faq0q": "Bu bir abonelik mi?",
-    "pricing.faq0a": "Hayır. Her iş bir kez ödenir.",
+    "pricing.faq0q": "Bir iş nasıl başlar?",
+    "pricing.faq0a": "Ne gerektiğini söylersiniz. Teklif, iş başlamadan gelir.",
     "pricing.faq1q": "Fiyat bir mülk için mi?",
     "pricing.faq1a": "Evet. Daha fazla oda veya ikinci mülk, işten önce başka fiyattır.",
     "pricing.faq2q": "Selanik dışı fotoğraf daha mı pahalı?",
@@ -546,12 +546,12 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "Fiyat ne zaman kapanır?",
     "pricing.faq4a": "İş başlamadan önce. Önce teklifi görürsünüz.",
     "pricing.faq5q": "Sonuç kime aittir?",
-    "pricing.faq5a": "Size. Aylık koltuk yok.",
+    "pricing.faq5a": "Size.",
   },
   fr: {
     "page.pricing.eyebrow": "Prix",
     "page.pricing.title": "Un prix pour chaque travail.",
-    "page.pricing.intro": "Pas de forfaits. Chaque prix vaut pour un bien et se paie une fois.",
+    "page.pricing.intro": "Pas de forfaits. Chaque prix vaut pour un bien. Le travail commence par un acompte.",
     "price.note": "Prix de départ",
     "price.scope":
       "Ces prix valent pour un bien dans la région de Thessalonique. Un travail plus large est chiffré avant de commencer.",
@@ -584,10 +584,10 @@ const prices: Record<Locale, Dict> = {
     "price.apps.b": "Un petit outil pour le travail qui se répète.",
     "price.apps.i0": "Réponses, un formulaire ou un rappel",
     "price.apps.i1": "Le périmètre avant de commencer",
-    "price.apps.i2": "Pas de place mensuelle",
+    "price.apps.i2": "Il reste à vous",
     "pricing.faqTitle": "Avant d’écrire",
-    "pricing.faq0q": "Est-ce un abonnement ?",
-    "pricing.faq0a": "Non. Chaque travail se paie une fois.",
+    "pricing.faq0q": "Comment un travail commence-t-il ?",
+    "pricing.faq0a": "Vous dites ce qu’il vous faut. L’offre arrive avant le travail.",
     "pricing.faq1q": "Le prix vaut-il pour un bien ?",
     "pricing.faq1a": "Oui. Plus de chambres ou un second bien, c’est un autre prix, avant le travail.",
     "pricing.faq2q": "Les photos hors Thessalonique coûtent-elles plus ?",
@@ -597,7 +597,7 @@ const prices: Record<Locale, Dict> = {
     "pricing.faq4q": "Quand le prix est-il fixé ?",
     "pricing.faq4a": "Avant tout travail. Vous voyez d’abord l’offre.",
     "pricing.faq5q": "À qui appartient le résultat ?",
-    "pricing.faq5a": "À vous. Il n’y a pas de place mensuelle.",
+    "pricing.faq5a": "À vous.",
   },
 };
 
@@ -816,70 +816,88 @@ const webKinds: Record<Locale, Dict> = {
 
 const place: Record<Locale, Dict> = {
   en: {
-    "studio.place.eyebrow": "Thessaloniki",
-    "studio.place.title": "A studio, not a side project.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Two years in the field.",
     "studio.place.p1":
-      "Webrya is a website studio in Thessaloniki, Greece. It builds landing pages, business websites, e-shops and sites with a booking engine. The work is delivered once. The site stays yours.",
+      "Webrya is in Thessaloniki. We have worked with websites and short-term rentals for two years. The experience is practical: what a page needs in order to hold, and what a property needs before it goes on a platform.",
     "studio.place.p2":
-      "For a short-term rental it also prepares the property, photographs it, publishes the listing on Airbnb and Booking, and builds a digital check-in. Each job has its own price. There is no monthly software.",
+      "We build landing pages, business websites, e-shops and sites with a booking engine. For a rental we also prepare the property, photograph it, publish the listing and set up the digital check-in.",
+    "studio.place.f0": "Two years of work",
+    "studio.place.f1": "Thessaloniki",
+    "studio.place.f2": "Websites and rentals",
     "meta.home.title": "Webrya — Website studio in Thessaloniki",
     "meta.home.description":
-      "Website studio in Thessaloniki. Landing pages, e-shops, booking engines, property photos and listings. Delivered once.",
+      "Webrya, Thessaloniki. Websites, e-shops, booking engines, property photography and listings. Two years in the field.",
   },
   el: {
-    "studio.place.eyebrow": "Θεσσαλονίκη",
-    "studio.place.title": "Στούντιο, όχι χόμπι.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Δύο χρόνια στον χώρο.",
     "studio.place.p1":
-      "Η Webrya είναι στούντιο κατασκευής ιστοσελίδων στη Θεσσαλονίκη. Φτιάχνει landing pages, εταιρικές ιστοσελίδες, e-shops και σελίδες με booking engine. Η δουλειά παραδίδεται μία φορά. Η σελίδα μένει δική σας.",
+      "Η Webrya είναι στη Θεσσαλονίκη. Δουλεύουμε με ιστοσελίδες και καταλύματα εδώ και δύο χρόνια. Η εμπειρία είναι πρακτική: τι χρειάζεται μια σελίδα για να σταθεί, και τι χρειάζεται ένα ακίνητο πριν βγει σε πλατφόρμα.",
     "studio.place.p2":
-      "Για κατάλυμα βραχυχρόνιας μίσθωσης αναλαμβάνει και την προετοιμασία του ακινήτου, την επαγγελματική φωτογράφιση, την αγγελία σε Airbnb και Booking, και ένα ψηφιακό check-in. Κάθε υπηρεσία έχει δική της τιμή. Δεν είναι μηνιαίο λογισμικό.",
+      "Φτιάχνουμε landing pages, εταιρικές ιστοσελίδες, e-shops και σελίδες με booking engine. Για ένα κατάλυμα αναλαμβάνουμε και την προετοιμασία, τη φωτογράφιση, την αγγελία και το ψηφιακό check-in.",
+    "studio.place.f0": "Δύο χρόνια δουλειάς",
+    "studio.place.f1": "Θεσσαλονίκη",
+    "studio.place.f2": "Ιστοσελίδες και καταλύματα",
     "meta.home.title": "Webrya — Στούντιο ιστοσελίδων στη Θεσσαλονίκη",
     "meta.home.description":
-      "Στούντιο ιστοσελίδων στη Θεσσαλονίκη. Landing page, e-shop, booking engine, φωτογράφιση και αγγελία καταλύματος. Μία φορά.",
+      "Webrya, Θεσσαλονίκη. Ιστοσελίδες, e-shop, booking engine, φωτογράφιση και αγγελίες. Δύο χρόνια στον χώρο.",
   },
   de: {
-    "studio.place.eyebrow": "Thessaloniki",
-    "studio.place.title": "Ein Studio, kein Nebenprojekt.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Zwei Jahre in der Branche.",
     "studio.place.p1":
-      "Webrya ist ein Website-Studio in Thessaloniki, Griechenland. Es baut Landingpages, Unternehmenswebsites, Shops und Seiten mit Buchungssystem. Die Arbeit wird einmal geliefert. Die Seite bleibt Ihre.",
+      "Webrya ist in Thessaloniki. Wir arbeiten seit zwei Jahren mit Websites und Ferienunterkünften. Die Erfahrung ist praktisch: was eine Seite braucht, und was ein Objekt braucht, bevor es auf eine Plattform geht.",
     "studio.place.p2":
-      "Für eine Ferienunterkunft bereitet es auch das Objekt vor, fotografiert es, veröffentlicht das Inserat auf Airbnb und Booking und baut einen digitalen Check-in. Jeder Auftrag hat seinen Preis. Keine monatliche Software.",
+      "Wir bauen Landingpages, Unternehmenswebsites, Shops und Seiten mit Buchungssystem. Für eine Unterkunft bereiten wir auch das Objekt vor, fotografieren es, veröffentlichen das Inserat und richten den digitalen Check-in ein.",
+    "studio.place.f0": "Zwei Jahre Arbeit",
+    "studio.place.f1": "Thessaloniki",
+    "studio.place.f2": "Websites und Unterkünfte",
     "meta.home.title": "Webrya — Website-Studio in Thessaloniki",
     "meta.home.description":
-      "Website-Studio in Thessaloniki. Landingpages, Shops, Buchungssysteme, Fotos und Inserate. Einmal geliefert.",
+      "Webrya, Thessaloniki. Websites, Shops, Buchungssysteme, Fotos und Inserate. Zwei Jahre in der Branche.",
   },
   ru: {
-    "studio.place.eyebrow": "Салоники",
-    "studio.place.title": "Студия, не хобби.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Два года в деле.",
     "studio.place.p1":
-      "Webrya — студия сайтов в Салониках, Греция. Делает лендинги, сайты компаний, магазины и страницы с бронированием. Работа сдаётся один раз. Сайт остаётся вашим.",
+      "Webrya в Салониках. Два года работаем с сайтами и краткосрочной арендой. Опыт практический: что нужно странице, и что нужно объекту, прежде чем он выйдет на платформу.",
     "studio.place.p2":
-      "Для краткосрочной аренды студия также готовит объект, фотографирует его, публикует объявление на Airbnb и Booking и делает цифровой заезд. У каждой работы своя цена. Без ежемесячной программы.",
+      "Делаем лендинги, сайты компаний, магазины и страницы с бронированием. Для жилья также готовим объект, фотографируем, публикуем объявление и настраиваем цифровой заезд.",
+    "studio.place.f0": "Два года работы",
+    "studio.place.f1": "Салоники",
+    "studio.place.f2": "Сайты и жильё",
     "meta.home.title": "Webrya — Студия сайтов в Салониках",
     "meta.home.description":
-      "Студия сайтов в Салониках. Лендинги, магазины, бронирование, фото и объявления. Один раз.",
+      "Webrya, Салоники. Сайты, магазины, бронирование, фото и объявления. Два года в деле.",
   },
   tr: {
-    "studio.place.eyebrow": "Selanik",
-    "studio.place.title": "Bir stüdyo, hobi değil.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Sektörde iki yıl.",
     "studio.place.p1":
-      "Webrya, Selanik, Yunanistan’da bir web sitesi stüdyosudur. Landing sayfalar, işletme siteleri, e-shop ve rezervasyon motorlu sayfalar kurar. İş bir kez teslim edilir. Site sizin kalır.",
+      "Webrya Selanik’tedir. İki yıldır web siteleri ve kısa dönem kiralamayla çalışıyoruz. Deneyim pratiktir: bir sayfanın ayakta durması için ne gerekir, bir mülk platforma çıkmadan önce ne gerekir.",
     "studio.place.p2":
-      "Kısa dönem kiralama için mülkü hazırlar, fotoğraflar, ilanı Airbnb ve Booking’e koyar ve dijital check-in kurar. Her işin kendi fiyatı vardır. Aylık yazılım yoktur.",
+      "Landing sayfalar, işletme siteleri, e-shop ve rezervasyon motorlu sayfalar kurarız. Bir konaklama için mülkü hazırlar, fotoğraflar, ilanı yayınlar ve dijital check-in’i kurarız.",
+    "studio.place.f0": "İki yıl iş",
+    "studio.place.f1": "Selanik",
+    "studio.place.f2": "Siteler ve konaklama",
     "meta.home.title": "Webrya — Selanik’te web sitesi stüdyosu",
     "meta.home.description":
-      "Selanik’te web sitesi stüdyosu. Landing, e-shop, rezervasyon, fotoğraf ve ilan. Bir kez teslim.",
+      "Webrya, Selanik. Siteler, e-shop, rezervasyon, fotoğraf ve ilan. Sektörde iki yıl.",
   },
   fr: {
-    "studio.place.eyebrow": "Thessalonique",
-    "studio.place.title": "Un studio, pas un passe-temps.",
+    "studio.place.eyebrow": "Webrya",
+    "studio.place.title": "Deux ans dans le métier.",
     "studio.place.p1":
-      "Webrya est un studio de sites web à Thessalonique, en Grèce. Il réalise des landings, des sites d’entreprise, des boutiques et des pages avec réservation. Le travail est livré une fois. Le site reste le vôtre.",
+      "Webrya est à Thessalonique. Nous travaillons depuis deux ans avec des sites web et des locations courte durée. L’expérience est pratique : ce qu’il faut à une page pour tenir, et ce qu’il faut à un bien avant qu’il aille sur une plateforme.",
     "studio.place.p2":
-      "Pour une location courte durée, il prépare aussi le bien, le photographie, publie l’annonce sur Airbnb et Booking, et construit un check-in numérique. Chaque travail a son prix. Pas de logiciel mensuel.",
+      "Nous réalisons des landings, des sites d’entreprise, des boutiques et des pages avec réservation. Pour un logement, nous préparons aussi le bien, le photographions, publions l’annonce et mettons en place le check-in numérique.",
+    "studio.place.f0": "Deux ans de travail",
+    "studio.place.f1": "Thessalonique",
+    "studio.place.f2": "Sites et logements",
     "meta.home.title": "Webrya — Studio web à Thessalonique",
     "meta.home.description":
-      "Studio web à Thessalonique. Landings, boutiques, réservation, photos et annonces. Livré une fois.",
+      "Webrya, Thessalonique. Sites, boutiques, réservation, photos et annonces. Deux ans dans le métier.",
   },
 };
 

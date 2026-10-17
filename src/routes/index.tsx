@@ -193,6 +193,16 @@ function Home() {
           <div className="max-w-2xl space-y-4 text-base leading-7 text-white/75">
             <p>{t("studio.place.p1")}</p>
             <p>{t("studio.place.p2")}</p>
+            <ul className="flex flex-wrap gap-2 pt-3">
+              {(["f0", "f1", "f2"] as const).map((id) => (
+                <li
+                  key={id}
+                  className="rounded-full border border-white/15 px-3 py-1 text-xs tracking-wide text-white/80"
+                >
+                  {t(`studio.place.${id}`)}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

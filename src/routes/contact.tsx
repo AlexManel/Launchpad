@@ -51,7 +51,7 @@ function ContactPage() {
             <div className="rounded-xl border border-border bg-surface p-6">
               <p className="eyebrow">{tr(t, "contact.how", "How we work")}</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {tr(t, "contact.howBody", "We look at the job and send a clear offer. No subscription.")}
+                {tr(t, "contact.howBody", "We look at the job and send a clear offer.")}
               </p>
             </div>
           </div>
