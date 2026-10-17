@@ -67,9 +67,12 @@ export function ContactForm() {
           <select
             name="topic"
             required
-            defaultValue="website"
+            defaultValue=""
             className="mt-1.5 h-10 w-full rounded-md border border-input bg-[#100a28] px-3 text-sm text-[#f4f6ff] [color-scheme:dark]"
           >
+            <option value="" disabled>
+              {tr(t, "nav.services", "Services")}
+            </option>
             <option value="website">{tr(t, "contact.topic.website", "A website")}</option>
             <option value="landing">{tr(t, "contact.topic.landing", "A landing page")}</option>
             <option value="booking">{tr(t, "contact.topic.booking", "A booking engine")}</option>

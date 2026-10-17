@@ -15,7 +15,7 @@ const en: Dict = {
     "A landing page, a shop, a booking engine, photos and a listing.",
   "studio.hero.view": "See the work",
   "studio.hero.talk": "Contact",
-  "studio.close": "Tell us the property.",
+  "studio.close": "Contact us.",
   "studio.close.cta": "Send a message",
   "offer.lead": "The work",
   "offer.title": "Six jobs. Each one starts and finishes.",
@@ -38,7 +38,7 @@ const en: Dict = {
   "offer.apps.b":
     "One small tool for the work you repeat: guest replies, review answers, a form, a reminder.",
   "offer.cta": "Ask about this",
-  "contact.intro": "A website, a listing, photos, or a small tool. Say which property.",
+  "contact.intro": "A website, a rental, photos, or a small tool.",
   "contact.topic.website": "A website",
   "contact.topic.prep": "Property setup",
   "contact.topic.photos": "Photography",
@@ -64,7 +64,7 @@ const el: Dict = {
     "Landing page, e-shop, booking engine, φωτογραφίες και αγγελία.",
   "studio.hero.view": "Δείτε τις δουλειές",
   "studio.hero.talk": "Επικοινωνία",
-  "studio.close": "Πείτε μας το ακίνητο.",
+  "studio.close": "Επικοινωνήστε μαζί μας.",
   "studio.close.cta": "Στείλτε μήνυμα",
   "offer.lead": "Οι δουλειές",
   "offer.title": "Έξι δουλειές. Καθεμία με αρχή και τέλος.",
@@ -87,7 +87,7 @@ const el: Dict = {
   "offer.apps.b":
     "Ένα μικρό εργαλείο για τη δουλειά που επαναλαμβάνεται: απαντήσεις σε επισκέπτες και κριτικές, φόρμα, υπενθύμιση.",
   "offer.cta": "Ρωτήστε για αυτό",
-  "contact.intro": "Ιστοσελίδα, αγγελία, φωτογραφίες ή ένα μικρό εργαλείο. Πείτε μας ποιο ακίνητο.",
+  "contact.intro": "Ιστοσελίδα, κατάλυμα, φωτογραφίες ή ένα μικρό εργαλείο.",
   "contact.topic.website": "Ιστοσελίδα",
   "contact.topic.prep": "Προετοιμασία ακινήτου",
   "contact.topic.photos": "Φωτογράφιση",
@@ -113,7 +113,7 @@ const de: Dict = {
     "Landingpage, Shop, Buchungssystem, Fotos und Inserat.",
   "studio.hero.view": "Leistungen ansehen",
   "studio.hero.talk": "Kontakt",
-  "studio.close": "Nennen Sie uns das Objekt.",
+  "studio.close": "Kontaktieren Sie uns.",
   "studio.close.cta": "Nachricht senden",
   "offer.lead": "Die Arbeit",
   "offer.title": "Sechs Aufträge. Jeder hat Anfang und Ende.",
@@ -135,7 +135,7 @@ const de: Dict = {
   "offer.apps.b":
     "Ein kleines Werkzeug für die Arbeit, die sich wiederholt: Antworten, Bewertungen, ein Formular, eine Erinnerung.",
   "offer.cta": "Dazu anfragen",
-  "contact.intro": "Website, Inserat, Fotos oder ein kleines Werkzeug. Welches Objekt?",
+  "contact.intro": "Website, Unterkunft, Fotos oder ein kleines Werkzeug.",
   "contact.topic.website": "Eine Website",
   "contact.topic.prep": "Objektvorbereitung",
   "contact.topic.photos": "Fotografie",
@@ -161,7 +161,7 @@ const ru: Dict = {
     "Лендинг, магазин, бронирование, фото и объявление.",
   "studio.hero.view": "Смотреть работы",
   "studio.hero.talk": "Контакт",
-  "studio.close": "Напишите, какой объект.",
+  "studio.close": "Свяжитесь с нами.",
   "studio.close.cta": "Отправить сообщение",
   "offer.lead": "Работы",
   "offer.title": "Шесть работ. У каждой есть начало и конец.",
@@ -183,7 +183,7 @@ const ru: Dict = {
   "offer.apps.b":
     "Один небольшой инструмент для повторяющейся работы: ответы гостям и на отзывы, форма, напоминание.",
   "offer.cta": "Спросить об этом",
-  "contact.intro": "Сайт, объявление, фото или небольшой инструмент. Какой объект?",
+  "contact.intro": "Сайт, жильё, фото или небольшой инструмент.",
   "contact.topic.website": "Сайт",
   "contact.topic.prep": "Подготовка объекта",
   "contact.topic.photos": "Фотосъёмка",
@@ -209,7 +209,7 @@ const tr: Dict = {
     "Landing, mağaza, rezervasyon motoru, fotoğraf ve ilan.",
   "studio.hero.view": "İşleri görün",
   "studio.hero.talk": "İletişim",
-  "studio.close": "Mülkü söyleyin.",
+  "studio.close": "Bize ulaşın.",
   "studio.close.cta": "Mesaj gönderin",
   "offer.lead": "İşler",
   "offer.title": "Altı iş. Her birinin başı ve sonu var.",
@@ -231,7 +231,7 @@ const tr: Dict = {
   "offer.apps.b":
     "Tekrarlanan iş için küçük bir araç: misafir ve yorum yanıtları, form, hatırlatma.",
   "offer.cta": "Bunu sorun",
-  "contact.intro": "Site, ilan, fotoğraf veya küçük bir araç. Hangi mülk?",
+  "contact.intro": "Site, konaklama, fotoğraf veya küçük bir araç.",
   "contact.topic.website": "Web sitesi",
   "contact.topic.prep": "Mülk hazırlığı",
   "contact.topic.photos": "Fotoğraf",
@@ -257,7 +257,7 @@ const fr: Dict = {
     "Landing, boutique, réservation, photos et annonce.",
   "studio.hero.view": "Voir les prestations",
   "studio.hero.talk": "Contact",
-  "studio.close": "Dites-nous le bien.",
+  "studio.close": "Contactez-nous.",
   "studio.close.cta": "Envoyer un message",
   "offer.lead": "Les prestations",
   "offer.title": "Six travaux. Chacun commence et se termine.",
@@ -279,7 +279,7 @@ const fr: Dict = {
   "offer.apps.b":
     "Un petit outil pour le travail qui se répète : réponses, avis, un formulaire, un rappel.",
   "offer.cta": "En parler",
-  "contact.intro": "Un site, une annonce, des photos ou un petit outil. Quel bien ?",
+  "contact.intro": "Un site, un logement, des photos ou un petit outil.",
   "contact.topic.website": "Un site web",
   "contact.topic.prep": "Préparation du bien",
   "contact.topic.photos": "Photographie",
@@ -816,7 +816,7 @@ const webKinds: Record<Locale, Dict> = {
 
 const place: Record<Locale, Dict> = {
   en: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "The company",
     "studio.place.title": "Two years in the field.",
     "studio.place.p1":
       "Webrya is in Thessaloniki. We have worked with websites and short-term rentals for two years. The experience is practical: what a page needs in order to hold, and what a property needs before it goes on a platform.",
@@ -830,7 +830,7 @@ const place: Record<Locale, Dict> = {
       "Webrya, Thessaloniki. Websites, e-shops, booking engines, property photography and listings. Two years in the field.",
   },
   el: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "Η εταιρεία",
     "studio.place.title": "Δύο χρόνια στον χώρο.",
     "studio.place.p1":
       "Η Webrya είναι στη Θεσσαλονίκη. Δουλεύουμε με ιστοσελίδες και καταλύματα εδώ και δύο χρόνια. Η εμπειρία είναι πρακτική: τι χρειάζεται μια σελίδα για να σταθεί, και τι χρειάζεται ένα ακίνητο πριν βγει σε πλατφόρμα.",
@@ -844,7 +844,7 @@ const place: Record<Locale, Dict> = {
       "Webrya, Θεσσαλονίκη. Ιστοσελίδες, e-shop, booking engine, φωτογράφιση και αγγελίες. Δύο χρόνια στον χώρο.",
   },
   de: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "Das Unternehmen",
     "studio.place.title": "Zwei Jahre in der Branche.",
     "studio.place.p1":
       "Webrya ist in Thessaloniki. Wir arbeiten seit zwei Jahren mit Websites und Ferienunterkünften. Die Erfahrung ist praktisch: was eine Seite braucht, und was ein Objekt braucht, bevor es auf eine Plattform geht.",
@@ -858,7 +858,7 @@ const place: Record<Locale, Dict> = {
       "Webrya, Thessaloniki. Websites, Shops, Buchungssysteme, Fotos und Inserate. Zwei Jahre in der Branche.",
   },
   ru: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "Компания",
     "studio.place.title": "Два года в деле.",
     "studio.place.p1":
       "Webrya в Салониках. Два года работаем с сайтами и краткосрочной арендой. Опыт практический: что нужно странице, и что нужно объекту, прежде чем он выйдет на платформу.",
@@ -872,7 +872,7 @@ const place: Record<Locale, Dict> = {
       "Webrya, Салоники. Сайты, магазины, бронирование, фото и объявления. Два года в деле.",
   },
   tr: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "Şirket",
     "studio.place.title": "Sektörde iki yıl.",
     "studio.place.p1":
       "Webrya Selanik’tedir. İki yıldır web siteleri ve kısa dönem kiralamayla çalışıyoruz. Deneyim pratiktir: bir sayfanın ayakta durması için ne gerekir, bir mülk platforma çıkmadan önce ne gerekir.",
@@ -886,7 +886,7 @@ const place: Record<Locale, Dict> = {
       "Webrya, Selanik. Siteler, e-shop, rezervasyon, fotoğraf ve ilan. Sektörde iki yıl.",
   },
   fr: {
-    "studio.place.eyebrow": "Webrya",
+    "studio.place.eyebrow": "L’entreprise",
     "studio.place.title": "Deux ans dans le métier.",
     "studio.place.p1":
       "Webrya est à Thessalonique. Nous travaillons depuis deux ans avec des sites web et des locations courte durée. L’expérience est pratique : ce qu’il faut à une page pour tenir, et ce qu’il faut à un bien avant qu’il aille sur une plateforme.",

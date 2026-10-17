@@ -10,7 +10,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 type ServiceItem = {
   label: string;
   to: "/" | "/websites";
-  hash?: "prep" | "photos" | "listing" | "checkin" | "apps";
+  hash?: "landing" | "site" | "booking" | "eshop" | "prep" | "photos" | "listing" | "checkin" | "apps";
 };
 
 export function Header() {
@@ -26,7 +26,10 @@ export function Header() {
   const pinnedRef = useRef(false);
 
   const services: ServiceItem[] = [
-    { to: "/websites", label: t("nav.websites") },
+    { to: "/websites", hash: "landing", label: t("web.landing.t") },
+    { to: "/websites", hash: "site", label: t("web.site.t") },
+    { to: "/websites", hash: "booking", label: t("web.booking.t") },
+    { to: "/websites", hash: "eshop", label: t("web.eshop.t") },
     { to: "/", hash: "prep", label: t("nav.prep") },
     { to: "/", hash: "photos", label: t("nav.photos") },
     { to: "/", hash: "listing", label: t("nav.listing") },
@@ -187,6 +190,9 @@ export function Header() {
             </div>
           </div>
 
+          <Link to="/" hash="company" className={["text-sm transition-colors duration-200", linkTone].join(" ")}>
+            {t("studio.place.eyebrow")}
+          </Link>
           <Link to="/resources" className={["text-sm transition-colors duration-200", linkTone].join(" ")}>
             {t("nav.resources")}
           </Link>
@@ -244,6 +250,14 @@ export function Header() {
                 </Link>
               ),
             )}
+            <Link
+              to="/"
+              hash="company"
+              onClick={() => setOpen(false)}
+              className="border-b border-border/60 py-3 text-sm text-foreground"
+            >
+              {t("studio.place.eyebrow")}
+            </Link>
             <Link
               to="/resources"
               onClick={() => setOpen(false)}
