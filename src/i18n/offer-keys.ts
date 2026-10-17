@@ -10,9 +10,9 @@ const en: Dict = {
   "nav.apps": "Apps",
   "nav.getStarted": "Start a project",
   "studio.hero.eyebrow": "Thessaloniki",
-  "studio.hero.title": "Ready for Airbnb and Booking.",
+  "studio.hero.title": "Websites and properties.",
   "studio.hero.sub":
-    "The website, the photos, the listing and a check-in page. Done once. No monthly software.",
+    "A landing page, a shop, a booking engine, photos and a listing. Done once. No monthly software.",
   "studio.hero.view": "See the work",
   "studio.hero.talk": "Contact",
   "studio.close": "Tell us the property.",
@@ -46,9 +46,9 @@ const en: Dict = {
   "contact.topic.checkin": "Digital check-in",
   "contact.topic.apps": "An app or automation",
   "contact.topic.other": "Something else",
-  "meta.home.title": "Webrya — Ready for Airbnb and Booking",
+  "meta.home.title": "Webrya — Websites and properties",
   "meta.home.description":
-    "Websites, property setup, photography, listings and a digital check-in. Done once. No monthly software.",
+    "Landing pages, shops, booking engines, property setup, photos and listings. Done once. No monthly software.",
 };
 
 const el: Dict = {
@@ -59,9 +59,9 @@ const el: Dict = {
   "nav.apps": "Εφαρμογές",
   "nav.getStarted": "Ξεκινήστε",
   "studio.hero.eyebrow": "Θεσσαλονίκη",
-  "studio.hero.title": "Έτοιμο για Airbnb και Booking.",
+  "studio.hero.title": "Ιστοσελίδες και καταλύματα.",
   "studio.hero.sub":
-    "Η ιστοσελίδα, οι φωτογραφίες, η αγγελία και ένα check-in. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
+    "Landing page, e-shop, booking engine, φωτογραφίες και αγγελία. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
   "studio.hero.view": "Δείτε τις δουλειές",
   "studio.hero.talk": "Επικοινωνία",
   "studio.close": "Πείτε μας το ακίνητο.",
@@ -95,9 +95,9 @@ const el: Dict = {
   "contact.topic.checkin": "Ψηφιακό check-in",
   "contact.topic.apps": "Εφαρμογή ή αυτοματισμός",
   "contact.topic.other": "Κάτι άλλο",
-  "meta.home.title": "Webrya — Έτοιμο για Airbnb και Booking",
+  "meta.home.title": "Webrya — Ιστοσελίδες και καταλύματα",
   "meta.home.description":
-    "Ιστοσελίδες, προετοιμασία ακινήτου, φωτογράφιση, αγγελίες και ψηφιακό check-in. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
+    "Landing page, e-shop, booking engine, προετοιμασία ακινήτου, φωτογραφίες και αγγελία. Μία φορά. Χωρίς μηνιαίο λογισμικό.",
 };
 
 const de: Dict = {
@@ -108,9 +108,9 @@ const de: Dict = {
   "nav.apps": "Apps",
   "nav.getStarted": "Projekt starten",
   "studio.hero.eyebrow": "Thessaloniki",
-  "studio.hero.title": "Bereit für Airbnb und Booking.",
+  "studio.hero.title": "Websites und Unterkünfte.",
   "studio.hero.sub":
-    "Website, Fotos, Inserat und eine Check-in-Seite. Einmal erledigt. Keine monatliche Software.",
+    "Landingpage, Shop, Buchungssystem, Fotos und Inserat. Einmal. Keine monatliche Software.",
   "studio.hero.view": "Leistungen ansehen",
   "studio.hero.talk": "Kontakt",
   "studio.close": "Nennen Sie uns das Objekt.",
@@ -143,9 +143,9 @@ const de: Dict = {
   "contact.topic.checkin": "Digitaler Check-in",
   "contact.topic.apps": "App oder Automation",
   "contact.topic.other": "Etwas anderes",
-  "meta.home.title": "Webrya — Bereit für Airbnb und Booking",
+  "meta.home.title": "Webrya — Websites und Unterkünfte",
   "meta.home.description":
-    "Websites, Objektvorbereitung, Fotos, Inserate und digitaler Check-in. Einmal erledigt. Keine monatliche Software.",
+    "Landingpages, Shops, Buchungssysteme, Objektvorbereitung, Fotos und Inserate. Einmal. Keine monatliche Software.",
 };
 
 const ru: Dict = {
@@ -156,9 +156,9 @@ const ru: Dict = {
   "nav.apps": "Приложения",
   "nav.getStarted": "Начать проект",
   "studio.hero.eyebrow": "Салоники",
-  "studio.hero.title": "Готово для Airbnb и Booking.",
+  "studio.hero.title": "Сайты и жильё.",
   "studio.hero.sub":
-    "Сайт, фотографии, объявление и страница заезда. Один раз. Без ежемесячной программы.",
+    "Лендинг, магазин, бронирование, фото и объявление. Один раз. Без ежемесячной программы.",
   "studio.hero.view": "Смотреть работы",
   "studio.hero.talk": "Контакт",
   "studio.close": "Напишите, какой объект.",
@@ -191,9 +191,9 @@ const ru: Dict = {
   "contact.topic.checkin": "Цифровой заезд",
   "contact.topic.apps": "Приложение или автоматизация",
   "contact.topic.other": "Другое",
-  "meta.home.title": "Webrya — Готово для Airbnb и Booking",
+  "meta.home.title": "Webrya — Сайты и жильё",
   "meta.home.description":
-    "Сайты, подготовка объекта, фото, объявления и цифровой заезд. Один раз. Без ежемесячной программы.",
+    "Лендинги, магазины, бронирование, подготовка объекта, фото и объявления. Один раз. Без ежемесячной программы.",
 };
 
 const tr: Dict = {
@@ -204,9 +204,9 @@ const tr: Dict = {
   "nav.apps": "Uygulamalar",
   "nav.getStarted": "Proje başlat",
   "studio.hero.eyebrow": "Selanik",
-  "studio.hero.title": "Airbnb ve Booking için hazır.",
+  "studio.hero.title": "Siteler ve konaklamalar.",
   "studio.hero.sub":
-    "Site, fotoğraflar, ilan ve bir check-in sayfası. Bir kez. Aylık yazılım yok.",
+    "Landing, mağaza, rezervasyon motoru, fotoğraf ve ilan. Bir kez. Aylık yazılım yok.",
   "studio.hero.view": "İşleri görün",
   "studio.hero.talk": "İletişim",
   "studio.close": "Mülkü söyleyin.",
@@ -239,9 +239,9 @@ const tr: Dict = {
   "contact.topic.checkin": "Dijital check-in",
   "contact.topic.apps": "Uygulama veya otomasyon",
   "contact.topic.other": "Başka bir şey",
-  "meta.home.title": "Webrya — Airbnb ve Booking için hazır",
+  "meta.home.title": "Webrya — Siteler ve konaklamalar",
   "meta.home.description":
-    "Siteler, mülk hazırlığı, fotoğraf, ilanlar ve dijital check-in. Bir kez. Aylık yazılım yok.",
+    "Landing, mağaza, rezervasyon, mülk hazırlığı, fotoğraf ve ilan. Bir kez. Aylık yazılım yok.",
 };
 
 const fr: Dict = {
@@ -252,9 +252,9 @@ const fr: Dict = {
   "nav.apps": "Applications",
   "nav.getStarted": "Démarrer un projet",
   "studio.hero.eyebrow": "Thessalonique",
-  "studio.hero.title": "Prêt pour Airbnb et Booking.",
+  "studio.hero.title": "Sites et logements.",
   "studio.hero.sub":
-    "Le site, les photos, l’annonce et une page de check-in. Une fois. Pas de logiciel mensuel.",
+    "Landing, boutique, réservation, photos et annonce. Une fois. Pas de logiciel mensuel.",
   "studio.hero.view": "Voir les prestations",
   "studio.hero.talk": "Contact",
   "studio.close": "Dites-nous le bien.",
@@ -287,9 +287,9 @@ const fr: Dict = {
   "contact.topic.checkin": "Check-in numérique",
   "contact.topic.apps": "Une application ou une automatisation",
   "contact.topic.other": "Autre chose",
-  "meta.home.title": "Webrya — Prêt pour Airbnb et Booking",
+  "meta.home.title": "Webrya — Sites et logements",
   "meta.home.description":
-    "Sites, préparation du bien, photos, annonces et check-in numérique. Une fois. Pas de logiciel mensuel.",
+    "Landings, boutiques, réservation, préparation du bien, photos et annonces. Une fois. Pas de logiciel mensuel.",
 };
 
 const prices: Record<Locale, Dict> = {
